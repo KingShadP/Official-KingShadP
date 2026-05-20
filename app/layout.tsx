@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Space_Grotesk, JetBrains_Mono } from 'next/font/goo
 import './globals.css';
 import { CustomCursor } from '@/components/CustomCursor';
 import { AmbientAudio } from '@/components/AmbientAudio';
+import { CookieBanner } from '@/components/CookieBanner';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -28,6 +29,8 @@ export const viewport: Viewport = {
   userScalable: false,
 };
 
+import { SmoothScroll } from '@/components/SmoothScroll';
+
 export const metadata: Metadata = {
   title: 'Official KingShadP',
   description: 'The luxury cinematic vault and official digital residence of KingShadP.',
@@ -49,10 +52,12 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${cormorant.variable} ${space.variable} ${mono.variable} antialiased bg-void text-ivory font-sans relative`} suppressHydrationWarning>
+        <SmoothScroll />
         <CustomCursor />
         <AmbientAudio />
         <div className="atmosphere fixed inset-0 z-[-1]" />
         {children}
+        <CookieBanner />
       </body>
     </html>
   );

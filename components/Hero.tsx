@@ -10,6 +10,8 @@ export function Hero() {
   const opacity1 = useTransform(scrollY, [0, 500], [1, 0]);
   const textY = useTransform(scrollY, [0, 400], [0, 100]);
   const textOpacity = useTransform(scrollY, [0, 400], [1, 0]);
+  const videoScale = useTransform(scrollY, [0, 800], [1.1, 0.8]);
+  const videoRadius = useTransform(scrollY, [0, 800], ["0%", "24px"]);
   
   const title1 = useTextScramble("OFFICIAL /");
   const title2 = useTextScramble("KINGSHADP");
@@ -18,17 +20,18 @@ export function Hero() {
     <section id="vault" className="relative h-screen w-full flex items-center justify-center overflow-hidden">
       {/* Background Media Architecture */}
       <motion.div 
-        className="absolute inset-0 z-0 h-[120%]"
-        style={{ y: y1, opacity: opacity1 }}
+        className="absolute inset-0 z-0 h-[120%] origin-top"
+        style={{ y: y1, opacity: opacity1, scale: videoScale, borderRadius: videoRadius, overflow: 'hidden' }}
       >
-        <Image
-          src="/ChatGPT Image May 16, 2026, 03_49_21 AM (2).png"
-          alt="Cinematic Depth"
-          fill
-          priority
-          referrerPolicy="no-referrer"
-          className="object-cover opacity-40 mix-blend-screen filter grayscale-[0.3] sepia-[0.1] contrast-[1.1] scale-110"
-        />
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover filter grayscale-[0.3] sepia-[0.1] contrast-[1.1]"
+        >
+          <source src="/imagine-0a15cc32.mp4" type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-gradient-to-b from-void/10 via-void/40 to-void z-10" />
       </motion.div>
 
