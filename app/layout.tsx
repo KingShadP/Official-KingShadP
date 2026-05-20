@@ -31,6 +31,10 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: 'Official KingShadP',
   description: 'The luxury cinematic vault and official digital residence of KingShadP.',
+  icons: {
+    icon: '/icon.png',
+    apple: '/icon.png',
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',

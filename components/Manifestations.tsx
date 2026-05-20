@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import Image from "next/image";
 import { TiltCard } from "@/components/TiltCard";
+const artifact1Image = "/ChatGPT Image May 16, 2026, 03_55_36 AM (1).png";
 
 const artifacts = [
   {
@@ -10,21 +11,21 @@ const artifacts = [
     title: "Heavyweight Obsidian",
     classification: "Textile Architecture",
     origin: "The Core Series",
-    image: "https://picsum.photos/seed/obsidianart/800/1000",
+    image: "/ChatGPT Image May 16, 2026, 03_55_36 AM (2).png"
   },
   {
     id: "MET_002",
     title: "Giragon Sigil",
     classification: "Precious Metalwork",
     origin: "Authorization Level 0",
-    image: "https://picsum.photos/seed/sigilart/800/1000",
+    image: "/ChatGPT Image May 12, 2026, 02_51_09 PM (8).png",
   },
   {
     id: "MET_003",
     title: "Regal Echoes",
     classification: "Sonic Preservation",
     origin: "Analog Vault Vol I",
-    image: "https://picsum.photos/seed/echoesart/800/1000",
+    image: "/ChatGPT Image May 16, 2026, 03_49_21 AM (1).png",
   },
 ];
 
