@@ -25,7 +25,7 @@ const artifacts = [
     title: "Regal Echoes",
     classification: "Sonic Preservation",
     origin: "Analog Vault Vol I",
-    image: "/ChatGPT Image May 16, 2026, 03_49_21 AM (1).png",
+    image: "/ChatGPT Image May 16, 2026, 03_55_36 AM (1).png",
   },
 ];
 
@@ -73,7 +73,7 @@ export function Manifestations() {
             >
               <TiltCard className="group relative cursor-crosshair">
                 {/* Media Exhibit */}
-                <div className="relative aspect-[3/4] overflow-hidden ruby-glass p-2 transition-all duration-700 group-hover:border-rosegold/40">
+                <div className="relative aspect-[3/4] overflow-hidden ruby-glass p-2 transition-all duration-700 group-hover:border-rosegold/40 group-hover:shadow-[0_0_40px_rgba(178,31,54,0.3)]">
                   <div className="relative w-full h-full overflow-hidden bg-void">
                     <Image
                       src={artifact.image}

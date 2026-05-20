@@ -22,7 +22,7 @@ export function Hero() {
         style={{ y: y1, opacity: opacity1 }}
       >
         <Image
-          src="/ChatGPT Image May 16, 2026, 03_55_37 AM (4).png"
+          src="/ChatGPT Image May 16, 2026, 03_49_21 AM (2).png"
           alt="Cinematic Depth"
           fill
           priority

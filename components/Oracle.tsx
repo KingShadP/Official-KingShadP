@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronRight, Loader2 } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { TypeWriterText } from "@/components/TypeWriterText";
 
 export function Oracle() {
@@ -128,9 +128,25 @@ export function Oracle() {
                       animate={{ opacity: 1 }}
                       className="flex w-full justify-start"
                     >
-                      <div className="bg-transparent border-l border-rosegold/40 px-4 py-2">
-                         <span className="block font-mono text-[8px] uppercase tracking-widest text-rosegold/60 mb-2">SYSTEM_THINKING</span>
-                         <Loader2 className="w-4 h-4 text-rosegold/80 animate-spin" />
+                      <div className="bg-transparent border-l border-rosegold/40 px-4 py-3 flex items-center">
+                         <span className="font-mono text-[8px] uppercase tracking-widest text-rosegold/60 mr-4">SYSTEM_THINKING</span>
+                         <div className="flex gap-1.5 items-center">
+                           <motion.div 
+                             animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }} 
+                             transition={{ repeat: Infinity, duration: 1.5, delay: 0 }} 
+                             className="w-[3px] h-[3px] rounded-full bg-gold/80" 
+                           />
+                           <motion.div 
+                             animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }} 
+                             transition={{ repeat: Infinity, duration: 1.5, delay: 0.2 }} 
+                             className="w-[3px] h-[3px] rounded-full bg-gold/80" 
+                           />
+                           <motion.div 
+                             animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }} 
+                             transition={{ repeat: Infinity, duration: 1.5, delay: 0.4 }} 
+                             className="w-[3px] h-[3px] rounded-full bg-gold/80" 
+                           />
+                         </div>
                       </div>
                     </motion.div>
                   )}

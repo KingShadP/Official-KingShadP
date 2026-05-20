@@ -1,8 +1,10 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
 import { ArtifactCard } from "@/components/ArtifactCard";
+import { Search } from "lucide-react";
 const codexMedia = "/regenerated_image_1779241202319.png";
 
 const loreFragments = [
@@ -27,6 +29,14 @@ const loreFragments = [
 ];
 
 export function LoreArchive() {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredFragments = loreFragments.filter(
+    (frag) =>
+      frag.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      frag.content.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <section id="codex" className="py-60 px-6 bg-void relative overflow-hidden velvet-section">
       <div className="atmosphere absolute inset-0 opacity-40 z-0" />
@@ -118,15 +128,49 @@ export function LoreArchive() {
 
         {/* Artifact Cards Grid */}
         <div className="flex flex-col gap-12">
-          <div className="flex items-center gap-6">
-            <span className="font-mono text-[9px] tracking-[0.5em] text-rosegold uppercase">Recovered_Fragments</span>
-            <div className="h-[1px] flex-grow bg-gradient-to-r from-rosegold/20 to-transparent" />
+          <div className="flex flex-col md:flex-row md:items-center gap-6 justify-between">
+            <div className="flex items-center gap-6 flex-grow">
+              <span className="font-mono text-[9px] tracking-[0.5em] text-rosegold uppercase">Recovered_Fragments</span>
+              <div className="h-[1px] flex-grow bg-gradient-to-r from-rosegold/20 to-transparent max-w-sm" />
+            </div>
+            
+            <div className="relative flex items-center">
+              <Search className="w-4 h-4 text-ivory/40 absolute left-3" />
+              <input 
+                type="text" 
+                placeholder="Search archive..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="bg-ivory/5 border border-rosegold/20 rounded-full text-ivory font-serif text-sm focus:outline-none focus:border-rosegold transition-colors pl-10 pr-4 py-2 placeholder:text-ivory/30 w-full md:w-64"
+              />
+            </div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-             {loreFragments.map((frag, idx) => (
-               <ArtifactCard key={frag.id} {...frag} delay={idx * 0.2} />
-             ))}
+             <AnimatePresence mode="popLayout">
+               {filteredFragments.map((frag, idx) => (
+                 <motion.div
+                   key={frag.id}
+                   initial={{ opacity: 0, scale: 0.9 }}
+                   animate={{ opacity: 1, scale: 1 }}
+                   exit={{ opacity: 0, scale: 0.9 }}
+                   transition={{ duration: 0.5 }}
+                   layout
+                 >
+                   <ArtifactCard {...frag} delay={0} />
+                 </motion.div>
+               ))}
+               {filteredFragments.length === 0 && (
+                 <motion.div 
+                   initial={{ opacity: 0 }}
+                   animate={{ opacity: 1 }}
+                   exit={{ opacity: 0 }}
+                   className="col-span-1 md:col-span-3 py-20 text-center flex flex-col items-center gap-4"
+                 >
+                   <span className="font-mono text-xs tracking-widest text-ivory/30 uppercase">No fragments found</span>
+                 </motion.div>
+               )}
+             </AnimatePresence>
           </div>
         </div>
 
