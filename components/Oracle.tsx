@@ -130,21 +130,21 @@ export function Oracle() {
                     >
                       <div className="bg-transparent border-l border-rosegold/40 px-4 py-3 flex items-center">
                          <span className="font-mono text-[8px] uppercase tracking-widest text-rosegold/60 mr-4">SYSTEM_THINKING</span>
-                         <div className="flex gap-1.5 items-center">
+                         <div className="relative w-6 h-6 flex flex-shrink-0 items-center justify-center ml-2">
                            <motion.div 
-                             animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }} 
-                             transition={{ repeat: Infinity, duration: 1.5, delay: 0 }} 
-                             className="w-[3px] h-[3px] rounded-full bg-gold/80" 
+                             animate={{ rotate: 360 }}
+                             transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
+                             className="absolute inset-0 border border-gold/30 rounded-sm"
                            />
                            <motion.div 
-                             animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }} 
-                             transition={{ repeat: Infinity, duration: 1.5, delay: 0.2 }} 
-                             className="w-[3px] h-[3px] rounded-full bg-gold/80" 
+                             animate={{ rotate: -360 }}
+                             transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+                             className="absolute inset-[3.5px] border border-rosegold/40 rounded-[2px]"
                            />
                            <motion.div 
-                             animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }} 
-                             transition={{ repeat: Infinity, duration: 1.5, delay: 0.4 }} 
-                             className="w-[3px] h-[3px] rounded-full bg-gold/80" 
+                             animate={{ scale: [0.5, 1.5, 0.5], opacity: [0.4, 1, 0.4] }}
+                             transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                             className="w-1 h-1 bg-ruby rounded-full shadow-[0_0_8px_#B21F36]"
                            />
                          </div>
                       </div>

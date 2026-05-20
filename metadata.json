@@ -1,7 +1,7 @@
 {
   "name": "Divine Archive",
   "description": "A luxury, engaging dark codex displaying celestial artifacts, lore, and an interactive oracle.",
-  "requestFramePermissions": [],
+  "requestFramePermissions": ["camera"],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
   ]

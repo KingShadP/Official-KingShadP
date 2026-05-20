@@ -4,6 +4,8 @@ import { motion } from "motion/react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { TiltCard } from "@/components/TiltCard";
+import { Scan } from "lucide-react";
+import { ARViewer } from "@/components/ARViewer";
 const artifact1Image = "/ChatGPT Image May 16, 2026, 03_55_36 AM (1).png";
 
 const artifacts = [
@@ -102,10 +104,11 @@ export function Manifestations() {
 function InteractiveArtifactImage({ artifact }: { artifact: any }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isScanned, setIsScanned] = useState(false);
+  const [isAROpen, setIsAROpen] = useState(false);
   
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    if (isHovered) {
+    if (isHovered && !isAROpen) {
        timer = setTimeout(() => {
           setIsScanned(true);
        }, 500); // Wait for fast-scan animation before scaling
@@ -115,34 +118,53 @@ function InteractiveArtifactImage({ artifact }: { artifact: any }) {
        }, 0);
     }
     return () => clearTimeout(timer);
-  }, [isHovered]);
+  }, [isHovered, isAROpen]);
 
   return (
-    <div 
-      className="relative aspect-[3/4] ruby-glass p-2 transition-all duration-700 z-10 group-hover:z-50 group-hover:border-rosegold/40 group-hover:shadow-[0_0_40px_rgba(178,31,54,0.3)]"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className={`relative w-full h-full bg-void transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${isScanned ? "scale-[1.6] md:scale-[2] z-[100] shadow-[0_0_80px_rgba(178,31,54,0.4)]" : "scale-100 overflow-hidden"}`}>
-        <Image
-          src={artifact.image}
-          alt={artifact.title}
-          fill
-          className={`object-cover transition-all duration-1000 ${isHovered ? "opacity-100 mix-blend-normal" : "opacity-70 mix-blend-luminosity"}`}
-          referrerPolicy="no-referrer"
-        />
-        
-        {isHovered && !isScanned && <div className="fast-scanline" />}
-        {!isHovered && <div className="scanline" />}
-        
-        <div className={`absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent transition-opacity duration-1000 pointer-events-none ${isHovered ? "opacity-20" : "opacity-80"}`} />
-        
-        {/* Micro Metadata */}
-        <div className={`absolute top-6 left-6 font-mono text-[7px] text-gold/40 tracking-[0.4em] uppercase transition-opacity duration-700 pointer-events-none ${isHovered ? "opacity-100" : "opacity-0"}`}>
-          ID: {artifact.id} {"//"} SEC_LVL: 4
+    <>
+      <div 
+        className="relative aspect-[3/4] ruby-glass p-2 transition-all duration-700 z-10 group-hover:z-50 group-hover:border-rosegold/40 group-hover:shadow-[0_0_40px_rgba(178,31,54,0.3)]"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div className={`relative w-full h-full bg-void transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${isScanned ? "scale-[1.6] md:scale-[2] z-[100] shadow-[0_0_80px_rgba(178,31,54,0.4)]" : "scale-100 overflow-hidden"}`}>
+          <Image
+            src={artifact.image}
+            alt={artifact.title}
+            fill
+            className={`object-cover transition-all duration-1000 ${isHovered ? "opacity-100 mix-blend-normal" : "opacity-70 mix-blend-luminosity"}`}
+            referrerPolicy="no-referrer"
+          />
+          
+          {isHovered && !isScanned && <div className="fast-scanline" />}
+          {!isHovered && <div className="scanline" />}
+          
+          <div className={`absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent transition-opacity duration-1000 pointer-events-none ${isHovered ? "opacity-20" : "opacity-80"}`} />
+          
+          {/* Micro Metadata */}
+          <div className={`absolute top-6 left-6 font-mono text-[7px] text-gold/40 tracking-[0.4em] uppercase transition-opacity duration-700 pointer-events-none ${isHovered ? "opacity-100" : "opacity-0"}`}>
+            ID: {artifact.id} {"//"} SEC_LVL: 4
+          </div>
+
+          {/* AR Button */}
+          <div className={`absolute bottom-6 left-6 transition-opacity duration-700 ${isHovered && isScanned ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
+            <button 
+              onClick={(e) => { e.stopPropagation(); setIsAROpen(true); }}
+              className="flex items-center gap-2 font-mono text-[8px] text-rosegold tracking-[0.3em] uppercase hover:text-gold transition-colors bg-void/60 backdrop-blur-md px-3 py-1.5 rounded-sm border border-rosegold/30 pointer-events-auto"
+            >
+              <Scan className="w-3 h-3" /> [INIT_AR_MODE]
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+
+      <ARViewer 
+        isOpen={isAROpen} 
+        onClose={() => setIsAROpen(false)} 
+        imageUrl={artifact.image}
+        title={artifact.title}
+      />
+    </>
   )
 }
 
