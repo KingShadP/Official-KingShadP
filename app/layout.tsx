@@ -1,4 +1,4 @@
-import type {Metadata} from 'next';
+import type {Metadata, Viewport} from 'next';
 import { Cormorant_Garamond, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { CustomCursor } from '@/components/CustomCursor';
@@ -20,9 +20,25 @@ const mono = JetBrains_Mono({
   variable: '--font-mono',
 });
 
+export const viewport: Viewport = {
+  themeColor: '#B21F36',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export const metadata: Metadata = {
-  title: 'DIVINE ARCHIVE | KINGSHADP',
+  title: 'Official KingShadP',
   description: 'The luxury cinematic vault and official digital residence of KingShadP.',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'KingShadP',
+  },
+  formatDetection: {
+    telephone: false,
+  },
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {

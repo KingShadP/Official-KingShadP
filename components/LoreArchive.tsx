@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import Image from "next/image";
 import { ArtifactCard } from "@/components/ArtifactCard";
-import codexMedia from "@/src/assets/images/regenerated_image_1779241202319.png";
+const codexMedia = "/regenerated_image_1779241202319.png";
 
 const loreFragments = [
   {
