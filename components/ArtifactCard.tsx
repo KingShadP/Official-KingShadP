@@ -89,7 +89,7 @@ export function ArtifactCard({ id, title, classification, content, delay = 0 }: 
                   &ldquo;{content}&rdquo;
                 </p>
                 <div className="mt-8 text-ivory/60 font-serif text-base leading-relaxed">
-                  <p>Detailed analysis reveals the depth of the {title.toLowerCase()}. Its architectural resonance echoes through the void, creating a lasting imprint on the mythological framework we've built.</p>
+                  <p>Detailed analysis reveals the depth of the {title.toLowerCase()}. Its architectural resonance echoes through the void, creating a lasting imprint on the mythological framework we&apos;ve built.</p>
                 </div>
               </div>
               

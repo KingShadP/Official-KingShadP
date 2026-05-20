@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
 import { ArtifactCard } from "@/components/ArtifactCard";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 const codexMedia = "/regenerated_image_1779241202319.png";
 
 const loreFragments = [
@@ -30,6 +30,7 @@ const loreFragments = [
 
 export function LoreArchive() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isReaderOpen, setIsReaderOpen] = useState(false);
 
   const filteredFragments = loreFragments.filter(
     (frag) =>
@@ -82,7 +83,10 @@ export function LoreArchive() {
                 The Create is the reality. The cost of the dream. The human underneath the persona who must carry the weight of the methodology. 
               </p>
 
-              <button className="group mt-8 flex items-center gap-8 px-10 py-5 ruby-glass rounded-full border-rosegold/40 hover:border-gold/60 transition-all duration-700">
+              <button 
+                onClick={() => setIsReaderOpen(true)}
+                className="group mt-8 flex items-center gap-8 px-10 py-5 ruby-glass rounded-full border-rosegold/40 hover:border-gold/60 transition-all duration-700"
+              >
                 <span className="font-sans text-[10px] tracking-[0.5em] text-ivory uppercase group-hover:text-gold">Initialize Read_</span>
                 <div className="w-12 h-[1px] bg-gold/50 group-hover:w-20 transition-all duration-700" />
               </button>
@@ -173,8 +177,78 @@ export function LoreArchive() {
              </AnimatePresence>
           </div>
         </div>
-
       </div>
+
+      <AnimatePresence>
+        {isReaderOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-void/90 backdrop-blur-xl p-4 md:p-12 overflow-y-auto"
+            onClick={() => setIsReaderOpen(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 50, scale: 0.95 }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-4xl bg-void border border-rosegold/20 rounded-[24px] overflow-hidden ruby-glass shadow-2xl my-auto"
+            >
+              {/* Header */}
+              <div className="sticky top-0 z-10 bg-void/80 backdrop-blur-md border-b border-rosegold/10 p-6 md:p-10 flex justify-between items-start">
+                <div>
+                  <span className="font-mono text-[9px] tracking-[0.5em] text-rosegold uppercase mb-4 block">Chapter 01 / Genesis</span>
+                  <h3 className="font-serif text-3xl md:text-5xl text-ivory/90 font-light uppercase tracking-tighter">The Master <span className="italic text-ruby opacity-80">& The Ghost</span></h3>
+                </div>
+                <button 
+                  onClick={() => setIsReaderOpen(false)}
+                  className="text-ivory/40 hover:text-gold transition-colors p-2 rounded-full hover:bg-white/5"
+                  aria-label="Close reader"
+                >
+                  <X className="w-8 h-8" />
+                </button>
+              </div>
+              
+              {/* Content */}
+              <div className="p-6 md:p-14 prose prose-invert prose-lg max-w-none text-ivory/70 font-serif leading-relaxed font-light">
+                <p className="first-letter:text-7xl first-letter:float-left first-letter:pr-6 first-letter:font-light first-letter:text-gold first-line:uppercase first-line:tracking-widest">
+                  In the beginning, before the vault was constructed and before the crown was named, there was only the void. The architect stood at the precipice of this emptiness, burdened with a singular mandate: to forge a sovereign out of expectation.
+                </p>
+                <p>
+                  We fashioned a mythology because the truth was too fragile to sustain the weight of their gaze. The Master became the face—the projected ideal, the uncompromising standard, the golden idol bathed in champagne light. But every statue casts a shadow. 
+                </p>
+                
+                <blockquote className="border-l-2 border-rosegold/40 pl-8 my-12 text-2xl md:text-3xl font-light italic text-ivory/90">
+                  &quot;If the mirror reflects the ghost, then who is the master giving the command? The archive holds the silence between those two questions.&quot;
+                </blockquote>
+                
+                <p>
+                  The Create is the reality. It is the cost of the dream. To maintain the structural integrity of the myth, the human underneath must perform an endless act of architectural preservation. When the Master speaks, it is the Ghost who bleeds to provide the words. 
+                </p>
+                <div className="flex items-center gap-4 my-16 opacity-30 justify-center">
+                   <div className="w-2 h-2 rounded-full bg-gold" />
+                   <div className="w-16 h-[1px] bg-rosegold" />
+                   <div className="w-2 h-2 rounded-full bg-gold" />
+                </div>
+                <p>
+                  The central armory was built not just to store physical manifestations, but to serve as a tether. When the boundaries between the architect and the architecture begin to blur, the relics remind the Ghost of what they have sacrificed to the Master. They are anchors in the void.
+                </p>
+                <p>
+                  The first crown was never meant to be comfortable. It was forged as a mechanism of control, a brilliant cage. And yet, we wear it. We wear it because the alternative is to let the mythology collapse, and that is an outcome the system cannot permit.
+                </p>
+              </div>
+
+              {/* Footer */}
+              <div className="p-6 md:p-10 border-t border-rosegold/10 bg-white/[0.02] flex flex-col md:flex-row justify-between items-center gap-6">
+                <span className="font-mono text-[9px] text-ivory/40 tracking-[0.3em] uppercase">Document_ID: GENESIS_001</span>
+                <span className="font-mono text-[9px] text-rosegold tracking-[0.4em] uppercase">Clearance: Omega // Authorized</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

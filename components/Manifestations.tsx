@@ -110,7 +110,9 @@ function InteractiveArtifactImage({ artifact }: { artifact: any }) {
           setIsScanned(true);
        }, 500); // Wait for fast-scan animation before scaling
     } else {
-       setIsScanned(false);
+       timer = setTimeout(() => {
+          setIsScanned(false);
+       }, 0);
     }
     return () => clearTimeout(timer);
   }, [isHovered]);
@@ -137,7 +139,7 @@ function InteractiveArtifactImage({ artifact }: { artifact: any }) {
         
         {/* Micro Metadata */}
         <div className={`absolute top-6 left-6 font-mono text-[7px] text-gold/40 tracking-[0.4em] uppercase transition-opacity duration-700 pointer-events-none ${isHovered ? "opacity-100" : "opacity-0"}`}>
-          ID: {artifact.id} // SEC_LVL: 4
+          ID: {artifact.id} {"//"} SEC_LVL: 4
         </div>
       </div>
     </div>

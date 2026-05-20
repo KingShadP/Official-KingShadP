@@ -96,7 +96,7 @@ export function Oracle() {
                     <span className="font-serif text-[10px] text-rosegold -rotate-45">G</span>
                   </div>
                   <p className="font-mono text-[9px] text-ivory tracking-widest uppercase max-w-xs">
-                    "Power is only beautiful when it has discipline."
+                    &quot;Power is only beautiful when it has discipline.&quot;
                   </p>
                 </div>
               ) : (

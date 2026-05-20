@@ -8,10 +8,10 @@ export function TypeWriterText({ text, className = "" }: { text: string, classNa
   useEffect(() => {
     let index = 0;
     const speed = 30; // ms per char
-    setDisplayedText("");
     
     // Add a small delay before starting to type
     const startDelay = setTimeout(() => {
+        setDisplayedText("");
         const interval = setInterval(() => {
         setDisplayedText((prev) => prev + text.charAt(index));
         index++;
