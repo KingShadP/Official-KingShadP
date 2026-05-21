@@ -23,35 +23,23 @@ export function ArtifactCard({ id, title, classification, content, delay = 0 }: 
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 1.2, delay, ease: [0.16, 1, 0.3, 1] }}
         onClick={() => setIsModalOpen(true)}
-        className="artifact-card p-8 rounded-[24px] group cursor-pointer flex flex-col justify-between"
+        className="group cursor-pointer flex flex-col justify-between relative overflow-hidden bg-transparent border border-ivory/10 hover:border-ivory/40 transition-colors duration-700 p-8 h-full"
       >
-        {/* Subtle Shimmer Overlay on Hover */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-rosegold/0 via-rosegold/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 blur-xl pointer-events-none" />
-        
-        {/* OS Decor */}
-        <div className="absolute top-0 right-0 p-6 opacity-30 group-hover:opacity-100 transition-opacity duration-700">
-          <div className="w-1.5 h-1.5 rounded-full bg-ruby animate-pulse" />
+        <div className="mb-10 pb-6 border-b border-ivory/10 group-hover:border-ivory/40 transition-colors duration-700">
+           <span className="font-mono text-[9px] tracking-[0.4em] text-ivory/40 uppercase mb-4 block transition-colors group-hover:text-ivory/70">{classification}</span>
+           <h4 className="font-serif text-3xl text-ivory/80 group-hover:text-ivory transition-colors duration-500 font-light leading-tight">{title}</h4>
         </div>
 
-        <div className="mb-10 border-b border-rosegold/10 pb-6 group-hover:border-rosegold/30 transition-colors duration-700 relative z-10">
-           <span className="font-mono text-[9px] tracking-[0.4em] text-rosegold uppercase mb-3 block">{classification}</span>
-           <h4 className="font-serif text-3xl text-ivory/90 group-hover:text-gold transition-colors duration-500 font-light engraved-text leading-tight">{title}</h4>
-        </div>
-
-        <div className="relative z-10 flex-grow flex flex-col justify-center mb-10">
-          <p className="font-serif text-base text-ivory/60 leading-relaxed italic group-hover:text-ivory/90 transition-colors duration-500 engraved-text">
+        <div className="flex-grow flex flex-col justify-center mb-10">
+          <p className="font-serif text-lg text-ivory/50 leading-relaxed italic group-hover:text-ivory/80 transition-colors duration-500">
             &ldquo;{content}&rdquo;
           </p>
         </div>
 
-        <div className="mt-auto flex justify-between items-end border-t border-rosegold/10 pt-6 group-hover:border-rosegold/30 transition-colors duration-700 relative z-10">
-           <span className="font-mono text-[8px] text-ivory/30 tracking-[0.4em] uppercase">Fragment_ID:</span>
-           <span className="font-mono text-[10px] text-rosegold/70 tracking-[0.3em] uppercase">{id}</span>
+        <div className="mt-auto flex justify-between items-end border-t border-ivory/10 pt-6 group-hover:border-ivory/40 transition-colors duration-700">
+           <span className="font-mono text-[8px] text-ivory/30 tracking-[0.4em] uppercase">Ref:</span>
+           <span className="font-mono text-[10px] text-ivory/60 tracking-[0.3em] uppercase">{id}</span>
         </div>
-
-        {/* Engraved Corners */}
-        <div className="absolute top-3 left-3 w-4 h-4 border-t-[1.5px] border-l-[1.5px] border-rosegold/20 rounded-tl-sm group-hover:border-gold/50 transition-colors duration-700" />
-        <div className="absolute bottom-3 right-3 w-4 h-4 border-b-[1.5px] border-r-[1.5px] border-rosegold/20 rounded-br-sm group-hover:border-gold/50 transition-colors duration-700" />
       </motion.div>
 
       <AnimatePresence>
@@ -60,42 +48,44 @@ export function ArtifactCard({ id, title, classification, content, delay = 0 }: 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-void/80 backdrop-blur-md p-4"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-void/90 backdrop-blur-3xl p-0"
             onClick={() => setIsModalOpen(false)}
           >
             <motion.div
-              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              initial={{ scale: 0.98, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              exit={{ scale: 0.98, opacity: 0, y: 20 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-2xl bg-void border border-rosegold/20 rounded-[24px] p-10 ruby-glass shadow-lg"
+              className="relative w-full h-full md:h-auto md:max-w-4xl bg-void border border-ivory/10 px-8 py-16 md:p-20 overflow-y-auto mix-blend-difference"
             >
-              <button 
-                onClick={() => setIsModalOpen(false)}
-                className="absolute top-6 right-6 text-ivory/60 hover:text-gold transition-colors"
-                aria-label="Close modal"
-              >
-                <X className="w-6 h-6" />
-              </button>
-              
-              <div className="mb-8 border-b border-rosegold/10 pb-6">
-                <span className="font-mono text-[9px] tracking-[0.5em] text-rosegold uppercase mb-4 block">{classification}</span>
-                <h3 className="font-serif text-4xl text-ivory/90 font-light italic">{title}</h3>
-              </div>
-              
-              <div className="prose prose-invert max-w-none">
-                <p className="font-serif text-xl text-ivory/80 leading-relaxed italic">
-                  &ldquo;{content}&rdquo;
-                </p>
-                <div className="mt-8 text-ivory/60 font-serif text-base leading-relaxed">
-                  <p>Detailed analysis reveals the depth of the {title.toLowerCase()}. Its architectural resonance echoes through the void, creating a lasting imprint on the mythological framework we&apos;ve built.</p>
+              <div className="relative z-10 max-w-2xl mx-auto">
+                <button 
+                  onClick={() => setIsModalOpen(false)}
+                  className="fixed md:absolute top-8 right-8 text-ivory/40 hover:text-ivory transition-colors p-4 rounded-full flex gap-2 items-center uppercase font-mono text-[9px] tracking-[0.4em]"
+                  aria-label="Close modal"
+                >
+                  Close <X className="w-4 h-4 ml-2" />
+                </button>
+                
+                <div className="mb-16 border-b border-ivory/10 pb-12">
+                  <span className="font-mono text-[9px] tracking-[0.5em] text-ivory/50 uppercase mb-8 block">{classification}</span>
+                  <h3 className="font-serif text-5xl md:text-6xl text-ivory font-light italic tracking-tight leading-[1]">{title}</h3>
                 </div>
-              </div>
-              
-              <div className="mt-10 pt-6 border-t border-rosegold/10 flex justify-between items-center">
-                <span className="font-mono text-[9px] text-ivory/40 tracking-[0.3em] uppercase">Status: Archived</span>
-                <span className="font-mono text-[10px] text-rosegold tracking-[0.4em] uppercase">{id}</span>
+                
+                <div className="prose prose-invert max-w-none text-left">
+                  <p className="font-serif text-2xl md:text-3xl text-ivory/80 leading-relaxed font-light mb-12">
+                    &ldquo;{content}&rdquo;
+                  </p>
+                  <p className="font-sans text-sm md:text-base leading-relaxed text-ivory/50 font-light max-w-xl">
+                    Detailed analysis reveals the depth of the {title.toLowerCase()}. Its architectural resonance echoes through the void, creating a lasting imprint on the mythological framework. The creator built the vault, but the artifact persists independently.
+                  </p>
+                </div>
+                
+                <div className="mt-20 pt-8 border-t border-ivory/10 flex justify-between items-center opacity-70">
+                  <span className="font-mono text-[9px] text-ivory/40 tracking-[0.3em] uppercase">Status: Archived</span>
+                  <span className="font-mono text-[10px] text-ivory/70 tracking-[0.4em] uppercase">{id}</span>
+                </div>
               </div>
             </motion.div>
           </motion.div>

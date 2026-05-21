@@ -9,20 +9,15 @@ export function CustomCursor() {
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
 
-  // Inner dot (fast)
-  const springConfigInner = { damping: 40, stiffness: 400 };
+  // Inner dot (ultra-responsive)
+  const springConfigInner = { damping: 25, stiffness: 450, mass: 0.1 };
   const springXInner = useSpring(cursorX, springConfigInner);
   const springYInner = useSpring(cursorY, springConfigInner);
 
-  // Outer anti-gravity field (slow, floating)
-  const springConfigOuter = { damping: 20, stiffness: 100, mass: 0.8 };
+  // Outer ring (smooth fluid drag)
+  const springConfigOuter = { damping: 40, stiffness: 200, mass: 0.5 };
   const springXOuter = useSpring(cursorX, springConfigOuter);
   const springYOuter = useSpring(cursorY, springConfigOuter);
-
-  // Satellite orbit field
-  const springConfigSat = { damping: 15, stiffness: 60, mass: 1.5 };
-  const springXSat = useSpring(cursorX, springConfigSat);
-  const springYSat = useSpring(cursorY, springConfigSat);
 
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
@@ -40,6 +35,9 @@ export function CustomCursor() {
     document.addEventListener("mouseleave", handleMouseLeave);
     document.addEventListener("mousedown", handleMouseDown);
     document.addEventListener("mouseup", handleMouseUp);
+    
+    // Default show if already on page
+    setIsVisible(true);
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
@@ -52,44 +50,7 @@ export function CustomCursor() {
 
   return (
     <>
-      {/* Outer Anti-Gravity Ripple / Field */}
-      <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9997] hidden lg:flex items-center justify-center mix-blend-screen"
-        style={{
-          x: springXSat,
-          y: springYSat,
-          translateX: "-50%",
-          translateY: "-50%",
-          opacity: isVisible ? 0.3 : 0,
-        }}
-      >
-        <div className="relative w-32 h-32 flex items-center justify-center">
-          <motion.div 
-            animate={{ 
-              rotate: 360,
-              scale: isClicking ? 1.5 : 1,
-            }}
-            transition={{ 
-              rotate: { repeat: Infinity, duration: 8, ease: "linear" },
-              scale: { type: "spring", damping: 15, stiffness: 200 }
-            }}
-            className="absolute inset-0 rounded-full border border-dashed border-rosegold/30" 
-          />
-          <motion.div
-            animate={{
-              rotate: -360,
-              scale: isClicking ? 0.8 : 1,
-            }}
-            transition={{
-              rotate: { repeat: Infinity, duration: 12, ease: "linear" },
-              scale: { type: "spring", damping: 15, stiffness: 200 }
-            }}
-            className="absolute inset-4 rounded-full border border-rosegold/10"
-          />
-        </div>
-      </motion.div>
-
-      {/* Main Cursor Ring */}
+      {/* Dynamic Outer Ring */}
       <motion.div
         className="fixed top-0 left-0 pointer-events-none z-[9998] hidden lg:flex items-center justify-center mix-blend-difference"
         style={{
@@ -102,15 +63,13 @@ export function CustomCursor() {
       >
         <motion.div 
           animate={{
-            scale: isClicking ? 0.5 : 1,
-            backgroundColor: isClicking ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0)"
+            scale: isClicking ? 0.7 : 1,
+            backgroundColor: isClicking ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0)",
+            borderColor: isClicking ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.4)"
           }}
-          transition={{ type: "spring", damping: 20, stiffness: 300 }}
-          className="w-10 h-10 border-[1px] border-ivory/50 rounded-full flex items-center justify-center backdrop-blur-[2px]"
-        >
-           {/* Anti-gravity glow */}
-           <div className="absolute inset-0 rounded-full bg-ivory/5 shadow-[0_0_20px_rgba(255,255,255,0.2)]" />
-        </motion.div>
+          transition={{ type: "spring", damping: 15, stiffness: 300, mass: 0.2 }}
+          className="w-12 h-12 border-[1.5px] rounded-full flex items-center justify-center backdrop-blur-sm"
+        />
       </motion.div>
 
       {/* Inner precise dot */}
@@ -124,7 +83,13 @@ export function CustomCursor() {
           opacity: isVisible ? 1 : 0,
         }}
       >
-        <div className="w-1.5 h-1.5 bg-ivory rounded-full shadow-[0_0_10px_#fff]" />
+        <motion.div 
+          animate={{
+            scale: isClicking ? 2 : 1,
+          }}
+          transition={{ type: "spring", damping: 20, stiffness: 400 }}
+          className="w-2 h-2 bg-ivory rounded-full shadow-[0_0_10px_#fff]" 
+        />
       </motion.div>
     </>
   );

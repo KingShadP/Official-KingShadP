@@ -2,116 +2,125 @@
 
 import { motion, useScroll, useTransform } from "motion/react";
 import { useTextScramble } from "@/lib/hooks/useTextScramble";
-import Image from "next/image";
 
 export function Hero() {
   const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 1000], [0, 200]);
-  const opacity1 = useTransform(scrollY, [0, 500], [1, 0]);
-  const textY = useTransform(scrollY, [0, 400], [0, 100]);
-  const textOpacity = useTransform(scrollY, [0, 400], [1, 0]);
-  const videoScale = useTransform(scrollY, [0, 800], [1.1, 0.8]);
-  const videoRadius = useTransform(scrollY, [0, 800], ["0%", "24px"]);
+  const y1 = useTransform(scrollY, [0, 1000], [0, 300]);
+  const opacity1 = useTransform(scrollY, [0, 600], [1, 0]);
+  const textY = useTransform(scrollY, [0, 800], [0, 400]);
+  const maskY = useTransform(scrollY, [0, 600], ["100%", "0%"]);
   
-  const title1 = useTextScramble("OFFICIAL /");
+  const title1 = useTextScramble("OFFICIAL");
   const title2 = useTextScramble("KINGSHADP");
 
   return (
-    <section id="vault" className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+    <section id="vault" className="relative h-screen min-h-[800px] w-full flex items-center justify-center overflow-hidden bg-void">
       {/* Background Media Architecture */}
       <motion.div 
-        className="absolute inset-0 z-0 h-[120%] origin-top"
-        style={{ y: y1, opacity: opacity1, scale: videoScale, borderRadius: videoRadius, overflow: 'hidden' }}
+        className="absolute inset-x-0 top-0 h-[100vh] origin-top will-change-transform"
+        style={{ y: y1, opacity: opacity1 }}
       >
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover filter grayscale-[0.3] sepia-[0.1] contrast-[1.1]"
+        <motion.div
+           initial={{ opacity: 0, scale: 1.1 }}
+           animate={{ opacity: 1, scale: 1 }}
+           transition={{ duration: 4, ease: [0.16, 1, 0.3, 1] }}
+           className="w-full h-full"
         >
-          <source src="/imagine-0a15cc32.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-void/10 via-void/40 to-void z-10" />
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover filter grayscale-[0.8] contrast-[1.4] sepia-[0.3] opacity-60"
+          >
+            <source src="/imagine-0a15cc32.mp4" type="video/mp4" />
+          </video>
+        </motion.div>
+        
+        {/* Cinematic Vignette */}
+        <div className="absolute inset-0 bg-gradient-to-b from-void/40 via-void/5 to-void z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent z-10" />
       </motion.div>
 
-      {/* OS Telemetry Grid */}
-      <div className="absolute inset-0 z-10 border-x border-rosegold/5 max-w-7xl mx-auto hidden md:block pointer-events-none">
-        <div className="w-[1px] h-full bg-rosegold/5 absolute left-1/4" />
-        <div className="w-[1px] h-full bg-rosegold/5 absolute right-1/4" />
-      </div>
-
-      {/* Marquee Background */}
-      <div className="absolute top-1/3 w-full -rotate-6 z-10 pointer-events-none overflow-hidden mix-blend-overlay opacity-10">
-        <motion.div
-           animate={{ x: [0, -2000] }}
-           transition={{ repeat: Infinity, ease: "linear", duration: 40 }}
-           className="flex whitespace-nowrap font-serif text-[20vw] leading-none uppercase tracking-tighter"
-        >
-           <span className="px-10">Official KingShadP // System Alpha</span>
-           <span className="px-10">Official KingShadP // System Alpha</span>
-           <span className="px-10">Official KingShadP // System Alpha</span>
-        </motion.div>
+      {/* Structural Grids */}
+      <div className="absolute inset-0 z-10 grid grid-cols-4 max-w-screen-2xl mx-auto pointer-events-none opacity-20">
+        <div className="border-r border-ivory/10 h-full w-full" />
+        <div className="border-r border-ivory/10 h-full w-full" />
+        <div className="border-r border-ivory/10 h-full w-full" />
+        <div className="h-full w-full" />
       </div>
 
       <motion.div 
-        className="relative z-20 flex flex-col items-center justify-center text-center w-full px-4"
-        style={{ y: textY, opacity: textOpacity }}
+        className="relative z-20 flex flex-col items-center justify-center text-center w-full px-4 mix-blend-difference"
+        style={{ y: textY }}
       >
-        <motion.div
-           initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col items-center"
-        >
+        <div className="flex flex-col items-center">
           {/* Status Badge */}
-          <div className="flex items-center gap-6 mb-8">
-            <span className="w-20 h-[1px] bg-rosegold/30"></span>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="flex items-center gap-6 mb-12"
+          >
+            <span className="w-16 h-[1px] bg-ivory/30"></span>
             <div className="flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-ruby shadow-[0_0_10px_#B21F36] animate-pulse" />
-              <span className="font-mono text-[9px] uppercase tracking-[0.5em] text-gold font-semibold italic">
-                Active_Link // Sys_001
+              <div className="w-1.5 h-1.5 bg-ivory shadow-[0_0_10px_#fff]" />
+              <span className="font-mono text-[9px] uppercase tracking-[0.5em] text-ivory/80 font-semibold">
+                Origin_Node // Established
               </span>
             </div>
-            <span className="w-20 h-[1px] bg-rosegold/30"></span>
-          </div>
+            <span className="w-16 h-[1px] bg-ivory/30"></span>
+          </motion.div>
 
-          <h1 className="font-serif text-[18vw] leading-[0.7] font-light text-ivory tracking-tighter mix-blend-difference z-20 relative">
-            {title1}
-          </h1>
-          <h1 className="font-serif text-[18vw] leading-[0.7] font-light text-transparent bg-clip-text bg-gradient-to-b from-ruby via-crimson to-oxblood tracking-tighter -mt-4 text-glow-rosegold z-20 relative">
-            {title2}
-          </h1>
-        </motion.div>
+          {/* Typography Masked Reveal */}
+          <div className="overflow-hidden relative leading-[0.8] pb-4">
+             <motion.h1 
+                initial={{ y: "150%" }}
+                animate={{ y: "0%" }}
+                transition={{ duration: 1.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className="font-serif text-[18vw] md:text-[15vw] font-light text-ivory tracking-tighter"
+             >
+               {title1}
+             </motion.h1>
+          </div>
+          <div className="overflow-hidden relative leading-[0.8]">
+             <motion.h1 
+                initial={{ y: "150%" }}
+                animate={{ y: "0%" }}
+                transition={{ duration: 1.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="font-serif text-[18vw] md:text-[15vw] font-light text-transparent bg-clip-text bg-gradient-to-b from-ivory to-ivory/40 tracking-tighter mix-blend-plus-lighter"
+             >
+               {title2}
+             </motion.h1>
+          </div>
+        </div>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 2, delay: 1 }}
-          className="mt-16 max-w-3xl font-serif text-2xl md:text-4xl text-ivory/60 leading-relaxed font-light"
+          transition={{ duration: 3, delay: 1.5, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-16 max-w-2xl font-serif text-lg sm:text-xl md:text-2xl text-ivory/50 leading-relaxed font-light mx-auto"
         >
-          &ldquo;Identity transformed into <span className="italic text-rosegold/80 font-medium">mythology</span>. 
-          The creator built the vault. <br className="hidden md:block" /> The creation survived it.&rdquo;
+          Identity transformed into mythology.
         </motion.p>
-
-        <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           animate={{ opacity: 1, y: 0 }}
-           transition={{ duration: 1.2, delay: 1.8, ease: "easeOut" }}
-           className="mt-20 flex items-center gap-12"
-        >
-           <a href="#artifacts" className="group flex flex-col items-center gap-3">
-              <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-ivory/60 group-hover:text-gold transition-colors duration-500">Exhibit_Library</span>
-              <div className="w-px h-16 bg-gradient-to-b from-rosegold/40 to-transparent group-hover:h-24 transition-all duration-1000" />
-           </a>
-        </motion.div>
       </motion.div>
 
-      {/* Rails */}
-      <div className="absolute right-12 bottom-12 hidden lg:flex flex-col items-end gap-2 font-mono text-[8px] text-ivory/20 tracking-[0.5em] uppercase text-right">
-        <span>sys.archive // code_divine</span>
-        <span>authorization: levels_omega</span>
-      </div>
+      {/* Down indicator */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2, delay: 2 }}
+        className="absolute bottom-12 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-4"
+      >
+        <span className="font-mono text-[8px] uppercase tracking-[0.4em] text-ivory/30">Descend</span>
+        <div className="w-[1px] h-12 bg-ivory/20 overflow-hidden relative">
+          <motion.div 
+            animate={{ y: ["-100%", "200%"] }}
+            transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+            className="absolute inset-0 bg-ivory"
+          />
+        </div>
+      </motion.div>
     </section>
   );
 }

@@ -3,15 +3,13 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronRight } from "lucide-react";
-import { TypeWriterText } from "@/components/TypeWriterText";
 
 export function Oracle() {
-  const [hovered, setHovered] = useState(false);
   const [query, setQuery] = useState("");
-  const [response, setResponse] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [history, setHistory] = useState<{role: 'user'|'oracle', text: string}[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -21,7 +19,6 @@ export function Oracle() {
     setQuery("");
     setHistory(prev => [...prev, { role: 'user', text: userText }]);
     setIsLoading(true);
-    setResponse(null);
 
     try {
       const res = await fetch('/api/oracle', {
@@ -32,11 +29,11 @@ export function Oracle() {
       const data = await res.json();
       
       setHistory(prev => [...prev, { role: 'oracle', text: data.text }]);
-      setResponse(data.text);
     } catch (err) {
-      setHistory(prev => [...prev, { role: 'oracle', text: "The signal is lost. Try your invocation again." }]);
+      setHistory(prev => [...prev, { role: 'oracle', text: "Signal lost. The connection to the archive has faded." }]);
     } finally {
       setIsLoading(false);
+      inputRef.current?.focus();
     }
   };
 
@@ -47,139 +44,100 @@ export function Oracle() {
   }, [history, isLoading]);
 
   return (
-    <section id="oracle" className="py-40 px-6 relative border-t border-rosegold/10 from-void to-oxblood/40 bg-gradient-to-b flex items-center justify-center min-h-[80vh] overflow-hidden velvet-section">
-      <div className="absolute inset-0 atmosphere opacity-50 pointer-events-none" />
-      
-      {/* Grid overlay */}
-      <div className="absolute inset-0 z-0 border-x border-rosegold/5 max-w-[80rem] mx-auto hidden md:block pointer-events-none">
-        <div className="w-full h-full border-x border-rosegold/5 absolute left-1/3" />
-        <div className="w-full h-full border-x border-rosegold/5 absolute right-1/3" />
-      </div>
-
-      <motion.div 
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-        className="max-w-4xl w-full z-10 glass-panel crimson-glass p-8 md:p-16 rounded-[40px] relative border-rosegold/20 flex flex-col items-center velvet-shadow"
-      >
-        <div className="absolute top-8 left-8 flex gap-2">
-          <div className="w-2 h-2 rounded-full bg-crimson shadow-[0_0_10px_#B21F36] animate-pulse" />
-          <div className="w-2 h-2 rounded-full bg-rosegold/20" />
-          <div className="w-2 h-2 rounded-full bg-rosegold/20" />
-        </div>
+    <section id="oracle" className="py-24 px-6 md:px-12 relative flex items-center justify-center min-h-[80vh] border-t border-ivory/5">
+      <div className="w-full max-w-5xl mx-auto flex flex-col h-[70vh]">
         
-        <div className="absolute top-8 right-8 font-mono text-[9px] uppercase tracking-[0.3em] text-rosegold/50">
-          OS_VERSION_002
-        </div>
-
-        <div className="flex flex-col items-center text-center mt-8 w-full">
-          <span className="font-sans text-[10px] tracking-[0.4em] text-gold uppercase mb-6 drop-shadow-md">
-            The Oracle Interface
-          </span>
-          <h2 className="font-serif text-4xl md:text-5xl text-ivory mb-12 font-light">
-            Consult The <span className="italic text-rosegold">Archive</span>
-          </h2>
-          
-          <div className="w-full max-w-2xl bg-void/50 border border-rosegold/10 rounded-3xl overflow-hidden velvet-shadow flex flex-col mb-8" style={{ height: '400px' }}>
-            <div 
-              ref={scrollRef}
-              className="flex-1 overflow-y-auto p-6 space-y-6 scroll-smooth scrollbar-hide"
-              style={{
-                scrollbarWidth: 'none',
-                msOverflowStyle: 'none'
-              }}
-            >
-              {history.length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center text-center opacity-50 space-y-4">
-                  <div className="w-12 h-12 border border-rosegold/20 rounded-full flex items-center justify-center rotate-45 group">
-                    <span className="font-serif text-[10px] text-rosegold -rotate-45">G</span>
-                  </div>
-                  <p className="font-mono text-[9px] text-ivory tracking-widest uppercase max-w-xs">
-                    &quot;Power is only beautiful when it has discipline.&quot;
-                  </p>
-                </div>
-              ) : (
-                <AnimatePresence initial={false}>
-                  {history.map((msg, idx) => (
-                    <motion.div 
-                      key={idx}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                    >
-                      <div className={`max-w-[85%] rounded-2xl p-4 ${msg.role === 'user' ? 'bg-rosegold/10 text-ivory rounded-tr-sm border border-rosegold/20' : 'bg-transparent text-ivory/80 border-l border-rosegold/40 rounded-tl-sm'}`}>
-                        <span className="block font-mono text-[8px] uppercase tracking-widest text-rosegold/60 mb-2">
-                          {msg.role === 'user' ? 'GUEST_INPUT' : 'SYSTEM_RESPONSE'}
-                        </span>
-                        {msg.role === 'oracle' ? (
-                          <TypeWriterText text={msg.text} className="font-serif text-lg italic text-platinum drop-shadow-md leading-relaxed" />
-                        ) : (
-                          <p className="font-serif leading-relaxed text-sm">
-                            {msg.text}
-                          </p>
-                        )}
-                      </div>
-                    </motion.div>
-                  ))}
-                  {isLoading && (
-                    <motion.div 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="flex w-full justify-start"
-                    >
-                      <div className="bg-transparent border-l border-rosegold/40 px-4 py-3 flex items-center">
-                         <span className="font-mono text-[8px] uppercase tracking-widest text-rosegold/60 mr-4">SYSTEM_THINKING</span>
-                         <div className="relative w-6 h-6 flex flex-shrink-0 items-center justify-center ml-2">
-                           <motion.div 
-                             animate={{ rotate: 360 }}
-                             transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
-                             className="absolute inset-0 border border-gold/30 rounded-sm"
-                           />
-                           <motion.div 
-                             animate={{ rotate: -360 }}
-                             transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
-                             className="absolute inset-[3.5px] border border-rosegold/40 rounded-[2px]"
-                           />
-                           <motion.div 
-                             animate={{ scale: [0.5, 1.5, 0.5], opacity: [0.4, 1, 0.4] }}
-                             transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-                             className="w-1 h-1 bg-ruby rounded-full shadow-[0_0_8px_#B21F36]"
-                           />
-                         </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              )}
-            </div>
-
-            <form 
-              onSubmit={handleSubmit}
-              className={`w-full flex items-center bg-void/90 border-t transition-all duration-700 px-4 py-4 ${hovered ? 'border-rosegold/60 shadow-[0_-10px_30px_rgba(183,110,121,0.05)]' : 'border-rosegold/20'}`}
-              onMouseEnter={() => setHovered(true)}
-              onMouseLeave={() => setHovered(false)}
-            >
-              <span className="font-mono text-[10px] text-rosegold/80 mr-4 tracking-widest uppercase hidden sm:block">Input_</span>
-              <input 
-                type="text" 
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Submit your inquiry..." 
-                className="bg-transparent border-none outline-none text-ivory font-serif text-lg w-full placeholder:text-ivory/30 placeholder:italic transition-all duration-500"
-                disabled={isLoading}
-              />
-              <button 
-                type="submit" 
-                disabled={!query.trim() || isLoading}
-                className="w-10 h-10 shrink-0 rounded-full border border-rosegold/30 flex items-center justify-center text-rosegold hover:bg-rosegold hover:text-void transition-all duration-300 disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-rosegold"
-              >
-                <ChevronRight className="w-4 h-4 ml-0.5" />
-              </button>
-            </form>
+        {/* Terminal Header */}
+        <div className="flex justify-between items-center pb-8 border-b border-ivory/10 mb-8 shrink-0">
+          <div className="flex gap-4 items-center">
+             <div className="w-2 h-2 bg-ivory rounded-full animate-pulse" />
+             <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-ivory/60">Oracle Kernel v0.3</span>
           </div>
+          <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-ivory/30 hidden sm:block">Awaiting Query</span>
         </div>
-      </motion.div>
+
+        {/* Content Area */}
+        <div 
+          ref={scrollRef}
+          className="flex-1 overflow-y-auto mb-8 pr-4 space-y-12 scrollbar-hide scroll-smooth"
+        >
+          {history.length === 0 ? (
+             <div className="h-full flex flex-col justify-end pb-12 opacity-50 space-y-6">
+                <span className="font-serif text-3xl md:text-5xl text-ivory font-light leading-tight w-full max-w-2xl">
+                  Submit your inquiry to the archive. The system is listening.
+                </span>
+             </div>
+          ) : (
+            <AnimatePresence initial={false}>
+              {history.map((msg, idx) => (
+                <motion.div 
+                  key={idx}
+                  initial={{ opacity: 0, y: 10, filter: "blur(2px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  className={`flex flex-col w-full ${msg.role === 'user' ? 'items-end' : 'items-start'}`}
+                >
+                   <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-ivory/30 mb-4 ml-1">
+                     {msg.role === 'user' ? 'Guest' : 'System'}
+                   </span>
+                   {msg.role === 'user' ? (
+                      <p className="font-serif text-2xl md:text-4xl text-ivory/80 leading-relaxed max-w-3xl text-right">
+                        {msg.text}
+                      </p>
+                   ) : (
+                      <p className="font-sans font-light text-lg md:text-xl text-ivory/90 leading-relaxed max-w-3xl whitespace-pre-wrap">
+                        {msg.text}
+                      </p>
+                   )}
+                </motion.div>
+              ))}
+              {isLoading && (
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex flex-col items-start w-full"
+                >
+                  <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-ivory/30 mb-4 ml-1">
+                     System
+                  </span>
+                  <div className="flex gap-2 items-center h-8">
+                     <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1.5 }} className="w-1.5 h-1.5 bg-ivory rounded-full" />
+                     <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1.5, delay: 0.2 }} className="w-1.5 h-1.5 bg-ivory rounded-full" />
+                     <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1.5, delay: 0.4 }} className="w-1.5 h-1.5 bg-ivory rounded-full" />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          )}
+        </div>
+
+        {/* Input Area */}
+        <form 
+          onSubmit={handleSubmit}
+          className="relative flex items-center shrink-0 w-full group"
+        >
+          <div className="absolute left-0 bottom-0 w-full h-[1px] bg-ivory/20 group-focus-within:bg-ivory/60 transition-colors duration-700" />
+          <span className="font-mono text-xs text-ivory/50 mr-6 tracking-widest uppercase shrink-0">{'>'}</span>
+          <input 
+            ref={inputRef}
+            type="text" 
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="" 
+            className="bg-transparent outline-none text-ivory font-serif text-2xl md:text-4xl w-full py-4 transition-all duration-500 placeholder:text-transparent"
+            disabled={isLoading}
+            autoComplete="off"
+            spellCheck="false"
+          />
+          <button 
+            type="submit" 
+            disabled={!query.trim() || isLoading}
+            className="absolute right-0 pr-4 h-full flex items-center text-ivory/40 hover:text-ivory transition-colors disabled:opacity-20"
+          >
+            <span className="font-mono text-[10px] uppercase tracking-[0.3em]">Transmit</span>
+          </button>
+        </form>
+      </div>
     </section>
   );
 }

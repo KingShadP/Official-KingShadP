@@ -3,7 +3,6 @@ import { Cormorant_Garamond, Space_Grotesk, JetBrains_Mono } from 'next/font/goo
 import './globals.css';
 import { CustomCursor } from '@/components/CustomCursor';
 import { AmbientAudio } from '@/components/AmbientAudio';
-import { CookieBanner } from '@/components/CookieBanner';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -57,7 +56,6 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <AmbientAudio />
         <div className="atmosphere fixed inset-0 z-[-1]" />
         {children}
-        <CookieBanner />
       </body>
     </html>
   );
