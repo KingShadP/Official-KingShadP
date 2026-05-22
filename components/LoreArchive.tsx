@@ -12,20 +12,20 @@ const loreFragments = [
   {
     id: "ARCHIVE_001",
     classification: "Foundational",
-    title: "The First Crown",
-    content: "We fashioned a sovereign not out of gold, but out of expectation. The weight was immediate. It was never meant to be comfortable."
+    title: "Self-Creation",
+    content: "The idea that greatness is constructed, not inherited. KingShadP exists as both creator and creation: man, symbol, architect, legend."
   },
   {
     id: "ARCHIVE_002",
-    classification: "Architect's Note",
-    title: "Symmetry of the Void",
-    content: "If the mirror reflects the ghost, then who is the master giving the command? The archive holds the silence between those two questions."
+    classification: "Cinematic Luxury",
+    title: "Dark Mythology",
+    content: "Matte black creates mystery. Rose gold adds prestige. Candy red brings danger, passion, and heat. Everything feels elevated, expensive, and emotionally immersive."
   },
   {
     id: "ARCHIVE_003",
-    classification: "Encrypted Protocol",
-    title: "The Final Seal",
-    content: "Authorization denied to those without the mark. The vault opens only when the myth recognizes the blood of its creator."
+    classification: "Sonic DNA",
+    title: "I Have A Purpose",
+    content: "Deep ambient bass, orchestral textures, distorted elegance, layered harmonies, sparse but heavy drums. Balance ambition, loneliness, god-complex confidence, and temptation."
   }
 ];
 
@@ -88,34 +88,34 @@ export function LoreArchive() {
             <div className="pl-0 lg:pl-12 flex flex-col gap-12">
               <div className="flex items-center gap-6">
                  <span className="font-mono text-[9px] tracking-[0.5em] text-ivory/50 uppercase flex items-center gap-2">
-                   <div className="w-1.5 h-1.5 bg-ivory/50 animate-pulse" /> Manifesto / 01
+                   <div className="w-1.5 h-1.5 bg-ivory/50 animate-pulse" /> The Purpose / 01
                  </span>
                  <span className="w-16 h-[1px] bg-ivory/20" />
               </div>
 
               <h2 className="font-serif text-6xl md:text-8xl text-ivory leading-[0.8] font-light tracking-tighter uppercase relative group">
-                The Master <br />
+                The Gold <br />
                 <span className="italic opacity-60 relative pr-4 group-hover:opacity-100 transition-opacity duration-1000">
-                  & The Ghost
+                  Standard.
                   <motion.div 
                     initial={{ scaleX: 0 }} 
                     whileInView={{ scaleX: 1 }} 
                     viewport={{ once: true }}
                     transition={{ duration: 1.5, delay: 0.5, ease: [0.16,1,0.3,1] }}
-                    className="absolute top-1/2 left-0 w-full h-[1px] bg-ivory/30 origin-left" 
+                    className="absolute top-1/2 left-0 w-full h-[1px] bg-[#b76e79]/30 origin-left" 
                   />
                 </span>
               </h2>
 
               <div className="max-w-xl space-y-8 relative">
                 {/* Visual accent vertical line */}
-                <div className="absolute -left-12 top-0 w-[1px] h-full bg-gradient-to-b from-ivory/30 to-transparent hidden lg:block" />
+                <div className="absolute -left-12 top-0 w-[1px] h-full bg-gradient-to-b from-[#b76e79]/30 to-transparent hidden lg:block" />
 
                 <p className="font-serif text-2xl md:text-3xl text-ivory/80 leading-relaxed font-light">
-                  The Creator is the architect. He builds the vault, names the sovereign, and decides what the crown means. He brings command to the void.
+                  KingShadP is more than an artist name. It is a statement, a signal, and a standard.
                 </p>
                 <p className="font-sans text-sm md:text-base text-ivory/40 leading-relaxed font-light">
-                  The Create is the reality. The cost of the dream. The human underneath the persona who must carry the weight of the methodology. 
+                  Through music, luxury fashion, dark visuals, and premium storytelling, the creator became the creation. I don&apos;t cater, I&apos;m the creator that makes your life greater.
                 </p>
 
                 <button 
@@ -220,14 +220,14 @@ export function LoreArchive() {
                      initial={{ y: 20, opacity: 0 }}
                      animate={{ y: 0, opacity: 1 }}
                      transition={{ duration: 1, delay: 0.2 }}
-                     className="pb-16 border-b border-ivory/15 relative"
+                     className="pb-16 border-b border-[#b76e79]/15 relative"
                    >
                       <div className="absolute bottom-0 left-0 w-1/4 h-[1px] bg-gradient-to-r from-ivory to-transparent" />
-                      <span className="font-mono text-[9px] tracking-[0.5em] text-ivory/50 uppercase mb-8 block flex items-center gap-3">
-                        <div className="w-2 h-2 bg-ivory animate-pulse" /> Manifesto_01 // SECURE
+                      <span className="font-mono text-[9px] tracking-[0.5em] text-[#b76e79]/50 uppercase mb-8 block flex items-center gap-3">
+                        <div className="w-2 h-2 bg-ivory animate-pulse" /> The Purpose // SECURE
                       </span>
                       <h3 className="font-serif text-6xl md:text-8xl text-ivory font-light uppercase tracking-tighter leading-[0.85] drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-                        The Master <br/><span className="text-ivory/60 italic">& The Ghost</span>
+                        The God. <br/><span className="text-[#b76e79]/60 italic">The Gold Standard.</span>
                       </h3>
                    </motion.div>
 
@@ -238,21 +238,21 @@ export function LoreArchive() {
                      className="prose prose-invert max-w-none text-left space-y-12"
                    >
                        <p className="font-serif text-3xl md:text-4xl text-ivory/90 leading-relaxed font-light italic">
-                         In the beginning, before the vault was constructed and before the crown was named, there was only the void. 
+                         KingShadP represents the transformation of identity into mythology.
                        </p>
                        <p className="font-sans text-lg text-ivory/70 font-light leading-relaxed">
-                         We fashioned a mythology because the truth was too fragile to sustain the weight of their gaze. The Master became the face—the projected ideal, the uncompromising standard, the golden idol bathed in champagne light. But every statue casts a shadow. 
+                         At its center, KingShadP carries purpose. Moreover, that purpose moves through music, image, fashion, and self-expression. It speaks to people who want more than attention. Instead, it speaks to those who want identity.
                        </p>
                        <p className="font-sans text-lg text-ivory/70 font-light leading-relaxed">
-                         The Create is the reality. It is the cost of the dream. To maintain the structural integrity of the myth, the human underneath must perform an endless act of architectural preservation. When the Master speaks, it is the Ghost who bleeds to provide the words. 
+                         The &ldquo;King&rdquo; energy speaks to leadership. The &ldquo;ShadP&rdquo; identity makes it personal. Together, the name creates a character with presence. Therefore, KingShadP feels both intimate and larger than life. The brand says that self-expression deserves power. It says originality should feel expensive.
                        </p>
                        
                        <div className="py-16 flex justify-center w-full">
-                          <div className="w-px h-32 bg-gradient-to-b from-transparent via-ivory/30 to-transparent" />
+                          <div className="w-px h-32 bg-gradient-to-b from-transparent via-[#b76e79]/30 to-transparent" />
                        </div>
                        
                        <p className="font-serif text-2xl text-ivory/90 font-light leading-relaxed text-center italic drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
-                         The first crown was never meant to be comfortable. It was forged as a mechanism of control, a brilliant cage. And yet, we wear it.
+                         Not built for trends. Built for permanence. <br/> KingShadP is not chasing the gold standard. KingShadP is becoming it.
                        </p>
                    </motion.div>
                 </div>

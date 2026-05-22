@@ -3,12 +3,17 @@
 
 @theme {
   --color-void: #050505;
-  --color-carbon: #0a0a0a;
-  --color-ivory: #F8F5F2;
-  --color-pearl: #FDFDFD;
+  --color-carbon: #111111;
+  --color-rosegold: #B76E79;
+  --color-copper: #C47A6D;
+  --color-crimson: #8A0F19;
+  --color-blood: #5E0008;
+  --color-platinum: #D9D9D9;
+  --color-silver: #BFC3C7;
+  --color-ivory: #D9D9D9; /* mapped to platinum for compatibility */
 
   --font-serif: var(--font-cormorant), serif;
-  --font-sans: var(--font-space), sans-serif;
+  --font-sans: var(--font-sans), sans-serif;
   --font-mono: var(--font-mono), monospace;
 }
 
@@ -22,7 +27,7 @@
   }
 
   ::selection {
-    background-color: var(--color-ivory);
+    background-color: var(--color-rosegold);
     color: var(--color-void);
   }
 

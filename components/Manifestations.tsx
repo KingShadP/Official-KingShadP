@@ -7,21 +7,21 @@ import React, { useRef } from "react";
 const artifacts = [
   {
     id: "EX_001",
-    title: "Heavyweight Obsidian",
-    classification: "Textile Architecture",
+    title: "Matte Black Vault",
+    classification: "Architectural Object",
     origin: "The Core Series",
     image: "/ChatGPT Image May 16, 2026, 03_55_36 AM (1).png"
   },
   {
     id: "EX_002",
-    title: "Giragon Sigil",
+    title: "Rose Gold Sigil",
     classification: "Precious Metalwork",
     origin: "Authorization Level 0",
     image: "/ChatGPT Image May 16, 2026, 03_55_36 AM (3).png",
   },
   {
     id: "EX_003",
-    title: "Regal Echoes",
+    title: "Crimson Aura",
     classification: "Sonic Preservation",
     origin: "Analog Vault Vol I",
     image: "/ChatGPT Image May 16, 2026, 03_55_36 AM (2).png",
@@ -173,7 +173,7 @@ export function Manifestations() {
             className="hidden lg:block text-right mb-4"
           >
              <p className="font-serif italic text-2xl text-ivory/40 max-w-sm leading-relaxed">
-                &ldquo;Every artifact secured in the central armory is a chapter of the myth made flesh.&rdquo;
+                &ldquo;Luxury without mythology is decoration. Every artifact is a chapter of the myth made flesh.&rdquo;
              </p>
           </motion.div>
         </div>

@@ -1,5 +1,5 @@
 import type {Metadata, Viewport} from 'next';
-import { Cormorant_Garamond, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
+import { Cormorant_Garamond, Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { CustomCursor } from '@/components/CustomCursor';
 import { AmbientAudio } from '@/components/AmbientAudio';
@@ -10,9 +10,9 @@ const cormorant = Cormorant_Garamond({
   variable: '--font-cormorant',
 });
 
-const space = Space_Grotesk({
+const sans = Inter({
   subsets: ['latin'],
-  variable: '--font-space',
+  variable: '--font-sans',
 });
 
 const mono = JetBrains_Mono({
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${cormorant.variable} ${space.variable} ${mono.variable} antialiased bg-void text-ivory font-sans relative`} suppressHydrationWarning>
+      <body className={`${cormorant.variable} ${sans.variable} ${mono.variable} antialiased bg-void text-platinum font-sans relative`} suppressHydrationWarning>
         <SmoothScroll />
         <CustomCursor />
         <AmbientAudio />

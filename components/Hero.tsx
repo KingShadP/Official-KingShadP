@@ -10,7 +10,7 @@ export function Hero() {
   const textY = useTransform(scrollY, [0, 800], [0, 400]);
   const blurValue = useTransform(scrollY, [0, 600], ["blur(0px)", "blur(20px)"]);
   
-  const title1 = useTextScramble("OFFICIAL");
+  const title1 = useTextScramble("THE GOD.");
   const title2 = useTextScramble("KINGSHADP");
 
   return (
@@ -115,6 +115,7 @@ export function Hero() {
           transition={{ duration: 3, delay: 1.8, ease: [0.16, 1, 0.3, 1] }}
           className="mt-16 max-w-2xl font-serif text-lg sm:text-xl md:text-2xl text-ivory/50 leading-relaxed font-light mx-auto tracking-wide"
         >
+          <span className="text-ivory/80">The God. The Gold Standard.</span> <br /> 
           Identity transformed into mythology.
         </motion.p>
       </motion.div>
