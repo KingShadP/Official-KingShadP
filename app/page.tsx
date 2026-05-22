@@ -6,6 +6,7 @@ import { Hero } from "@/components/Hero";
 import { Manifestations } from "@/components/Manifestations";
 import { UniverseStats } from "@/components/UniverseStats";
 import { LoreArchive } from "@/components/LoreArchive";
+import { CelestialNavigation } from "@/components/CelestialNavigation";
 import { Oracle } from "@/components/Oracle";
 import { Footer } from "@/components/Footer";
 import { BootSequence } from "@/components/BootSequence";
@@ -33,6 +34,7 @@ export default function Home() {
               <Hero />
               <Manifestations />
               <LoreArchive />
+              <CelestialNavigation />
               <UniverseStats />
               <Oracle />
               <Footer />

@@ -68,5 +68,43 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes shimmer-move {
+    100% { transform: translateX(300%); }
+  }
+
+  .animate-spin-slow {
+    animation: spin-slow 60s linear infinite;
+  }
+
+  .animate-shimmer {
+    animation: shimmer-move 2.5s ease-in-out infinite;
+  }
+
+  @keyframes star-twinkle {
+    0%, 100% {
+      opacity: 0.2;
+    }
+    50% {
+      opacity: 0.95;
+    }
+  }
+
+  .star-twinkle-fast {
+    animation: star-twinkle 2.5s ease-in-out infinite;
+  }
+
+  .star-twinkle-normal {
+    animation: star-twinkle 4s ease-in-out infinite;
+  }
+
+  .star-twinkle-slow {
+    animation: star-twinkle 6s ease-in-out infinite;
+  }
 }
 

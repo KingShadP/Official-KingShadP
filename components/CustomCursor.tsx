@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, useSpring, useMotionValue } from "motion/react";
 
 export function CustomCursor() {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [isClicking, setIsClicking] = useState(false);
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -35,9 +35,6 @@ export function CustomCursor() {
     document.addEventListener("mouseleave", handleMouseLeave);
     document.addEventListener("mousedown", handleMouseDown);
     document.addEventListener("mouseup", handleMouseUp);
-    
-    // Default show if already on page
-    setIsVisible(true);
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
