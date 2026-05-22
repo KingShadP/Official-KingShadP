@@ -9,21 +9,21 @@ const artifacts = [
     title: "Heavyweight Obsidian",
     classification: "Textile Architecture",
     origin: "The Core Series",
-    image: "/regenerated_image_1779241202319.png" // using available path
+    image: "/ChatGPT Image May 16, 2026, 03_55_36 AM (1).png" // using available path
   },
   {
     id: "EX_002",
     title: "Giragon Sigil",
     classification: "Precious Metalwork",
     origin: "Authorization Level 0",
-    image: "/regenerated_image_1779241202319.png",
+    image: "/ChatGPT Image May 16, 2026, 03_55_36 AM (3).png",
   },
   {
     id: "EX_003",
     title: "Regal Echoes",
     classification: "Sonic Preservation",
     origin: "Analog Vault Vol I",
-    image: "/regenerated_image_1779241202319.png",
+    image: "/ChatGPT Image May 16, 2026, 03_55_36 AM (2).png",
   },
 ];
 

@@ -169,6 +169,26 @@ export function CelestialNavigation() {
         }}
       />
       
+      {/* Nebulous Cosmic Orbs */}
+      <motion.div 
+        animate={{ 
+          x: [0, 50, -30, 0], 
+          y: [0, -30, 50, 0],
+          scale: [1, 1.2, 0.8, 1]
+        }}
+        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+        className="absolute top-[20%] left-[10%] w-[500px] h-[500px] bg-[#93000a]/10 rounded-full blur-[130px] pointer-events-none z-0" 
+      />
+      <motion.div 
+        animate={{ 
+          x: [0, -60, 40, 0], 
+          y: [0, 60, -40, 0],
+          scale: [1, 1.3, 0.7, 1]
+        }}
+        transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+        className="absolute bottom-[20%] right-[10%] w-[600px] h-[600px] bg-[#dcc57b]/5 rounded-full blur-[140px] pointer-events-none z-0" 
+      />
+
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#93000a]/3 rounded-full blur-[120px] pointer-events-none z-0" />
 
       <div className="max-w-[100rem] mx-auto relative z-10">
@@ -288,16 +308,32 @@ export function CelestialNavigation() {
             </div>
 
             {/* Plot Button Trigger */}
-            <div className="mt-12">
+            <div className="mt-12 group/btn relative">
+              {/* Intense Glitch Layer when plotting */}
+              <AnimatePresence>
+                {isPlotting && (
+                  <motion.div 
+                    initial={{ opacity: 0 }} 
+                    animate={{ opacity: 1 }} 
+                    exit={{ opacity: 0 }}
+                    className="absolute -inset-1 bg-[#dcc57b]/20 blur-md pointer-events-none z-0 animate-pulse" 
+                  />
+                )}
+              </AnimatePresence>
+
               <button
                 onClick={handlePlot}
                 disabled={isPlotting}
-                className="w-full relative group overflow-hidden border border-[#b76e79] bg-[#93000a]/20 hover:bg-[#93000a]/40 text-ivory font-mono text-[10px] tracking-[0.5em] py-5 px-6 uppercase transition-all duration-700 shadow-[0_0_30px_rgba(147,0,10,0.15)] hover:shadow-[0_0_50px_rgba(147,0,10,0.3)] disabled:opacity-50"
+                className={`w-full relative overflow-hidden border transition-all duration-700 font-mono text-[10px] tracking-[0.5em] py-5 px-6 uppercase z-10 ${
+                  isPlotting 
+                    ? "border-[#dcc57b] bg-[#93000a]/60 text-[#dcc57b] shadow-[0_0_50px_rgba(220,197,123,0.3)]"
+                    : "border-[#b76e79] bg-[#93000a]/20 hover:bg-[#93000a]/40 text-ivory shadow-[0_0_30px_rgba(147,0,10,0.15)] hover:shadow-[0_0_50px_rgba(147,0,10,0.3)]"
+                }`}
               >
-                <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-[#b76e79]/30 to-transparent -translate-x-full group-hover:animate-shimmer" />
+                <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-[#b76e79]/30 to-transparent -translate-x-full group-hover/btn:animate-shimmer" />
                 {isPlotting ? (
                   <span className="flex items-center justify-center gap-3">
-                    <RefreshCw className="w-3 h-3 animate-spin" /> PLOTTING_VECTOR_
+                    <RefreshCw className="w-3 h-3 animate-spin text-[#dcc57b]" /> ALIGNING_ORACLE_VECTORS_
                   </span>
                 ) : (
                   <span className="flex items-center justify-center gap-2">
@@ -336,9 +372,30 @@ export function CelestialNavigation() {
                 <circle cx="150" cy="150" r="140" fill="none" stroke="#b76e79" strokeWidth="0.5" strokeOpacity="0.2" />
                 <circle cx="150" cy="150" r="134" fill="none" stroke="#b76e79" strokeWidth="1" strokeOpacity="0.3" strokeDasharray="3 3" />
 
+                {/* Radar Plotting Scanner */}
+                <AnimatePresence>
+                  {isPlotting && (
+                    <motion.g 
+                      initial={{ opacity: 0, rotate: 0 }} 
+                      animate={{ opacity: 1, rotate: 360 }} 
+                      exit={{ opacity: 0 }}
+                      transition={{ rotate: { duration: 1.5, repeat: Infinity, ease: "linear" }, opacity: { duration: 0.3 } }}
+                      style={{ transformOrigin: "150px 150px" }}
+                    >
+                      <path d="M150 150 L150 10 A140 140 0 0 1 290 150 Z" fill="url(#radarScan)" />
+                      <line x1="150" y1="150" x2="150" y2="10" stroke="#dcc57b" strokeWidth="1.5" strokeOpacity="0.9" filter="drop-shadow(0 0 4px #dcc57b)" />
+                    </motion.g>
+                  )}
+                </AnimatePresence>
+
                 {/* Concentric rings rotating based on alignment */}
-                {/* Ring A: Latitude representing grid */}
-                <g style={{ transform: `rotate(${latitude}deg)`, transformOrigin: "150px 150px", transition: "transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)" }}>
+                <motion.g
+                  animate={isPlotting ? { rotate: [0, 5, -5, 0], scale: [1, 1.02, 1] } : {}}
+                  transition={{ duration: 0.4, repeat: Infinity, ease: "linear" }}
+                  style={{ transformOrigin: "150px 150px" }}
+                >
+                  {/* Ring A: Latitude representing grid */}
+                  <g style={{ transform: `rotate(${latitude}deg)`, transformOrigin: "150px 150px", transition: "transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)" }}>
                   <circle cx="150" cy="150" r="110" fill="none" stroke="#b76e79" strokeWidth="0.75" strokeOpacity="0.3" />
                   <line x1="150" y1="40" x2="150" y2="260" stroke="#b76e79" strokeWidth="0.5" strokeOpacity="0.15" />
                   <text x="150" y="32" fontSize="5" fontFamily="var(--font-mono)" fill="#b76e79" fillOpacity="0.6" textAnchor="middle" letterSpacing="1">VOID LAT</text>
@@ -353,6 +410,7 @@ export function CelestialNavigation() {
                   {/* Subtle ticking metrics along the ring */}
                   <circle cx="150" cy="150" r="84" fill="none" stroke="#dcc57b" strokeWidth="0.5" strokeOpacity="0.3" strokeDasharray="1 15" />
                 </g>
+                </motion.g>
 
                 {/* Embedded Scattered Background Stars with Different Twinkle Speeds */}
                 <g>
@@ -582,6 +640,11 @@ export function CelestialNavigation() {
                     <stop offset="0%" stopColor="#93000a" stopOpacity="0.8" />
                     <stop offset="100%" stopColor="#93000a" stopOpacity="0" />
                   </radialGradient>
+                  
+                  <radialGradient id="radarScan" cx="50%" cy="50%" r="50%" fx="50%" fy="0%">
+                    <stop offset="0%" stopColor="#dcc57b" stopOpacity="0.3" />
+                    <stop offset="100%" stopColor="#dcc57b" stopOpacity="0" />
+                  </radialGradient>
                 </defs>
               </svg>
 
@@ -601,7 +664,11 @@ export function CelestialNavigation() {
           </div>
 
           {/* Column C: The Navigation Ledger & Oracle Prophecy (span 4) */}
-          <div className="lg:col-span-4 flex flex-col justify-between border border-[#b76e79]/20 bg-[#050505] p-8 md:p-10 relative overflow-hidden shadow-[0_0_60px_rgba(147,0,10,0.15)] bg-gradient-to-b from-void via-void to-[#93000a]/3">
+          <motion.div 
+            animate={isPlotting ? { x: [-2, 2, -2, 2, 0], y: [-1, 1, -1, 1, 0] } : {}}
+            transition={{ duration: 0.3, repeat: Infinity }}
+            className="lg:col-span-4 flex flex-col justify-between border border-[#b76e79]/20 bg-[#050505] p-8 md:p-10 relative overflow-hidden shadow-[0_0_60px_rgba(147,0,10,0.15)] bg-gradient-to-b from-void via-void to-[#93000a]/3"
+          >
             
             {/* Elegant glowing background border effect */}
             <div className="absolute top-0 right-0 w-24 h-24 bg-[#93000a]/5 blur-2xl pointer-events-none" />
@@ -707,8 +774,20 @@ export function CelestialNavigation() {
             {/* Oracle Verdict Display (Parchment scroll effect) */}
             <div className="mt-8 border-t border-[#b76e79]/10 pt-6">
               <span className="font-mono text-[8px] text-[#b76e79]/60 tracking-[0.5em] block mb-4 uppercase">Sacred_Oracle_Decree</span>
-              <div className="bg-[#93000a]/5 border border-[#93000a]/20 p-5 relative overflow-hidden">
-                <div className="absolute right-0 bottom-0 opacity-10 pointer-events-none">
+              <div className="bg-[#93000a]/5 border border-[#93000a]/20 p-5 relative overflow-hidden backdrop-blur-sm">
+                
+                {/* Intense light sweep effect on prophecy load */}
+                {result && (
+                  <motion.div 
+                    initial={{ x: '-100%' }}
+                    animate={{ x: '200%' }}
+                    transition={{ duration: 1.5, ease: 'linear' }}
+                    className="absolute inset-0 w-[50%] bg-gradient-to-r from-transparent via-[#dcc57b]/20 to-transparent pointer-events-none -z-1" 
+                    style={{ transform: 'skewX(-20deg)' }}
+                  />
+                )}
+
+                <div className="absolute right-0 bottom-0 opacity-10 pointer-events-none z-0">
                   <span className="font-serif italic text-6xl text-[#93000a]">V</span>
                 </div>
                 
@@ -726,18 +805,39 @@ export function CelestialNavigation() {
                   ) : (
                     <motion.div
                       key="oracle-prophecy"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 1 }}
+                      initial="hidden"
+                      animate="visible"
+                      variants={{
+                        hidden: {},
+                        visible: { transition: { staggerChildren: 0.08 } },
+                      }}
                       className="space-y-2"
                     >
                       <p className="font-serif italic text-sm md:text-base text-ivory/90 leading-relaxed leading-[1.6]">
-                        &ldquo;{result.prophecy}&rdquo;
+                        &ldquo;
+                        {result.prophecy.split(" ").map((word, i) => (
+                          <motion.span
+                            key={i}
+                            variants={{
+                              hidden: { opacity: 0, filter: 'blur(4px)' },
+                              visible: { opacity: 1, filter: 'blur(0px)' }
+                            }}
+                            className="inline-block mr-1"
+                          >
+                            {word}
+                          </motion.span>
+                        ))}
+                        &rdquo;
                       </p>
-                      <div className="flex justify-between items-center text-[7px] font-mono text-[#b76e79] tracking-[0.4em] uppercase pt-2">
+                      <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: result.prophecy.split(" ").length * 0.08 + 0.5, duration: 1 }}
+                        className="flex justify-between items-center text-[7px] font-mono text-[#b76e79] tracking-[0.4em] uppercase pt-2"
+                      >
                         <span>Cleared Node: {result.constellation.slice(0, 3).toUpperCase()}_{Math.floor(result.distortion)}</span>
                         <span>[ TRANSITION_SECURE ]</span>
-                      </div>
+                      </motion.div>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -745,7 +845,7 @@ export function CelestialNavigation() {
               </div>
             </div>
 
-          </div>
+          </motion.div>
 
         </div>
 
