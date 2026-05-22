@@ -378,49 +378,74 @@ export function CelestialNavigation() {
                 {/* Static Star Coordinates Map (glowing vectors of constellations) */}
                 {/* Plot the constellation coordinates */}
                 <g stroke="#b76e79" strokeWidth="0.5" strokeOpacity="0.2">
-                  <line x1="150" y1="150" x2="195" y2="105" /> {/* Avarice (45, 12h -> +45, 180deg) */}
-                  <line x1="150" y1="150" x2="150" y2="240" /> {/* Oxblood (-90, 3.3h) */}
-                  <line x1="150" y1="150" x2="150" y2="70" /> {/* Spire (0, 0h) */}
-                  <line x1="150" y1="150" x2="260" y2="185" /> {/* Lion (110, 18.5h) */}
-                  <line x1="150" y1="150" x2="90" y2="183" /> {/* Helix (-33, 8.8h) */}
+                  <motion.line key={`Avarice-${selectedConst}`} initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, ease: 'easeOut' }} x1="150" y1="150" x2="195" y2="105" /> {/* Avarice (45, 12h -> +45, 180deg) */}
+                  <motion.line key={`Oxblood-${selectedConst}`} initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, ease: 'easeOut', delay: 0.1 }} x1="150" y1="150" x2="150" y2="240" /> {/* Oxblood (-90, 3.3h) */}
+                  <motion.line key={`Spire-${selectedConst}`} initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }} x1="150" y1="150" x2="150" y2="70" /> {/* Spire (0, 0h) */}
+                  <motion.line key={`Lion-${selectedConst}`} initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }} x1="150" y1="150" x2="260" y2="185" /> {/* Lion (110, 18.5h) */}
+                  <motion.line key={`Helix-${selectedConst}`} initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, ease: 'easeOut', delay: 0.4 }} x1="150" y1="150" x2="90" y2="183" /> {/* Helix (-33, 8.8h) */}
                 </g>
 
                 {/* Actual Constellation Node Markers */}
                 <g>
                   {/* The Scepter of Avarice node (r=63.6, angle=180 -> x=150, y=86) */}
-                  <g className="cursor-pointer" onClick={() => alignToIdeal("The Scepter of Avarice")}>
+                  <motion.g 
+                    className="cursor-pointer" 
+                    onClick={() => alignToIdeal("The Scepter of Avarice")}
+                    whileHover={{ scale: 1.4, filter: 'drop-shadow(0px 0px 8px rgba(220,197,123,0.8))' }}
+                    style={{ transformOrigin: '195px 105px' }}
+                  >
                     <circle cx="195" cy="105" r="5" fill="#050505" stroke={selectedConst === "The Scepter of Avarice" ? "#dcc57b" : "#b76e79"} strokeWidth="1.5" />
                     <circle cx="195" cy="105" r="1.5" fill="#dcc57b" className="star-twinkle-fast" />
                     <text x="205" y="103" fontSize="5" fontFamily="var(--font-mono)" fill="#f8f5f2" fillOpacity="0.5" textAnchor="start">AVARICE</text>
-                  </g>
+                  </motion.g>
 
                   {/* Oxblood Eclipse node */}
-                  <g className="cursor-pointer" onClick={() => alignToIdeal("Oxblood Eclipse")}>
+                  <motion.g 
+                    className="cursor-pointer" 
+                    onClick={() => alignToIdeal("Oxblood Eclipse")}
+                    whileHover={{ scale: 1.4, filter: 'drop-shadow(0px 0px 8px rgba(147,0,10,0.8))' }}
+                    style={{ transformOrigin: '150px 240px' }}
+                  >
                     <circle cx="150" cy="240" r="5" fill="#050505" stroke={selectedConst === "Oxblood Eclipse" ? "#dcc57b" : "#b76e79"} strokeWidth="1.5" />
                     <circle cx="150" cy="240" r="1.5" fill="#93000a" className="star-twinkle-normal" />
                     <text x="150" y="252" fontSize="5" fontFamily="var(--font-mono)" fill="#f8f5f2" fillOpacity="0.5" textAnchor="middle">OXBLOOD</text>
-                  </g>
+                  </motion.g>
 
                   {/* Platinum Spire node */}
-                  <g className="cursor-pointer" onClick={() => alignToIdeal("Platinum Spire")}>
+                  <motion.g 
+                    className="cursor-pointer" 
+                    onClick={() => alignToIdeal("Platinum Spire")}
+                    whileHover={{ scale: 1.4, filter: 'drop-shadow(0px 0px 8px rgba(255,255,255,0.8))' }}
+                    style={{ transformOrigin: '150px 80px' }}
+                  >
                     <circle cx="150" cy="80" r="5" fill="#050505" stroke={selectedConst === "Platinum Spire" ? "#dcc57b" : "#b76e79"} strokeWidth="1.5" />
                     <circle cx="150" cy="80" r="1.5" fill="#ffffff" className="star-twinkle-slow" />
                     <text x="150" y="72" fontSize="5" fontFamily="var(--font-mono)" fill="#f8f5f2" fillOpacity="0.5" textAnchor="middle">SPIRE</text>
-                  </g>
+                  </motion.g>
 
                   {/* The Silent Lion node */}
-                  <g className="cursor-pointer" onClick={() => alignToIdeal("The Silent Lion")}>
+                  <motion.g 
+                    className="cursor-pointer" 
+                    onClick={() => alignToIdeal("The Silent Lion")}
+                    whileHover={{ scale: 1.4, filter: 'drop-shadow(0px 0px 8px rgba(183,110,121,0.8))' }}
+                    style={{ transformOrigin: '260px 180px' }}
+                  >
                     <circle cx="260" cy="180" r="5" fill="#050505" stroke={selectedConst === "The Silent Lion" ? "#dcc57b" : "#b76e79"} strokeWidth="1.5" />
                     <circle cx="260" cy="180" r="1.5" fill="#b76e79" className="star-twinkle-fast" />
                     <text x="260" y="172" fontSize="5" fontFamily="var(--font-mono)" fill="#f8f5f2" fillOpacity="0.5" textAnchor="middle">LION</text>
-                  </g>
+                  </motion.g>
 
                   {/* Obsidian Helix node */}
-                  <g className="cursor-pointer" onClick={() => alignToIdeal("Obsidian Helix")}>
+                  <motion.g 
+                    className="cursor-pointer" 
+                    onClick={() => alignToIdeal("Obsidian Helix")}
+                    whileHover={{ scale: 1.4, filter: 'drop-shadow(0px 0px 8px rgba(209,204,192,0.8))' }}
+                    style={{ transformOrigin: '90px 183px' }}
+                  >
                     <circle cx="90" cy="183" r="5" fill="#050505" stroke={selectedConst === "Obsidian Helix" ? "#dcc57b" : "#b76e79"} strokeWidth="1.5" />
                     <circle cx="90" cy="183" r="1.5" fill="#d1ccc0" className="star-twinkle-slow" />
                     <text x="80" y="181" fontSize="5" fontFamily="var(--font-mono)" fill="#f8f5f2" fillOpacity="0.5" textAnchor="end">HELIX</text>
-                  </g>
+                  </motion.g>
                 </g>
 
                 {/* Central singularity hub with burgundy core glow */}
@@ -432,7 +457,28 @@ export function CelestialNavigation() {
                 {/* Dynamically projects coordinate selector */}
                 <g>
                   {/* Crosshair target alignment indicator */}
-                  <circle cx="150" cy="150" r={Math.min(136, Math.abs(50 + (latitude + 180) * 0.25))} fill="none" stroke="#fff" strokeWidth="0.5" strokeOpacity="0.1" />
+                  <motion.circle 
+                    key={`reticle-${latitude.toFixed(1)}-${ascension.toFixed(1)}`}
+                    cx="150" 
+                    cy="150" 
+                    r={Math.min(136, Math.abs(50 + (latitude + 180) * 0.25))} 
+                    fill="none" 
+                    stroke="#fff" 
+                    strokeWidth="0.5" 
+                    strokeOpacity="0.1"
+                    initial={{ strokeWidth: 2, strokeOpacity: 0.6 }}
+                    animate={{ strokeWidth: 0.5, strokeOpacity: 0.1 }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                  />
+                  <circle 
+                    cx="150" 
+                    cy="150" 
+                    r={Math.min(136, Math.abs(50 + (latitude + 180) * 0.25))} 
+                    fill="none" 
+                    stroke="#fff" 
+                    strokeWidth="0.5" 
+                    strokeOpacity="0.1" 
+                  />
                 </g>
 
                 {/* Definitions for gradient cores */}
