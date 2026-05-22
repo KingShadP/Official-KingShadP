@@ -66,6 +66,7 @@ const CONSTELLATIONS_INFO = [
 
 export function CelestialNavigation() {
   const [selectedConst, setSelectedConst] = useState("The Scepter of Avarice");
+  const [hoveredConst, setHoveredConst] = useState<string | null>(null);
   const [latitude, setLatitude] = useState(45.0);
   const [ascension, setAscension] = useState(12.0);
   const [isPlotting, setIsPlotting] = useState(false);
@@ -377,12 +378,96 @@ export function CelestialNavigation() {
 
                 {/* Static Star Coordinates Map (glowing vectors of constellations) */}
                 {/* Plot the constellation coordinates */}
-                <g stroke="#b76e79" strokeWidth="0.5" strokeOpacity="0.2">
-                  <motion.line key={`Avarice-${selectedConst}`} initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, ease: 'easeOut' }} x1="150" y1="150" x2="195" y2="105" /> {/* Avarice (45, 12h -> +45, 180deg) */}
-                  <motion.line key={`Oxblood-${selectedConst}`} initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, ease: 'easeOut', delay: 0.1 }} x1="150" y1="150" x2="150" y2="240" /> {/* Oxblood (-90, 3.3h) */}
-                  <motion.line key={`Spire-${selectedConst}`} initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }} x1="150" y1="150" x2="150" y2="70" /> {/* Spire (0, 0h) */}
-                  <motion.line key={`Lion-${selectedConst}`} initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }} x1="150" y1="150" x2="260" y2="185" /> {/* Lion (110, 18.5h) */}
-                  <motion.line key={`Helix-${selectedConst}`} initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, ease: 'easeOut', delay: 0.4 }} x1="150" y1="150" x2="90" y2="183" /> {/* Helix (-33, 8.8h) */}
+                <g>
+                  <motion.line 
+                    key={`Avarice-${selectedConst}`} 
+                    initial={{ pathLength: 0 }} 
+                    animate={{ 
+                      pathLength: 1,
+                      strokeWidth: hoveredConst === "The Scepter of Avarice" ? 1.5 : 0.5,
+                      stroke: hoveredConst === "The Scepter of Avarice" ? "#dcc57b" : "#b76e79",
+                      strokeOpacity: hoveredConst === "The Scepter of Avarice" ? [0.4, 1, 0.4] : 0.2,
+                      filter: hoveredConst === "The Scepter of Avarice" ? "drop-shadow(0px 0px 4px rgba(220,197,123,0.8))" : "none"
+                    }} 
+                    transition={{ 
+                      duration: 1, ease: 'easeOut',
+                      strokeOpacity: { repeat: hoveredConst === "The Scepter of Avarice" ? Infinity : 0, duration: 1.2 },
+                      filter: { duration: 0.3 }
+                    }} 
+                    x1="150" y1="150" x2="195" y2="105" 
+                  /> {/* Avarice (45, 12h -> +45, 180deg) */}
+                  
+                  <motion.line 
+                    key={`Oxblood-${selectedConst}`} 
+                    initial={{ pathLength: 0 }} 
+                    animate={{ 
+                      pathLength: 1,
+                      strokeWidth: hoveredConst === "Oxblood Eclipse" ? 1.5 : 0.5,
+                      stroke: hoveredConst === "Oxblood Eclipse" ? "#dcc57b" : "#b76e79",
+                      strokeOpacity: hoveredConst === "Oxblood Eclipse" ? [0.4, 1, 0.4] : 0.2,
+                      filter: hoveredConst === "Oxblood Eclipse" ? "drop-shadow(0px 0px 4px rgba(147,0,10,0.8))" : "none"
+                    }} 
+                    transition={{ 
+                      duration: 1, ease: 'easeOut', delay: 0.1,
+                      strokeOpacity: { repeat: hoveredConst === "Oxblood Eclipse" ? Infinity : 0, duration: 1.2 },
+                      filter: { duration: 0.3 }
+                    }} 
+                    x1="150" y1="150" x2="150" y2="240" 
+                  /> {/* Oxblood (-90, 3.3h) */}
+                  
+                  <motion.line 
+                    key={`Spire-${selectedConst}`} 
+                    initial={{ pathLength: 0 }} 
+                    animate={{ 
+                      pathLength: 1,
+                      strokeWidth: hoveredConst === "Platinum Spire" ? 1.5 : 0.5,
+                      stroke: hoveredConst === "Platinum Spire" ? "#dcc57b" : "#b76e79",
+                      strokeOpacity: hoveredConst === "Platinum Spire" ? [0.4, 1, 0.4] : 0.2,
+                      filter: hoveredConst === "Platinum Spire" ? "drop-shadow(0px 0px 4px rgba(255,255,255,0.8))" : "none"
+                    }} 
+                    transition={{ 
+                      duration: 1, ease: 'easeOut', delay: 0.2,
+                      strokeOpacity: { repeat: hoveredConst === "Platinum Spire" ? Infinity : 0, duration: 1.2 },
+                      filter: { duration: 0.3 }
+                    }} 
+                    x1="150" y1="150" x2="150" y2="70" 
+                  /> {/* Spire (0, 0h) */}
+                  
+                  <motion.line 
+                    key={`Lion-${selectedConst}`} 
+                    initial={{ pathLength: 0 }} 
+                    animate={{ 
+                      pathLength: 1,
+                      strokeWidth: hoveredConst === "The Silent Lion" ? 1.5 : 0.5,
+                      stroke: hoveredConst === "The Silent Lion" ? "#dcc57b" : "#b76e79",
+                      strokeOpacity: hoveredConst === "The Silent Lion" ? [0.4, 1, 0.4] : 0.2,
+                      filter: hoveredConst === "The Silent Lion" ? "drop-shadow(0px 0px 4px rgba(183,110,121,0.8))" : "none"
+                    }} 
+                    transition={{ 
+                      duration: 1, ease: 'easeOut', delay: 0.3,
+                      strokeOpacity: { repeat: hoveredConst === "The Silent Lion" ? Infinity : 0, duration: 1.2 },
+                      filter: { duration: 0.3 }
+                    }} 
+                    x1="150" y1="150" x2="260" y2="185" 
+                  /> {/* Lion (110, 18.5h) */}
+                  
+                  <motion.line 
+                    key={`Helix-${selectedConst}`} 
+                    initial={{ pathLength: 0 }} 
+                    animate={{ 
+                      pathLength: 1,
+                      strokeWidth: hoveredConst === "Obsidian Helix" ? 1.5 : 0.5,
+                      stroke: hoveredConst === "Obsidian Helix" ? "#dcc57b" : "#b76e79",
+                      strokeOpacity: hoveredConst === "Obsidian Helix" ? [0.4, 1, 0.4] : 0.2,
+                      filter: hoveredConst === "Obsidian Helix" ? "drop-shadow(0px 0px 4px rgba(209,204,192,0.8))" : "none"
+                    }} 
+                    transition={{ 
+                      duration: 1, ease: 'easeOut', delay: 0.4,
+                      strokeOpacity: { repeat: hoveredConst === "Obsidian Helix" ? Infinity : 0, duration: 1.2 },
+                      filter: { duration: 0.3 }
+                    }} 
+                    x1="150" y1="150" x2="90" y2="183" 
+                  /> {/* Helix (-33, 8.8h) */}
                 </g>
 
                 {/* Actual Constellation Node Markers */}
@@ -391,6 +476,8 @@ export function CelestialNavigation() {
                   <motion.g 
                     className="cursor-pointer" 
                     onClick={() => alignToIdeal("The Scepter of Avarice")}
+                    onMouseEnter={() => setHoveredConst("The Scepter of Avarice")}
+                    onMouseLeave={() => setHoveredConst(null)}
                     whileHover={{ scale: 1.4, filter: 'drop-shadow(0px 0px 8px rgba(220,197,123,0.8))' }}
                     style={{ transformOrigin: '195px 105px' }}
                   >
@@ -403,6 +490,8 @@ export function CelestialNavigation() {
                   <motion.g 
                     className="cursor-pointer" 
                     onClick={() => alignToIdeal("Oxblood Eclipse")}
+                    onMouseEnter={() => setHoveredConst("Oxblood Eclipse")}
+                    onMouseLeave={() => setHoveredConst(null)}
                     whileHover={{ scale: 1.4, filter: 'drop-shadow(0px 0px 8px rgba(147,0,10,0.8))' }}
                     style={{ transformOrigin: '150px 240px' }}
                   >
@@ -415,6 +504,8 @@ export function CelestialNavigation() {
                   <motion.g 
                     className="cursor-pointer" 
                     onClick={() => alignToIdeal("Platinum Spire")}
+                    onMouseEnter={() => setHoveredConst("Platinum Spire")}
+                    onMouseLeave={() => setHoveredConst(null)}
                     whileHover={{ scale: 1.4, filter: 'drop-shadow(0px 0px 8px rgba(255,255,255,0.8))' }}
                     style={{ transformOrigin: '150px 80px' }}
                   >
@@ -427,6 +518,8 @@ export function CelestialNavigation() {
                   <motion.g 
                     className="cursor-pointer" 
                     onClick={() => alignToIdeal("The Silent Lion")}
+                    onMouseEnter={() => setHoveredConst("The Silent Lion")}
+                    onMouseLeave={() => setHoveredConst(null)}
                     whileHover={{ scale: 1.4, filter: 'drop-shadow(0px 0px 8px rgba(183,110,121,0.8))' }}
                     style={{ transformOrigin: '260px 180px' }}
                   >
@@ -439,6 +532,8 @@ export function CelestialNavigation() {
                   <motion.g 
                     className="cursor-pointer" 
                     onClick={() => alignToIdeal("Obsidian Helix")}
+                    onMouseEnter={() => setHoveredConst("Obsidian Helix")}
+                    onMouseLeave={() => setHoveredConst(null)}
                     whileHover={{ scale: 1.4, filter: 'drop-shadow(0px 0px 8px rgba(209,204,192,0.8))' }}
                     style={{ transformOrigin: '90px 183px' }}
                   >
