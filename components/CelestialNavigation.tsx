@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import JSZip from "jszip";
+import { jsPDF } from "jspdf";
 import { motion, AnimatePresence } from "motion/react";
 import { 
   Orbit, 
@@ -218,7 +220,6 @@ export function CelestialNavigation() {
   const handlePdfExport = async () => {
     setIsExportingPdf(true);
     try {
-      const { jsPDF } = await import("jspdf");
       const doc = new jsPDF({
         orientation: "portrait",
         unit: "mm",
@@ -374,91 +375,44 @@ export function CelestialNavigation() {
   const handleShopifyExport = async () => {
     setIsExporting(true);
     try {
-      const JSZip = (await import("jszip")).default;
       const zip = new JSZip();
 
+      // Retrieve contextual active values for default injection if needed
       const activeConst = result ? result.constellation : selectedConst;
       const activeLat = result ? result.latitude : latitude;
       const activeAsc = result ? result.ascension : ascension;
-      const activeCycles = result ? result.travelCycles : 3;
-      const activeDist = result ? result.distortion : 4.2;
       const activeProphecy = result ? result.prophecy : "In the convergence of scepters lies the eternal verification of the absolute luxury void, a black marble harbor of gold and crimson sparks.";
 
-      const layoutThemeLiquid = `<!DOCTYPE html>
-<html lang="{{ request.locale.iso_code }}">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="canonical" href="{{ canonical_url }}">
-  
-  <title>{{ page_title }} - Avarice Luxury</title>
-  
-  {% if page_description %}
-    <meta name="description" content="{{ page_description | escape }}">
-  {% endif %}
-
-  <!-- Google Fonts: Newsreader (primary serif) & Inter (labels) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=Newsreader:ital,opsz,wght@1,6..72,200;1,6..72,400;1,6..72,700&display=swap" rel="stylesheet">
-
-  {{ content_for_header }}
-  
-  {{ 'theme.css' | asset_url | stylesheet_tag }}
-</head>
-<body class="bg-void text-platinum min-h-screen relative overflow-x-hidden">
-  
-  <!-- Custom luxury cursor elements -->
-  <div class="luxury-cursor-dot"></div>
-  <div class="luxury-cursor-circle"></div>
-
-  <!-- Ambient noise overlay -->
-  <div class="luxury-noise-overlay"></div>
-
-  <main id="MainContent" class="focus-none" role="main" tabindex="-1">
-    {{ content_for_layout }}
-  </main>
-
-  {{ 'theme.js' | asset_url | script_tag }}
-</body>
-</html>`;
-
+      // ─────────────────────────────────────────────────────────────────
+      // 1. CONFIG & SETTINGS
+      // ─────────────────────────────────────────────────────────────────
+      
       const settingsSchemaJson = [
         {
-          "name": "theme_info",
-          "theme_name": "The Verse Avarice Luxury",
-          "theme_version": "1.0.0",
-          "theme_author": "The Verse team",
-          "theme_documentation_url": "https://kingshadp.github.io/the-verse",
-          "theme_support_url": "https://kingshadp.github.io/the-verse/support"
+          "name": "Theme Identity",
+          "theme_name": "Avarice Sovereign",
+          "theme_version": "2.0.0",
+          "theme_author": "Kingshadp Archive",
+          "theme_documentation_url": "https://kingshadp.github.io/the-verse"
         },
         {
-          "name": "Design Colors",
+          "name": "Design Tokens & Values",
           "settings": [
-            {
-              "type": "color",
-              "id": "color_bg",
-              "label": "The Void Color",
-              "default": "#050505"
-            },
-            {
-              "type": "color",
-              "id": "color_primary",
-              "label": "Platinum Text",
-              "default": "#c9c6c5"
-            },
-            {
-              "type": "color",
-              "id": "color_accent",
-              "label": "Oxblood Crimson",
-              "default": "#93000a"
-            },
-            {
-              "type": "color",
-              "id": "color_gold",
-              "label": "Muted Gold Accent",
-              "default": "#dcc57b"
-            }
+            { "type": "color", "id": "color_void_bg", "label": "Void Primary Background", "default": "#030303" },
+            { "type": "color", "id": "color_platinum_text", "label": "Platinum Primary Text", "default": "#e6e6e6" },
+            { "type": "color", "id": "color_gold_accent", "label": "Sovereign Gold Accent", "default": "#dcc57b" },
+            { "type": "color", "id": "color_oxblood_brand", "label": "Oxblood Threat Core", "default": "#93000a" },
+            { "type": "color", "id": "color_border_subtle", "label": "Subtle Architecture Lines", "default": "rgba(220, 197, 123, 0.15)" },
+            { "type": "header", "content": "Typography Scales" },
+            { "type": "text", "id": "tracking_display", "label": "Display Tracking", "default": "-0.04em", "info": "Tightly kerned primary headers" },
+            { "type": "text", "id": "tracking_mono", "label": "Monospace Tracking", "default": "0.15em", "info": "Utility/Tech labels" }
+          ]
+        },
+        {
+          "name": "Global Interactivity",
+          "settings": [
+            { "type": "checkbox", "id": "enable_custom_cursor", "label": "Enable Premium Custom Cursor", "default": true },
+            { "type": "checkbox", "id": "enable_noise_overlay", "label": "Enable CRT/Void Noise Filter", "default": true }
           ]
         }
       ];
@@ -467,353 +421,564 @@ export function CelestialNavigation() {
         "current": "Default",
         "presets": {
           "Default": {
-            "color_bg": "#050505",
-            "color_primary": "#c9c6c5",
-            "color_accent": "#93000a",
-            "color_gold": "#dcc57b"
+            "color_void_bg": "#030303",
+            "color_platinum_text": "#e6e6e6",
+            "color_gold_accent": "#dcc57b",
+            "color_oxblood_brand": "#93000a",
+            "color_border_subtle": "rgba(220, 197, 123, 0.15)",
+            "tracking_display": "-0.04em",
+            "tracking_mono": "0.15em",
+            "enable_custom_cursor": true,
+            "enable_noise_overlay": true
           }
         }
       };
 
-      const indexJson = {
-        "sections": {
-          "hero": {
-            "type": "the-verse-hero",
-            "settings": {
-              "title_top": "THE GOD.",
-              "title_bottom": "KINGSHADP",
-              "badge": "Origin_Node // Aligned"
-            }
-          },
-          "constellations": {
-            "type": "the-verse-constellations",
-            "settings": {
-              "title": "Aligned Constellations Ledger",
-              "constellation": activeConst,
-              "latitude": activeLat.toString(),
-              "ascension": activeAsc.toString() + "h",
-              "cycles": activeCycles.toString(),
-              "distortion": activeDist.toFixed(1)
-            }
-          },
-          "manifestations": {
-            "type": "the-verse-manifestations",
-            "settings": {
-              "title_manifests": "Stellar Manifestations"
-            }
-          },
-          "oracle": {
-            "type": "the-verse-oracle",
-            "settings": {
-              "title": "The Oracle's Prophetic Judgment",
-              "prophecy_text": activeProphecy
-            }
-          }
-        },
-        "order": [
-          "hero",
-          "constellations",
-          "manifestations",
-          "oracle"
-        ]
-      };
+      // ─────────────────────────────────────────────────────────────────
+      // 2. LAYOUT
+      // ─────────────────────────────────────────────────────────────────
+      
+      const layoutThemeLiquid = `<!doctype html>
+<html class="no-js avarice-theme-root" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_void_bg }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
 
-      const sectionHeroLiquid = `<div class="verse-hero-section relative min-h-screen flex items-center justify-center overflow-hidden" style="background-color: {{ settings.color_bg }};">
-  <!-- Moving cosmic elements -->
-  <div class="absolute inset-0 atmosphere z-0 opacity-40"></div>
-  <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#050505] to-transparent h-1/3 z-10"></div>
+    <title>
+      {{ page_title }}{%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {{ content_for_header }}
+
+    <!-- Preconnects & Typography Loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:ital,wght@0,300;0,400;1,300&family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;1,6..72,200;1,6..72,300&display=swap" rel="stylesheet">
+    
+    {% render 'css-variables' %}
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+
+    {%- if request.design_mode -%}
+      <!-- Load Shopify specific editor scripts if necessary -->
+    {%- endif -%}
+  </head>
+
+  <body class="template-{{ template.name }} relative bg-void text-platinum antialiased selection-bg-gold selection-text-void min-h-screen">
+    <a class="skip-to-content-link button visually-hidden absolute" href="#MainContent">Skip to content</a>
+
+    {%- if settings.enable_noise_overlay -%}
+      <div class="pointer-events-none fixed inset-0 z-50 mix-blend-overlay opacity-30 avarice-noise"></div>
+    {%- endif -%}
+
+    {% section 'header' %}
+
+    <main id="MainContent" class="focus-none outline-none relative z-10" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'footer' %}
+
+    {%- if settings.enable_custom_cursor -%}
+      {% render 'custom-cursor' %}
+    {%- endif -%}
+
+    <script>window.shopUrl = '{{ request.origin }}';</script>
+  </body>
+</html>`;
+
+      // ─────────────────────────────────────────────────────────────────
+      // 3. SNIPPETS
+      // ─────────────────────────────────────────────────────────────────
+
+      const snippetCssVars = `{%- style -%}
+  :root {
+    --color-void: {{ settings.color_void_bg }};
+    --color-platinum: {{ settings.color_platinum_text }};
+    --color-gold: {{ settings.color_gold_accent }};
+    --color-oxblood: {{ settings.color_oxblood_brand }};
+    --color-border: {{ settings.color_border_subtle }};
+    
+    --font-serif: "Newsreader", "Playfair Display", Times, serif;
+    --font-sans: "Inter", -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", monospace;
+
+    --tracking-display: {{ settings.tracking_display }};
+    --tracking-mono: {{ settings.tracking_mono }};
+
+    --nav-height: 80px;
+    --transition-lux: cubic-bezier(0.19, 1, 0.22, 1);
+  }
+{%- endstyle -%}`;
+
+      const snippetCursor = `<div class="avarice-cursor" id="AvariceCursor">
+  <div class="avarice-cursor__dot" id="AvariceCursorDot"></div>
+  <div class="avarice-cursor__ring" id="AvariceCursorRing"></div>
+</div>`;
+
+      // ─────────────────────────────────────────────────────────────────
+      // 4. ASSETS (CSS & JS)
+      // ─────────────────────────────────────────────────────────────────
+
+      const assetBaseCss = `/* OVERHAULED AVARICE ARCHITECTURE CSS */
+/* Reset & Vars */
+*, *::before, *::after { box-sizing: border-box; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body { background: var(--color-void); color: var(--color-platinum); margin: 0; min-height: 100vh; overflow-x: hidden; font-family: var(--font-sans); font-weight: 300; }
+
+/* Selection */
+::selection { background-color: var(--color-gold); color: var(--color-void); }
+
+/* Typography Utility */
+.font-serif { font-family: var(--font-serif); font-weight: 200; font-style: normal; }
+.font-serif-italic { font-family: var(--font-serif); font-weight: 200; font-style: italic; }
+.font-mono { font-family: var(--font-mono); font-weight: 300; text-transform: uppercase; letter-spacing: var(--tracking-mono); }
+.font-sans { font-family: var(--font-sans); }
+
+.tracking-tight { letter-spacing: var(--tracking-display); }
+.text-gold { color: var(--color-gold); }
+.text-platinum { color: var(--color-platinum); }
+.text-oxblood { color: var(--color-oxblood); }
+
+/* Visually Hidden */
+.visually-hidden { position: absolute !important; overflow: hidden; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; clip: rect(0 0 0 0); word-wrap: normal !important; }
+
+/* Noise Overlay */
+.avarice-noise { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
+
+/* Custom Luxury Cursor */
+.avarice-cursor { position: fixed; pointer-events: none; mix-blend-mode: difference; z-index: 9999; opacity: 0; transition: opacity 0.4s var(--transition-lux); }
+.avarice-cursor.is-active { opacity: 1; }
+.avarice-cursor__dot { position: absolute; width: 4px; height: 4px; background: var(--color-gold); border-radius: 50%; transform: translate(-50%, -50%); transition: transform 0.1s linear; }
+.avarice-cursor__ring { position: absolute; width: 36px; height: 36px; border: 1px solid rgba(234,234,234,0.3); border-radius: 50%; transform: translate(-50%, -50%); transition: width 0.3s var(--transition-lux), height 0.3s var(--transition-lux), border-color 0.3s ease; }
+.avarice-cursor.hovering .avarice-cursor__ring { width: 56px; height: 56px; border-color: var(--color-gold); }
+
+/* Animations - Intersection Observer hooks */
+.reveal-up { opacity: 0; transform: translateY(50px); transition: opacity 1.2s var(--transition-lux), transform 1.2s var(--transition-lux); will-change: opacity, transform; }
+.reveal-up.is-visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-up { opacity: 1; transform: none; transition: none; }
+  .avarice-cursor { display: none !important; }
+}
+
+/* Sections & Grids */
+.section-wrapper { padding: 8rem 0; position: relative; }
+.section-wrapper--bordered { border-top: 1px solid var(--color-border); }
+.container { width: 100%; max-w-7xl; padding: 0 2rem; margin: 0 auto; box-sizing: border-box; @media (min-width: 1024px) { max-width: 1280px; padding: 0 4rem; } }
+
+.grid-bento { display: grid; gap: 2rem; grid-template-columns: 1fr; @media(min-width: 768px) { grid-template-columns: repeat(12, 1fr); } }
+
+/* Advanced Card Module */
+.bento-card { position: relative; display: flex; flex-direction: column; background: rgba(5,5,5,0.85); border: 1px solid var(--color-border); padding: 3rem; transition: border-color 0.5s var(--transition-lux), transform 0.5s var(--transition-lux); backdrop-filter: blur(10px); }
+.bento-card:hover { border-color: rgba(220, 197, 123, 0.4); transform: translateY(-5px); cursor: pointer; }
+.bento-card__corner { position: absolute; width: 6px; height: 6px; border: 1px solid var(--color-gold); opacity: 0; transition: opacity 0.3s ease; }
+.bento-card:hover .bento-card__corner { opacity: 1; }
+.bento-card__corner--tl { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+.bento-card__corner--tr { top: -1px; right: -1px; border-width: 1px 1px 0 0; }
+.bento-card__corner--bl { bottom: -1px; left: -1px; border-width: 0 0 1px 1px; }
+.bento-card__corner--br { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
+
+/* Ghost Button */
+.btn-ghost { display: inline-flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding: 1.25rem 2.5rem; border: 1px solid var(--color-border); background: transparent; color: var(--color-platinum); outline: none; cursor: pointer; transition: all 0.6s var(--transition-lux); text-decoration: none; }
+.btn-ghost::before { content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(220,197,123,0.1), transparent); transition: left 0.8s var(--transition-lux); }
+.btn-ghost:hover { border-color: var(--color-gold); color: #fff; }
+.btn-ghost:hover::before { left: 100%; }
+
+/* Header Link Styling */
+.header-link { position: relative; text-decoration: none; display: inline-block; padding-bottom: 2px; }
+.header-link::after { content: ''; position: absolute; width: 100%; transform: scaleX(0); height: 1px; bottom: 0; left: 0; background-color: var(--color-gold); transform-origin: bottom right; transition: transform 0.4s var(--transition-lux); }
+.header-link:hover::after { transform: scaleX(1); transform-origin: bottom left; }`;
+
+      const assetGlobalJs = `/**
+ * AVARICE THEME ENGINE
+ * Pure Vanilla Object-Oriented JS Architecture. No React/jQuery dependencies.
+ */
+class AvariceTheme {
+  constructor() {
+    this.initCursor();
+    this.initObservers();
+    this.initHeaderScroll();
+  }
+
+  initCursor() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    
+    this.cursor = document.getElementById('AvariceCursor');
+    this.cursorDot = document.getElementById('AvariceCursorDot');
+    this.cursorRing = document.getElementById('AvariceCursorRing');
+    if (!this.cursor) return;
+
+    this.mouseX = window.innerWidth / 2;
+    this.mouseY = window.innerHeight / 2;
+    this.ringX = this.mouseX;
+    this.ringY = this.mouseY;
+
+    document.addEventListener('mousemove', (e) => {
+      this.cursor.classList.add('is-active');
+      this.mouseX = e.clientX;
+      this.mouseY = e.clientY;
+      this.cursorDot.style.transform = \`translate3d(\${this.mouseX}px, \${this.mouseY}px, 0) translate(-50%, -50%)\`;
+      
+      const target = e.target;
+      if (target.closest('a') || target.closest('button') || target.closest('.bento-card')) {
+        this.cursor.classList.add('hovering');
+      } else {
+        this.cursor.classList.remove('hovering');
+      }
+    });
+
+    // Smooth lerp for ring lag effect
+    const loop = () => {
+      this.ringX += (this.mouseX - this.ringX) * 0.15;
+      this.ringY += (this.mouseY - this.ringY) * 0.15;
+      this.cursorRing.style.transform = \`translate3d(\${this.ringX}px, \${this.ringY}px, 0) translate(-50%, -50%)\`;
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  }
+
+  initObservers() {
+    const options = { root: null, rootMargin: '0px', threshold: 0.15 };
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, options);
+
+    document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
+  }
+
+  initHeaderScroll() {
+    const header = document.querySelector('header');
+    if(!header) return;
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset;
+      if (currentScroll > 50) {
+        header.classList.add('scrolled');
+        header.style.background = 'rgba(3,3,3,0.9)';
+        header.style.backdropFilter = 'blur(10px)';
+        header.style.borderBottom = '1px solid var(--color-border)';
+      } else {
+        header.classList.remove('scrolled');
+        header.style.background = 'transparent';
+        header.style.backdropFilter = 'none';
+        header.style.borderBottom = '1px solid transparent';
+      }
+      lastScroll = currentScroll;
+    }, { passive: true });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  window.AvariceController = new AvariceTheme();
+});`;
+
+      // ─────────────────────────────────────────────────────────────────
+      // 5. SECTIONS (Complete Schema + Liquid)
+      // ─────────────────────────────────────────────────────────────────
+
+      const sectionHeaderLiquid = `{%- style -%}
+  .avarice-header { position: fixed; top: 0; width: 100%; height: var(--nav-height); z-index: 1000; transition: all 0.5s ease; border-bottom: 1px solid transparent; }
+  .avarice-header__inner { display: flex; justify-content: space-between; align-items: center; height: 100%; padding: 0 4rem; }
+  .avarice-header__logo { font-size: 1.5rem; text-transform: uppercase; text-decoration: none; letter-spacing: 0.1em; color: var(--color-platinum); }
+  .avarice-header__nav { display: flex; gap: 3rem; }
+  .avarice-header__icons { display: flex; gap: 1.5rem; align-items: center; }
+{%- endstyle -%}
+
+<header class="avarice-header">
+  <div class="avarice-header__inner">
+    <a href="{{ routes.root_url }}" class="avarice-header__logo font-serif tracking-tight">
+      {{ shop.name }}
+    </a>
+    <nav class="avarice-header__nav font-mono text-[11px] reveal-up">
+      {%- for link in linklists[section.settings.menu].links -%}
+        <a href="{{ link.url }}" class="header-link text-platinum hover:text-gold transition-colors block py-2">
+          {{ link.title }}
+        </a>
+      {%- endfor -%}
+    </nav>
+    <div class="avarice-header__icons font-mono text-[10px]">
+      <a href="{{ routes.search_url }}" class="header-link text-platinum">SEARCH</a>
+      <a href="{{ routes.cart_url }}" class="header-link text-platinum">CART ({{ cart.item_count }})</a>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "Primary Navigation Menu"
+    }
+  ]
+}
+{% endschema %}`;
+
+      const sectionFooterLiquid = `<footer class="section-wrapper section-wrapper--bordered" style="background: rgba(5,5,5,0.4);">
+  <div class="container grid-bento" style="grid-template-columns: repeat(4, 1fr); padding-bottom: 4rem;">
+    <div class="col-span-1 reveal-up">
+      <h3 class="font-serif text-3xl mb-6 text-gold">The Verse</h3>
+      <p class="font-mono text-[10px] text-platinum opacity-60 leading-relaxed max-w-xs">
+        Forging physical relics of absolute luxury from cosmic data nodes. Certified by Sovereign Gold parameters.
+      </p>
+    </div>
+    <div class="col-span-1 reveal-up reveal-delay-1">
+      <h4 class="font-mono text-[11px] text-gold mb-6 border-b border-oxblood pb-2 inline-block">ARCHIVE LINKS</h4>
+      <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1rem;">
+        {%- for link in linklists.footer.links -%}
+          <li><a href="{{ link.url }}" class="header-link font-sans text-sm text-platinum opacity-80">{{ link.title }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </div>
+    <div class="col-span-1 reveal-up reveal-delay-2">
+      <h4 class="font-mono text-[11px] text-gold mb-6 border-b border-oxblood pb-2 inline-block">POLICIES</h4>
+      <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1rem;">
+        <li><a href="#" class="header-link font-sans text-sm text-platinum opacity-80">Terms of Service</a></li>
+        <li><a href="#" class="header-link font-sans text-sm text-platinum opacity-80">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div class="col-span-1 reveal-up reveal-delay-3">
+      <h4 class="font-mono text-[11px] text-gold mb-6 border-b border-oxblood pb-2 inline-block">DECREE SUBSCRIPTION</h4>
+      <p class="font-sans text-sm text-platinum opacity-60 mb-4">Avarice logs delivered direct to core consciousness.</p>
+      <form action="#" class="flex border border-oxblood bg-black/50 p-1 mt-4">
+        <input type="email" placeholder="ENTER SIGNAL FREQUENCY" class="flex-1 bg-transparent border-none text-platinum font-mono text-[10px] p-3 outline-none" required>
+        <button type="submit" class="bg-oxblood text-white font-mono text-[10px] px-4 hover:bg-gold transition-colors">INITIATE</button>
+      </form>
+    </div>
+  </div>
+  <div class="container border-t border-border pt-8 mt-8 flex justify-between items-center font-mono text-[9px] text-platinum opacity-40">
+    <p>&copy; {{ 'now' | date: "%Y" }} {{ shop.name }}. All Rights Reserved. Void certified.</p>
+    <p>System Powered by Shopify // Designed by Kingshadp</p>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": []
+}
+{% endschema %}`;
+
+      const sectionAvariceHeroLiquid = `<div class="relative min-h-[90vh] flex items-center justify-center overflow-hidden w-full" style="padding-top: var(--nav-height);">
   
-  <!-- Grid Matrix Overlay with 4 premium structural columns -->
-  <div class="absolute inset-0 grid grid-cols-4 max-w-7xl mx-auto pointer-events-none opacity-5 z-10">
-    <div class="border-r border-platinum h-full w-full"></div>
-    <div class="border-r border-platinum h-full w-full"></div>
-    <div class="border-r border-platinum h-full w-full"></div>
-    <div class="h-full w-full"></div>
+  {%- if section.settings.bg_video != blank -%}
+    <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-40 mix-blend-screen" style="filter: contrast(1.2) grayscale(0.2);">
+      <source src="{{ section.settings.bg_video }}" type="video/mp4">
+    </video>
+  {%- endif -%}
+
+  <div class="absolute inset-0 bg-gradient-to-t from-void via-transparent to-void z-10 opacity-90"></div>
+
+  <!-- Decorative Overlay Grid -->
+  <div class="absolute inset-0 z-10 pointer-events-none opacity-10 flex justify-between px-16">
+    <div class="w-px h-full bg-platinum"></div>
+    <div class="w-px h-full bg-platinum"></div>
+    <div class="w-px h-full bg-platinum"></div>
   </div>
 
-  <div class="relative z-20 flex flex-col items-center justify-center text-center px-6">
-    <div class="flex items-center gap-6 mb-8 uppercase tracking-[0.6em] text-xs font-mono" style="color: {{ settings.color_gold }};">
-      <span class="w-12 h-[1px]" style="background-color: {{ settings.color_gold }}44;"></span>
-      <span>{{ section.settings.badge }}</span>
-      <span class="w-12 h-[1px]" style="background-color: {{ settings.color_gold }}44;"></span>
+  <div class="container relative z-20 text-center flex flex-col items-center">
+    <div class="reveal-up font-mono text-[10px] tracking-[0.4em] text-gold mb-12 flex items-center gap-6">
+      <span class="w-16 h-px bg-gold opacity-40"></span>
+      <span>{{ section.settings.badge_text }}</span>
+      <span class="w-16 h-px bg-gold opacity-40"></span>
     </div>
 
-    <h1 class="font-serif text-7xl md:text-9xl font-light tracking-tighter uppercase leading-none text-platinum mb-4">
-      {{ section.settings.title_top }}
+    <h1 class="reveal-up reveal-delay-1 font-serif text-6xl md:text-[8vw] leading-[0.8] tracking-tight uppercase text-platinum mb-4">
+      {{ section.settings.heading_top }}
     </h1>
-    <h1 class="font-serif text-7xl md:text-9xl font-light tracking-tighter uppercase leading-none opacity-60 text-platinum italic">
-      {{ section.settings.title_bottom }}
-    </h1>
-
-    <p class="mt-12 max-w-xl font-serif text-lg italic text-platinum/60 font-light leading-relaxed">
-      {{ section.settings.tagline }}
-    </p>
+    <h2 class="reveal-up reveal-delay-2 font-serif-italic text-6xl md:text-[8vw] leading-[0.8] tracking-tight text-platinum opacity-70">
+      {{ section.settings.heading_bottom }}
+    </h2>
     
-    <div class="mt-16">
-      <a href="/collections/all" class="verse-ghost-btn font-mono text-[9px] uppercase tracking-[0.4em] py-4 px-10 border border-platinum/25 text-platinum hover:text-white transition-all duration-700">
-        Enter the Scepter
-      </a>
-    </div>
+    <p class="reveal-up reveal-delay-3 mt-12 max-w-xl font-serif text-xl italic text-platinum opacity-60 leading-relaxed">
+      {{ section.settings.description }}
+    </p>
+
+    {%- if section.settings.button_link != blank -%}
+      <div class="reveal-up reveal-delay-3 mt-16">
+        <a href="{{ section.settings.button_link }}" class="btn-ghost font-mono text-[10px] tracking-[0.4em]">
+          {{ section.settings.button_label }}
+        </a>
+      </div>
+    {%- endif -%}
   </div>
 </div>
 
 {% schema %}
 {
-  "name": "The Verse Hero",
+  "name": "Avarice Splendor Hero",
   "settings": [
     {
       "type": "text",
-      "id": "badge",
-      "label": "Badge Text",
-      "default": "Origin_Node // Aligned"
+      "id": "bg_video",
+      "label": "Background Video URL (MP4)"
     },
     {
       "type": "text",
-      "id": "title_top",
-      "label": "Heading Part 1",
+      "id": "badge_text",
+      "label": "Upper Badge Text",
+      "default": "SYSTEM NODE // ACTIVE"
+    },
+    {
+      "type": "text",
+      "id": "heading_top",
+      "label": "Primary Heading Top",
       "default": "THE GOD."
     },
     {
       "type": "text",
-      "id": "title_bottom",
-      "label": "Heading Part 2",
+      "id": "heading_bottom",
+      "label": "Primary Heading Bottom",
       "default": "KINGSHADP"
     },
     {
       "type": "textarea",
-      "id": "tagline",
-      "label": "Theme Decree Subtitle",
-      "default": "Identity re-forged into divine corporate-spiritual mythology. Calculated alignments completed."
+      "id": "description",
+      "label": "Decree Description",
+      "default": "Identity re-forged into divine corporate-spiritual mythology."
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "ENTER THE SCEPTER"
     }
   ],
-  "presets": [
-    {
-      "name": "The Verse Hero"
-    }
-  ]
+  "presets": [{ "name": "Avarice Splendor Hero" }]
 }
 {% endschema %}`;
 
-      const sectionConstellationsLiquid = `<div class="verse-astrolabe-section py-32 px-6 lg:px-12 relative overflow-hidden" style="background-color: {{ settings.color_bg }}; border-top: 1px solid {{ settings.color_accent }}44;">
-  <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-stretch relative z-10">
-    <div class="flex-1 flex flex-col justify-between border p-12 relative" style="border-color: {{ settings.color_accent }}33; background: rgba(5,5,5,0.85);">
-      <!-- Glowing corners -->
-      <div class="absolute top-0 left-0 w-3 h-3 border-t border-l" style="border-color: {{ settings.color_accent }};"></div>
-      <div class="absolute top-0 right-0 w-3 h-3 border-t border-r" style="border-color: {{ settings.color_accent }};"></div>
-      <div class="absolute bottom-0 left-0 w-3 h-3 border-b border-l" style="border-color: {{ settings.color_accent }};"></div>
-      <div class="absolute bottom-0 right-0 w-3 h-3 border-b border-r" style="border-color: {{ settings.color_accent }};"></div>
-
-      <div class="space-y-8">
-        <span class="font-mono text-[9px] uppercase tracking-[0.5em] block" style="color: {{ settings.color_gold }};">DIVINE_ASTROLABE_MONITOR //</span>
-        <h2 class="font-serif text-4xl text-platinum tracking-tight uppercase leading-none">{{ section.settings.title }}</h2>
-        <p class="font-serif italic text-base text-platinum/50 leading-relaxed">{{ section.settings.description }}</p>
-        
-        <div class="h-px w-full" style="background-color: {{ settings.color_accent }}33;"></div>
-        
-        <div class="space-y-4">
-          <div class="flex justify-between font-mono text-[10px] tracking-widest text-[#c9c6c5] uppercase">
-            <span>Aligned Sovereign Cluster</span>
-            <span style="color: {{ settings.color_gold }};">{{ section.settings.constellation }}</span>
-          </div>
-          <div class="flex justify-between font-mono text-[10px] tracking-widest text-[#c9c6c5] uppercase">
-            <span>Void Coordinates</span>
-            <span>LAT {{ section.settings.latitude }}° / RA {{ section.settings.ascension }}</span>
-          </div>
-          <div class="flex justify-between font-mono text-[10px] tracking-widest text-[#c9c6c5] uppercase">
-            <span>Cycles Traversing</span>
-            <span style="color: {{ settings.color_gold }};">{{ section.settings.cycles }}</span>
-          </div>
-          <div class="flex justify-between font-mono text-[10px] tracking-widest text-[#c9c6c5] uppercase">
-            <span>Signal Distortion Level</span>
-            <span>{{ section.settings.distortion }}%</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-12">
-        <a href="https://kingshadp.github.io/the-verse" style="border-color: {{ settings.color_gold }}; color: {{ settings.color_gold }};" class="verse-ghost-btn block text-center font-mono text-[9px] uppercase tracking-[0.4em] py-5 px-6 border bg-transparent hover:bg-gold-glow-hover transition-all duration-700">
-          RE-ALIGN THE VECTORS
-        </a>
-      </div>
+      const sectionAvariceBentoLiquid = `<div class="section-wrapper section-wrapper--bordered relative">
+  <div class="container z-10 relative">
+    
+    <div class="flex flex-col gap-6 mb-20 pb-10 border-b border-border reveal-up">
+      <span class="font-mono text-[10px] tracking-[0.5em] text-gold uppercase">{{ section.settings.subtitle }}</span>
+      <h2 class="font-serif text-5xl md:text-7xl tracking-tight uppercase text-platinum leading-none">
+        {{ section.settings.title }}
+      </h2>
     </div>
 
-    <!-- Stunning Decorative Astrolabe Graphic -->
-    <div class="flex-1 flex items-center justify-center border p-12 relative min-h-[400px]" style="border-color: {{ settings.color_accent }}33;">
-      <div class="absolute inset-8 rounded-full border opacity-5 pointer-events-none" style="border-color: {{ settings.color_accent }};"></div>
-      <div class="absolute inset-16 rounded-full border opacity-10 pointer-events-none dash-array" style="border-color: {{ settings.color_accent }};"></div>
-      
-      <svg viewBox="0 0 300 300" class="w-full max-w-[280px] text-platinum">
-        <circle cx="150" cy="150" r="142" fill="none" stroke="{{ settings.color_accent }}" stroke-width="1" stroke-opacity="0.3"></circle>
-        <circle cx="150" cy="150" r="134" fill="none" stroke="{{ settings.color_accent }}" stroke-width="0.5" stroke-opacity="0.2" stroke-dasharray="3 3"></circle>
-        <circle cx="150" cy="150" r="110" fill="none" stroke="{{ settings.color_accent }}" stroke-width="0.75" stroke-opacity="0.2"></circle>
-        <circle cx="150" cy="150" r="80" fill="none" stroke="{{ settings.color_gold }}" stroke-width="0.5" stroke-opacity="0.2" stroke-dasharray="20 4"></circle>
-        
-        <circle cx="195" cy="105" r="4.5" fill="#050505" stroke="{{ settings.color_gold }}" stroke-width="1.5"></circle>
-        <circle cx="150" cy="240" r="4.5" fill="#050505" stroke="{{ settings.color_accent }}" stroke-width="1"></circle>
-        <circle cx="150" cy="80" r="4.5" fill="#050505" stroke="{{ settings.color_accent }}" stroke-width="1"></circle>
-        <circle cx="150" cy="150" r="1.5" fill="{{ settings.color_gold }}"></circle>
-      </svg>
+    <div class="grid-bento">
+      {%- for block in section.blocks -%}
+        <div class="col-span-12 md:col-span-4 bento-card reveal-up" style="transition-delay: {{ forloop.index | times: 0.1 }}s;">
+          <div class="bento-card__corner bento-card__corner--tl"></div>
+          <div class="bento-card__corner bento-card__corner--tr"></div>
+          <div class="bento-card__corner bento-card__corner--bl"></div>
+          <div class="bento-card__corner bento-card__corner--br"></div>
+          
+          <div class="flex justify-between items-center mb-10 pb-4 border-b border-white opacity-20">
+            <span class="font-mono text-[9px] tracking-widest text-oxblood uppercase">{{ block.settings.label_left }}</span>
+            <span class="font-mono text-[9px] tracking-widest text-gold uppercase font-bold">{{ block.settings.label_right }}</span>
+          </div>
+
+          <h3 class="font-serif-italic text-3xl text-platinum mb-6 group-hover:text-gold transition-colors">
+            {{ block.settings.heading }}
+          </h3>
+          <p class="font-serif text-sm italic text-platinum opacity-60 leading-relaxed flex-grow">
+            {{ block.settings.text }}
+          </p>
+          
+          <div class="mt-12 pt-6 border-t border-border flex justify-between items-center opacity-70">
+            <span class="font-mono text-[9px] tracking-widest text-gold uppercase">CLEARANCE</span>
+            <span class="font-mono text-[9px] tracking-widest text-platinum uppercase">VERIFIED //</span>
+          </div>
+        </div>
+      {%- endfor -%}
     </div>
   </div>
 </div>
 
 {% schema %}
 {
-  "name": "Stellar Constellations",
+  "name": "Avarice Manifest Bento",
   "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "ARCHITECTURAL_MANIFESTS //"
+    },
     {
       "type": "text",
       "id": "title",
-      "label": "Title",
-      "default": "Aligned Constellations Ledger"
-    },
-    {
-      "type": "textarea",
-      "id": "description",
-      "label": "Description",
-      "default": "Calculated trajectories drawing upon the sovereign nodes of the Avarice grid space."
-    },
-    {
-      "type": "text",
-      "id": "constellation",
-      "label": "Constellation",
-      "default": "The Scepter of Avarice"
-    },
-    {
-      "type": "text",
-      "id": "latitude",
-      "label": "Latitude",
-      "default": "45.0"
-    },
-    {
-      "type": "text",
-      "id": "ascension",
-      "label": "Right Ascension",
-      "default": "12.0"
-    },
-    {
-      "type": "text",
-      "id": "cycles",
-      "label": "Cycles",
-      "default": "3"
-    },
-    {
-      "type": "text",
-      "id": "distortion",
-      "label": "Distortion Level",
-      "default": "4.2"
-    }
-  ],
-  "presets": [
-    {
-      "name": "Stellar Constellations"
-    }
-  ]
-}
-{% endschema %}`;
-
-      const sectionManifestationsLiquid = `<div class="verse-manifestations-section py-32 px-6 lg:px-12 relative" style="background-color: {{ settings.color_bg }}; border-top: 1px solid {{ settings.color_accent }}11;">
-  <div class="max-w-7xl mx-auto z-10 relative">
-    
-    <div class="flex flex-col gap-6 mb-24 border-b pb-12" style="border-color: {{ settings.color_accent }}22;">
-      <span class="font-mono text-[9px] uppercase tracking-[0.5em]" style="color: {{ settings.color_gold }};">ARCHITECTURAL_MANIFESTS //</span>
-      <h2 class="font-serif text-5xl md:text-7xl font-light text-platinum uppercase leading-none">{{ section.settings.title_manifests }}</h2>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-      <div class="verse-item-card border p-10 flex flex-col justify-between min-h-[420px] transition-all duration-700 group hover:border-[#dcc57b]/30" style="border-color: {{ settings.color_accent }}22; background: rgba(5,5,5,0.85);">
-        <div>
-          <div class="flex justify-between items-center mb-6">
-            <span class="font-mono text-[8px] uppercase tracking-widest text-[#93000a]">Manifestation 01</span>
-            <span class="font-mono text-[8px] uppercase tracking-widest font-bold" style="color: {{ settings.color_gold }};">Tome</span>
-          </div>
-          <h3 class="font-serif text-3xl text-platinum tracking-tight italic group-hover:text-white transition-colors duration-500 mb-6">Avarice Luxury Scepter</h3>
-          <p class="font-serif text-sm italic text-platinum/40 leading-relaxed">Solidified gold-fire artifact acting as the primary system core ledger anchor. A heavy physical manifestation of the primary singularity.</p>
-        </div>
-        <div class="mt-8 pt-6 border-t border-platinum/5 flex justify-between items-center">
-          <span class="font-mono text-[9px] uppercase tracking-widest text-[#dcc57b]">Sovereign Tier</span>
-          <span class="font-mono text-[9px] uppercase tracking-widest text-platinum/40">Exquisite //</span>
-        </div>
-      </div>
-
-      <div class="verse-item-card border p-10 flex flex-col justify-between min-h-[420px] transition-all duration-700 group hover:border-[#dcc57b]/30" style="border-color: {{ settings.color_accent }}22; background: rgba(5,5,5,0.85);">
-        <div>
-          <div class="flex justify-between items-center mb-6">
-            <span class="font-mono text-[8px] uppercase tracking-widest text-[#93000a]">Manifestation 02</span>
-            <span class="font-mono text-[8px] uppercase tracking-widest font-bold" style="color: {{ settings.color_gold }};">Relic</span>
-          </div>
-          <h3 class="font-serif text-3xl text-platinum tracking-tight italic group-hover:text-white transition-colors duration-500 mb-6">Platinum Lighthouse</h3>
-          <p class="font-serif text-sm italic text-platinum/40 leading-relaxed">The singular uncorrupted beacon inside the center of the void, emitting high-density spatial purges to eliminate navigation interference.</p>
-        </div>
-        <div class="mt-8 pt-6 border-t border-platinum/5 flex justify-between items-center">
-          <span class="font-mono text-[9px] uppercase tracking-widest text-[#dcc57b]">Lighthouse Tier</span>
-          <span class="font-mono text-[9px] uppercase tracking-widest text-platinum/40">Uncorrupted //</span>
-        </div>
-      </div>
-
-      <div class="verse-item-card border p-10 flex flex-col justify-between min-h-[420px] transition-all duration-700 group hover:border-[#dcc57b]/30" style="border-color: {{ settings.color_accent }}22; background: rgba(5,5,5,0.85);">
-        <div>
-          <div class="flex justify-between items-center mb-6">
-            <span class="font-mono text-[8px] uppercase tracking-widest text-[#93000a]">Manifestation 03</span>
-            <span class="font-mono text-[8px] uppercase tracking-widest font-bold" style="color: {{ settings.color_gold }};">Anchor</span>
-          </div>
-          <h3 class="font-serif text-3xl text-platinum tracking-tight italic group-hover:text-white transition-colors duration-500 mb-6">Crimson Eclipse Mass</h3>
-          <p class="font-serif text-sm italic text-platinum/40 leading-relaxed">A massive core of deep-friction dark matter drawn in velvet red, indicating the space where the Great severance unfolded.</p>
-        </div>
-        <div class="mt-8 pt-6 border-t border-platinum/5 flex justify-between items-center">
-          <span class="font-mono text-[9px] uppercase tracking-widest text-[#dcc57b]">Forbidden Tier</span>
-          <span class="font-mono text-[9px] uppercase tracking-widest text-platinum/40">Volatile //</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-{% schema %}
-{
-  "name": "Verse Manifestations",
-  "settings": [
-    {
-      "type": "text",
-      "id": "title_manifests",
-      "label": "Heading",
+      "label": "Main Heading",
       "default": "Stellar Manifestations"
     }
   ],
-  "presets": [
+  "blocks": [
     {
-      "name": "Verse Manifestations"
+      "type": "card",
+      "name": "Bento Manifest Card",
+      "settings": [
+        { "type": "text", "id": "label_left", "label": "Top Left Label", "default": "MANIFEST 01" },
+        { "type": "text", "id": "label_right", "label": "Top Right Label", "default": "TOME" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Avarice Luxury Scepter" },
+        { "type": "textarea", "id": "text", "label": "Body Text", "default": "Solidified gold-fire artifact acting as the primary system core ledger." }
+      ]
     }
-  ]
+  ],
+  "presets": [{ "name": "Avarice Manifest Bento" }]
 }
 {% endschema %}`;
 
-      const sectionOracleLiquid = `<div class="verse-oracle-section py-32 px-6 lg:px-12 relative overflow-hidden" style="background-color: {{ settings.color_bg }}; border-top: 1px solid {{ settings.color_accent }}33;">
-  <div class="absolute inset-0 atmosphere z-0 opacity-[0.03]"></div>
-  
-  <div class="max-w-4xl mx-auto text-center relative z-10">
-    <div class="flex flex-col items-center gap-6 mb-16">
-      <span class="font-mono text-[9px] uppercase tracking-[0.5em]" style="color: {{ settings.color_gold }};">SACRED_DECREE_MONITOR //</span>
-      <h2 class="font-serif text-5xl font-light text-platinum uppercase tracking-tight italic">{{ section.settings.title }}</h2>
+      const sectionOracleLiquid = `<div class="section-wrapper relative bg-void border-y border-oxblood overflow-hidden flex items-center justify-center min-h-[60vh]">
+  <!-- Decorative Background Astrolabe logic from component replicated in pure CSS -->
+  <div class="absolute inset-0 z-0 opacity-10 flex items-center justify-center pointer-events-none">
+    <div class="w-[800px] h-[800px] border border-gold rounded-full opacity-20"></div>
+    <div class="absolute w-[600px] h-[600px] border border-oxblood rounded-full opacity-40 border-dashed"></div>
+  </div>
+
+  <div class="container relative z-10 max-w-4xl text-center reveal-up">
+    <div class="inline-flex items-center gap-4 mb-16 border border-border px-6 py-3 bg-black bg-opacity-50">
+      <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
+      <span class="font-mono text-[10px] tracking-[0.4em] text-platinum uppercase">{{ section.settings.badge }}</span>
     </div>
 
-    <div class="border p-12 md:p-16 relative backdrop-blur-md overflow-hidden text-left" style="border-color: {{ settings.color_accent }}44; background: rgba(5,5,5,0.95);">
-      <div class="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent opacity-80"></div>
+    <div class="relative p-12 md:p-20 bg-void border border-border backdrop-blur-xl">
+      <!-- Ornate corner accents -->
+      <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-gold -translate-x-[2px] -translate-y-[2px]"></div>
+      <div class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-gold translate-x-[2px] -translate-y-[2px]"></div>
+      <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-gold -translate-x-[2px] translate-y-[2px]"></div>
+      <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-gold translate-x-[2px] translate-y-[2px]"></div>
+
+      <h2 class="font-serif-italic text-3xl md:text-5xl text-platinum leading-relaxed opacity-90 mx-auto max-w-3xl">
+        "{{ section.settings.prophecy }}"
+      </h2>
       
-      <div class="absolute top-0 left-0 w-3 h-3 border-t border-l" style="border-color: {{ settings.color_accent }};"></div>
-      <div class="absolute top-0 right-0 w-3 h-3 border-t border-r" style="border-color: {{ settings.color_accent }};"></div>
-      <div class="absolute bottom-0 left-0 w-3 h-3 border-b border-l" style="border-color: {{ settings.color_accent }};"></div>
-      <div class="absolute bottom-0 right-0 w-3 h-3 border-b border-r" style="border-color: {{ settings.color_accent }};"></div>
-
-      <div class="text-left font-serif leading-loose text-platinum/90 text-xl md:text-2xl italic">
-        "{{ section.settings.prophecy_text }}"
-      </div>
-
-      <div class="h-px bg-platinum/10 my-10"></div>
-
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-mono tracking-widest text-[9px] uppercase" style="color: {{ settings.color_accent }};">
-        <span>Oracle Source Status: [ SYSTEM_ACTIVE ]</span>
-        <span style="color: {{ settings.color_gold }};">Avarice Luxury Design Engine 2026</span>
+      <div class="mt-16 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 font-mono text-[10px] tracking-widest uppercase">
+        <span class="text-oxblood">TRACE: VERIFIED_PERFECT_ALIGNMENT</span>
+        <span class="text-platinum opacity-50">{{ shop.name | escape }} ENGINE</span>
       </div>
     </div>
   </div>
@@ -821,162 +986,114 @@ export function CelestialNavigation() {
 
 {% schema %}
 {
-  "name": "The Verse Oracle",
+  "name": "Avarice Oracle Decree",
   "settings": [
     {
       "type": "text",
-      "id": "title",
-      "label": "Title",
-      "default": "The Oracle's Prophetic Judgment"
+      "id": "badge",
+      "label": "Badge text",
+      "default": "SACRED_DECREE_MONITOR //"
     },
     {
       "type": "textarea",
-      "id": "prophecy_text",
-      "label": "Prophecy text",
-      "default": "In the convergence of scepters lies the eternal verification of the absolute luxury void, a black marble harbor of gold and crimson sparks."
+      "id": "prophecy",
+      "label": "Oracle Prophecy Text",
+      "default": "In the convergence of scepters lies the eternal verification of the absolute luxury void."
     }
   ],
-  "presets": [
-    {
-      "name": "The Verse Oracle"
-    }
-  ]
+  "presets": [{ "name": "Avarice Oracle Decree" }]
 }
 {% endschema %}`;
 
-      const assetThemeCss = `:root {
-  --color-void: #050505;
-  --color-platinum: #c9c6c5;
-  --color-oxblood: #93000a;
-  --color-gold: #dcc57b;
-  --font-serif: 'Newsreader', 'Georgia', serif;
-  --font-sans: 'Inter', sans-serif;
-}
+      // ─────────────────────────────────────────────────────────────────
+      // 6. BUILD JSON TEMPLATES
+      // ─────────────────────────────────────────────────────────────────
 
-body {
-  background-color: var(--color-void);
-  color: var(--color-platinum);
-  font-family: var(--font-serif);
-  margin: 0;
-  padding: 0;
-  line-height: 1.6;
-}
+      const indexJson = {
+        "sections": {
+          "hero": {
+            "type": "avarice-hero",
+            "settings": {
+              "badge_text": `NODE LOG: LAT ${activeLat} // RA ${activeAsc}h`,
+              "heading_top": "THE GOD.",
+              "heading_bottom": "KINGSHADP",
+              "button_link": "/collections/all"
+            }
+          },
+          "manifestations": {
+            "type": "avarice-bento",
+            "settings": {
+              "title": "Stellar Manifestations",
+              "subtitle": `CONSTELLATION FOCUS // ${activeConst.toUpperCase()}`
+            },
+            "blocks": {
+              "tome": { "type": "card", "settings": { "label_left": "MANIFEST 01", "label_right": "TOME", "heading": "Avarice Luxury Scepter", "text": "Solidified gold-fire artifact acting as the primary system core ledger anchor. A heavy physical manifestation." } },
+              "beacon": { "type": "card", "settings": { "label_left": "MANIFEST 02", "label_right": "BEACON", "heading": "Platinum Lighthouse", "text": "The singular uncorrupted beacon inside the center of the void, emitting high-density spatial purges." } },
+              "mass": { "type": "card", "settings": { "label_left": "MANIFEST 03", "label_right": "MASS", "heading": "Crimson Eclipse Core", "text": "A massive core of deep-friction dark matter drawn in velvet red, indicating absolute gravity limits." } }
+            },
+            "block_order": ["tome", "beacon", "mass"]
+          },
+          "oracle": {
+            "type": "avarice-oracle",
+            "settings": {
+              "prophecy": activeProphecy
+            }
+          }
+        },
+        "order": ["hero", "manifestations", "oracle"]
+      };
 
-.luxury-cursor-dot {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 5px;
-  height: 5px;
-  background-color: var(--color-gold);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-}
+      const localesEnJson = {
+        "general": {
+          "password_page": { "login_form_heading": "Enter store using password" },
+          "social": { "alt_text": { "share_on_facebook": "Share on Facebook", "share_on_twitter": "Tweet" } },
+          "search": { "search": "Search", "no_results_html": "No results found." }
+        }
+      };
 
-.luxury-cursor-circle {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 32px;
-  height: 32px;
-  border: 1px solid var(--color-oxblood);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  transform: translate(-50%, -50%);
-  transition: transform 0.08s ease-out;
-}
+      // ─────────────────────────────────────────────────────────────────
+      // 7. ASSEMBLE ZIP
+      // ─────────────────────────────────────────────────────────────────
 
-::-webkit-scrollbar {
-  width: 5px;
-}
-::-webkit-scrollbar-track {
-  background: var(--color-void);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-oxblood);
-}
-
-.atmosphere {
-  background: radial-gradient(circle at 50% 50%, rgba(147,0,10,0.15) 0%, transparent 80%);
-  filter: blur(100px);
-}
-
-.luxury-noise-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-  width: 100%;
-  height: 100%;
-  background-image: radial-gradient(rgba(183, 110, 121, 0.05) 0.5px, transparent 1px);
-  background-size: 24px 24px;
-  pointer-events: none;
-}
-
-.verse-ghost-btn {
-  display: inline-block;
-  cursor: pointer;
-  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  background: transparent;
-  color: var(--color-platinum);
-  border: 1px solid rgba(201, 198, 197, 0.25);
-}
-
-.verse-ghost-btn:hover {
-  border-color: var(--color-gold);
-  color: #fff;
-}
-
-.verse-item-card {
-  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.verse-item-card:hover {
-  transform: translateY(-8px);
-  border-color: var(--color-gold) !important;
-}`;
-
-      const assetThemeJs = `document.addEventListener('DOMContentLoaded', () => {
-  const dot = document.querySelector('.luxury-cursor-dot');
-  const circle = document.querySelector('.luxury-cursor-circle');
-
-  if (dot && circle) {
-    document.addEventListener('mousemove', (e) => {
-      dot.style.left = e.clientX + 'px';
-      dot.style.top = e.clientY + 'px';
-      
-      setTimeout(() => {
-        circle.style.left = e.clientX + 'px';
-        circle.style.top = e.clientY + 'px';
-      }, 50);
-    });
-  }
-});`;
-
+      // Layout & Config
       zip.file("layout/theme.liquid", layoutThemeLiquid);
-      zip.file("templates/index.json", JSON.stringify(indexJson, null, 2));
-      zip.file("sections/the-verse-hero.liquid", sectionHeroLiquid);
-      zip.file("sections/the-verse-constellations.liquid", sectionConstellationsLiquid);
-      zip.file("sections/the-verse-manifestations.liquid", sectionManifestationsLiquid);
-      zip.file("sections/the-verse-oracle.liquid", sectionOracleLiquid);
-      zip.file("assets/theme.css", assetThemeCss);
-      zip.file("assets/theme.js", assetThemeJs);
       zip.file("config/settings_schema.json", JSON.stringify(settingsSchemaJson, null, 2));
       zip.file("config/settings_data.json", JSON.stringify(settingsDataJson, null, 2));
+      
+      // Snippets
+      zip.file("snippets/css-variables.liquid", snippetCssVars);
+      zip.file("snippets/custom-cursor.liquid", snippetCursor);
+      
+      // Theme Assets
+      zip.file("assets/base.css", assetBaseCss);
+      zip.file("assets/global.js", assetGlobalJs);
+      
+      // Sections
+      zip.file("sections/header.liquid", sectionHeaderLiquid);
+      zip.file("sections/footer.liquid", sectionFooterLiquid);
+      zip.file("sections/avarice-hero.liquid", sectionAvariceHeroLiquid);
+      zip.file("sections/avarice-bento.liquid", sectionAvariceBentoLiquid);
+      zip.file("sections/avarice-oracle.liquid", sectionOracleLiquid);
+      
+      // Templates
+      zip.file("templates/index.json", JSON.stringify(indexJson, null, 2));
+      zip.file("locales/en.default.json", JSON.stringify(localesEnJson, null, 2));
+
+      // ─────────────────────────────────────────────────────────────────
+      // 8. GENERATE & TRIGGER DOWNLOAD
+      // ─────────────────────────────────────────────────────────────────
 
       const blob = await zip.generateAsync({ type: "blob" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `the-verse-avarice-luxury-shopify-theme.zip`;
+      link.download = `avarice-sovereign-shopify-theme.zip`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
     } catch (err) {
-      console.error("Failed to generate Shopify theme:", err);
+      console.error("Failed to generate comprehensive Shopify theme:", err);
     } finally {
       setIsExporting(false);
     }
