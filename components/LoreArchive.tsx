@@ -210,7 +210,7 @@ export function LoreArchive() {
                   className="fixed top-12 right-12 z-50 text-ivory/40 hover:text-ivory transition-colors flex gap-4 items-center font-mono text-[9px] tracking-[0.4em] uppercase group"
                 >
                   <span className="group-hover:-translate-x-2 transition-transform duration-500">Close</span>
-                  <div className="w-10 h-10 border border-ivory/20 flex items-center justify-center rounded-full group-hover:border-ivory transition-colors duration-500">
+                  <div className="w-10 h-10 border border-ivory/20 flex items-center justify-center rounded-none hover:bg-ivory/5 group-hover:border-ivory transition-all duration-500">
                     <X className="w-4 h-4" />
                   </div>
                 </button>
@@ -224,7 +224,7 @@ export function LoreArchive() {
                    >
                       <div className="absolute bottom-0 left-0 w-1/4 h-[1px] bg-gradient-to-r from-ivory to-transparent" />
                       <span className="font-mono text-[9px] tracking-[0.5em] text-[#b76e79]/50 uppercase mb-8 block flex items-center gap-3">
-                        <div className="w-2 h-2 bg-ivory animate-pulse" /> The Purpose // SECURE
+                        <div className="w-1.5 h-1.5 bg-ivory rotate-45 animate-pulse" /> The Purpose // SECURE
                       </span>
                       <h3 className="font-serif text-6xl md:text-8xl text-ivory font-light uppercase tracking-tighter leading-[0.85] drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
                         The God. <br/><span className="text-[#b76e79]/60 italic">The Gold Standard.</span>

@@ -33,7 +33,7 @@ export function UniverseStats() {
               <div className="flex items-center gap-6">
                  <div className="w-12 h-[1px] bg-ivory/30" />
                  <span className="font-mono text-[9px] uppercase tracking-[0.6em] text-ivory/50 flex items-center gap-2">
-                   <div className="w-1.5 h-1.5 bg-ivory/30 rounded-full animate-pulse" />
+                   <div className="w-1.5 h-1.5 bg-ivory/30 rotate-45 animate-pulse" />
                    System_Diagnostics
                  </span>
               </div>

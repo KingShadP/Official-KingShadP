@@ -60,7 +60,7 @@ export function Nav() {
             transition={{ duration: 1, delay: 1.2 }}
             className="flex items-center gap-3"
           >
-            <div className="w-1.5 h-1.5 bg-ivory rounded-full shadow-[0_0_10px_#fff]" />
+            <div className="w-1.5 h-1.5 bg-ivory rotate-45 border border-white/20 shadow-[0_0_8px_rgba(255,255,255,0.7)]" />
             <span className="font-mono text-[8px] uppercase tracking-[0.4em] text-ivory/50 hidden sm:block">
               Connection Secure
             </span>

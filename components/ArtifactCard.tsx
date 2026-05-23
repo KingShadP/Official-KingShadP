@@ -62,7 +62,7 @@ export function ArtifactCard({ id, title, classification, content, delay = 0 }: 
               <div className="relative z-10 max-w-2xl mx-auto">
                 <button 
                   onClick={() => setIsModalOpen(false)}
-                  className="fixed md:absolute top-8 right-8 text-ivory/40 hover:text-ivory transition-colors p-4 rounded-full flex gap-2 items-center uppercase font-mono text-[9px] tracking-[0.4em]"
+                  className="fixed md:absolute top-8 right-8 text-ivory/40 hover:text-ivory transition-all duration-500 px-4 py-2 border border-ivory/10 hover:border-ivory/40 hover:bg-ivory/5 rounded-none flex gap-2 items-center uppercase font-mono text-[9px] tracking-[0.4em]"
                   aria-label="Close modal"
                 >
                   Close <X className="w-4 h-4 ml-2" />
