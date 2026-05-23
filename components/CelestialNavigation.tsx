@@ -542,6 +542,16 @@ export function CelestialNavigation() {
                     <circle cx="195" cy="105" r="5" fill="#050505" stroke={selectedConst === "The Scepter of Avarice" ? "#dcc57b" : "#b76e79"} strokeWidth="1.5" />
                     <circle cx="195" cy="105" r="1.5" fill="#dcc57b" className="star-twinkle-fast" />
                     <text x="205" y="103" fontSize="5" fontFamily="var(--font-mono)" fill="#f8f5f2" fillOpacity="0.5" textAnchor="start">AVARICE</text>
+                    <AnimatePresence>
+                      {hoveredConst === "The Scepter of Avarice" && (
+                        <motion.text
+                          initial={{ opacity: 0, x: -3 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -3 }} transition={{ duration: 0.3 }}
+                          x="205" y="112" fontSize="6" fill="#D9D9D9" textAnchor="start" className="font-serif italic font-light drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+                        >
+                          The Scepter of Avarice
+                        </motion.text>
+                      )}
+                    </AnimatePresence>
                   </motion.g>
 
                   {/* Oxblood Eclipse node */}
@@ -556,6 +566,16 @@ export function CelestialNavigation() {
                     <circle cx="150" cy="240" r="5" fill="#050505" stroke={selectedConst === "Oxblood Eclipse" ? "#dcc57b" : "#b76e79"} strokeWidth="1.5" />
                     <circle cx="150" cy="240" r="1.5" fill="#93000a" className="star-twinkle-normal" />
                     <text x="150" y="252" fontSize="5" fontFamily="var(--font-mono)" fill="#f8f5f2" fillOpacity="0.5" textAnchor="middle">OXBLOOD</text>
+                    <AnimatePresence>
+                      {hoveredConst === "Oxblood Eclipse" && (
+                        <motion.text
+                          initial={{ opacity: 0, y: -3 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -3 }} transition={{ duration: 0.3 }}
+                          x="150" y="261" fontSize="6" fill="#D9D9D9" textAnchor="middle" className="font-serif italic font-light drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+                        >
+                          Oxblood Eclipse
+                        </motion.text>
+                      )}
+                    </AnimatePresence>
                   </motion.g>
 
                   {/* Platinum Spire node */}
@@ -570,6 +590,16 @@ export function CelestialNavigation() {
                     <circle cx="150" cy="80" r="5" fill="#050505" stroke={selectedConst === "Platinum Spire" ? "#dcc57b" : "#b76e79"} strokeWidth="1.5" />
                     <circle cx="150" cy="80" r="1.5" fill="#ffffff" className="star-twinkle-slow" />
                     <text x="150" y="72" fontSize="5" fontFamily="var(--font-mono)" fill="#f8f5f2" fillOpacity="0.5" textAnchor="middle">SPIRE</text>
+                    <AnimatePresence>
+                      {hoveredConst === "Platinum Spire" && (
+                        <motion.text
+                          initial={{ opacity: 0, y: 3 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 3 }} transition={{ duration: 0.3 }}
+                          x="150" y="63" fontSize="6" fill="#D9D9D9" textAnchor="middle" className="font-serif italic font-light drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+                        >
+                          Platinum Spire
+                        </motion.text>
+                      )}
+                    </AnimatePresence>
                   </motion.g>
 
                   {/* The Silent Lion node */}
@@ -584,6 +614,16 @@ export function CelestialNavigation() {
                     <circle cx="260" cy="180" r="5" fill="#050505" stroke={selectedConst === "The Silent Lion" ? "#dcc57b" : "#b76e79"} strokeWidth="1.5" />
                     <circle cx="260" cy="180" r="1.5" fill="#b76e79" className="star-twinkle-fast" />
                     <text x="260" y="172" fontSize="5" fontFamily="var(--font-mono)" fill="#f8f5f2" fillOpacity="0.5" textAnchor="middle">LION</text>
+                    <AnimatePresence>
+                      {hoveredConst === "The Silent Lion" && (
+                        <motion.text
+                          initial={{ opacity: 0, y: 3 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 3 }} transition={{ duration: 0.3 }}
+                          x="260" y="163" fontSize="6" fill="#D9D9D9" textAnchor="middle" className="font-serif italic font-light drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+                        >
+                          The Silent Lion
+                        </motion.text>
+                      )}
+                    </AnimatePresence>
                   </motion.g>
 
                   {/* Obsidian Helix node */}
@@ -598,6 +638,16 @@ export function CelestialNavigation() {
                     <circle cx="90" cy="183" r="5" fill="#050505" stroke={selectedConst === "Obsidian Helix" ? "#dcc57b" : "#b76e79"} strokeWidth="1.5" />
                     <circle cx="90" cy="183" r="1.5" fill="#d1ccc0" className="star-twinkle-slow" />
                     <text x="80" y="181" fontSize="5" fontFamily="var(--font-mono)" fill="#f8f5f2" fillOpacity="0.5" textAnchor="end">HELIX</text>
+                    <AnimatePresence>
+                      {hoveredConst === "Obsidian Helix" && (
+                        <motion.text
+                          initial={{ opacity: 0, x: 3 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 3 }} transition={{ duration: 0.3 }}
+                          x="80" y="190" fontSize="6" fill="#D9D9D9" textAnchor="end" className="font-serif italic font-light drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+                        >
+                          Obsidian Helix
+                        </motion.text>
+                      )}
+                    </AnimatePresence>
                   </motion.g>
                 </g>
 
