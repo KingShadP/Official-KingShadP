@@ -26,6 +26,12 @@
     overflow-x: hidden;
   }
 
+  @media (pointer: fine) {
+    html, body, a, button, input, select, textarea, [role="button"], [class*="cursor-pointer"], .group {
+      cursor: none !important;
+    }
+  }
+
   ::selection {
     background-color: var(--color-rosegold);
     color: var(--color-void);
