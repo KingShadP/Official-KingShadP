@@ -1,266 +1,334 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import Image from "next/image";
-import { ArtifactCard } from "@/components/ArtifactCard";
-import { Search, X } from "lucide-react";
+import { useState, useRef, useEffect, memo, useCallback } from "react";
+import { useEngine } from "./EngineProvider";
+import { motion, AnimatePresence } from "framer-motion";
+import { Search, Flame, Volume2, VolumeX } from "lucide-react";
+import { ArtifactCard, Modal } from "./ArtifactCard";
+import { Radar } from "./Radar";
+import { AudioVisualizer } from "./AudioVisualizer";
 
-const codexMedia = "/ChatGPT Image May 16, 2026, 03_55_36 AM (2).png";
-
-const loreFragments = [
-  {
-    id: "ARCHIVE_001",
-    classification: "Foundational",
-    title: "Self-Creation",
-    content: "The idea that greatness is constructed, not inherited. KingShadP exists as both creator and creation: man, symbol, architect, legend."
-  },
-  {
-    id: "ARCHIVE_002",
-    classification: "Cinematic Luxury",
-    title: "Dark Mythology",
-    content: "Matte black creates mystery. Rose gold adds prestige. Candy red brings danger, passion, and heat. Everything feels elevated, expensive, and emotionally immersive."
-  },
-  {
-    id: "ARCHIVE_003",
-    classification: "Sonic DNA",
-    title: "I Have A Purpose",
-    content: "Deep ambient bass, orchestral textures, distorted elegance, layered harmonies, sparse but heavy drums. Balance ambition, loneliness, god-complex confidence, and temptation."
-  }
+const ARCHIVES = [
+  { id: "A-001", classification: "Manifesto", title: "The Sovereign Thread", content: "Architecture built strictly to outlast trends. We define the void rather than allowing it to define us. The principles laid forth are unbreakable. True premium aesthetics are forged through intense pressure, demanding flawless execution across every single touchpoint.", image: "/ChatGPT Image May 28, 2026, 02_10_07 AM (5).png" },
+  { id: "A-002", classification: "Visual Code", title: "Oxblood & Platinum", content: "Crimson filters unoriginality. Platinum asserts permanence. Our color palette represents the treasury of the unseen. We strip away the unnecessary defaults, relying on high-contrast pairings to deliver aggressive elegance onto the digital canvas.", image: "/ChatGPT Image May 28, 2026, 02_10_07 AM (6)-1.png" },
+  { id: "A-003", classification: "Aural Grid", title: "Sonic Architecture", content: "Silence is a luxury. We punctuate the absolute zero ambient space only with heavily calculated low-frequency waveforms to establish pressure. The integration of audio is not a garnish, but a core column of the KingShadP structural manifesto.", image: "/ChatGPT Image May 28, 2026, 02_10_36 AM (1)-1.png" },
+  { id: "A-004", classification: "Identity", title: "KingShadP Prime", content: "Not just a title, but a structural protocol. The creator orchestrates the reality engine from behind the veil. We do not apologize. We do not explain. The final build stands as undeniable proof of absolute dominance within the digital framework.", image: "/ChatGPT Image May 28, 2026, 02_11_23 AM (1).png" }
 ];
 
-export function LoreArchive() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isReaderOpen, setIsReaderOpen] = useState(false);
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.2
+    }
+  }
+};
 
-  const filteredFragments = loreFragments.filter(
-    (frag) =>
-      frag.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      frag.content.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+const itemVariants = {
+  hidden: { opacity: 0, y: 50, scale: 0.95, filter: "blur(5px)" },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1, 
+    filter: "blur(0px)",
+    transition: { type: "spring", stiffness: 100, damping: 20 }
+  },
+  exit: { 
+    opacity: 0, 
+    scale: 0.9, 
+    filter: "blur(5px)", 
+    transition: { duration: 0.3 } 
+  }
+};
+
+export const LoreArchive = memo(function LoreArchive() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [archives, setArchives] = useState(ARCHIVES);
+  const [audioEnabled, setAudioEnabled] = useState(false);
+  const [analyserNode, setAnalyserNode] = useState<AnalyserNode | null>(null);
+  
+  // Direct parameter deep link active state
+  const [activeDeepLinkItem, setActiveDeepLinkItem] = useState<any>(null);
+
+  // Sync state on load and register listener hooks to prevent SSR hydration gaps
+  useEffect(() => {
+    // 1. Load search query
+    const savedQuery = localStorage.getItem("kingshadp_archive_search");
+    if (savedQuery) {
+      setSearchQuery(savedQuery);
+    }
+
+    // 2. Blend files from core and custom user logs
+    const syncDatabaseLocal = () => {
+      const savedUserEntries = localStorage.getItem("kingshadp_user_archives");
+      if (savedUserEntries) {
+        try {
+          const parsed = JSON.parse(savedUserEntries);
+          setArchives([...ARCHIVES, ...parsed]);
+        } catch (e) {
+          setArchives(ARCHIVES);
+        }
+      } else {
+        setArchives(ARCHIVES);
+      }
+    };
+
+    syncDatabaseLocal();
+
+    // 3. Register system-wide storage trigger events
+    window.addEventListener("kingshadp_vault_sync", syncDatabaseLocal);
+    return () => {
+      window.removeEventListener("kingshadp_vault_sync", syncDatabaseLocal);
+    };
+  }, []);
+
+  // Check URL parameters for direct vault entry focus linking
+  useEffect(() => {
+    if (archives.length > 0) {
+      const params = new URLSearchParams(window.location.search);
+      const vaultId = params.get("vault");
+      if (vaultId) {
+        const matched = archives.find(x => x.id === vaultId);
+        if (matched) {
+          setActiveDeepLinkItem(matched);
+        }
+      }
+    }
+  }, [archives]);
+
+  const handleSearchChange = (val: string) => {
+    setSearchQuery(val);
+    localStorage.setItem("kingshadp_archive_search", val);
+  };
+  
+  const audioCtx = useRef<AudioContext | null>(null);
+  const oscillator = useRef<OscillatorNode | null>(null);
+  const gainNode = useRef<GainNode | null>(null);
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const gridContainerRef = useRef<HTMLDivElement>(null);
+
+  useEngine(useCallback((state) => {
+    if (sectionRef.current && gridContainerRef.current) {
+      const rect = sectionRef.current.getBoundingClientRect();
+      const vh = window.innerHeight;
+      
+      const rawProgress = (vh - rect.top) / (vh * 0.7);
+      const progress = Math.max(0, Math.min(1, rawProgress));
+
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+
+      const rotateX = 25 * (1 - Math.min(1, easeOutQuart));
+      const scale = 0.85 + (0.15 * Math.min(1, easeOutQuart));
+      const yStr = `${100 * (1 - easeOutQuart)}px`;
+      const blur = 10 * (1 - easeOutQuart);
+      const opacity = easeOutQuart;
+
+      gridContainerRef.current.style.transform = `perspective(1500px) rotateX(${rotateX}deg) scale(${scale}) translateY(${yStr})`;
+      gridContainerRef.current.style.filter = `blur(${blur}px)`;
+      gridContainerRef.current.style.opacity = Math.max(0.01, opacity).toString();
+    }
+  }, []));
+
+  const toggleSound = () => {
+    if (!audioCtx.current) {
+      audioCtx.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      gainNode.current = audioCtx.current.createGain();
+      gainNode.current.connect(audioCtx.current.destination);
+      gainNode.current.gain.value = 0;
+
+      oscillator.current = audioCtx.current.createOscillator();
+      oscillator.current.type = "sine";
+      oscillator.current.frequency.value = 40; 
+
+      const lfo = audioCtx.current.createOscillator();
+      lfo.type = "triangle";
+      lfo.frequency.value = 0.15;
+      const lfoGain = audioCtx.current.createGain();
+      lfoGain.gain.value = 6;
+      lfo.connect(lfoGain);
+      lfoGain.connect(oscillator.current.frequency);
+      lfo.start();
+
+      const analyser = audioCtx.current.createAnalyser();
+      analyser.fftSize = 64;
+      analyser.smoothingTimeConstant = 0.8;
+      
+      oscillator.current.connect(analyser);
+      analyser.connect(gainNode.current);
+      
+      oscillator.current.start();
+      setAnalyserNode(analyser);
+    }
+
+    if (audioEnabled) {
+      gainNode.current!.gain.setTargetAtTime(0, audioCtx.current.currentTime, 0.5);
+      setAudioEnabled(false);
+    } else {
+      audioCtx.current.resume();
+      gainNode.current!.gain.setTargetAtTime(0.2, audioCtx.current.currentTime, 1);
+      setAudioEnabled(true);
+    }
+  };
+
+  const triggerChaos = () => {
+    setArchives([...archives].sort(() => Math.random() - 0.5));
+  };
+
+  const filteredArchives = archives.filter((item) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      item.title.toLowerCase().includes(query) ||
+      item.content.toLowerCase().includes(query) ||
+      item.classification.toLowerCase().includes(query) ||
+      item.id.toLowerCase().includes(query)
+    );
+  });
 
   return (
-    <section id="codex" className="py-40 px-6 lg:px-12 bg-void relative overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute top-[20%] left-[10%] w-[500px] h-[500px] bg-ivory/[0.015] blur-[100px] pointer-events-none rounded-full" />
-      
-      <div className="max-w-[100rem] mx-auto relative z-10 flex flex-col gap-40">
-        
-        {/* Editorial Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+    <section ref={sectionRef} id="vault" className="relative w-full py-32 px-6 lg:px-24 z-10 border-t border-ivory/10 bg-gradient-to-b from-void to-[#080808] overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none mix-blend-overlay bg-noise opacity-30" />
+      <Radar />
+
+      {/* Floating Reliquary Audio Toggle */}
+      <button
+        onClick={toggleSound}
+        className="absolute top-12 right-6 lg:right-24 z-50 flex items-center gap-4 bg-void/80 backdrop-blur-md px-5 py-3 border border-oxblood/30 hover:border-oxblood hover:shadow-[0_0_20px_rgba(147,0,10,0.5)] transition-all group pointer-events-auto rounded-sm overflow-hidden"
+      >
+        <div className="absolute inset-0 bg-noise opacity-30 mix-blend-overlay pointer-events-none" />
+        <div className="flex items-center gap-3 relative z-10">
+          {audioEnabled ? (
+            <>
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-oxblood shadow-[0_0_12px_#93000a]"></span>
+              </span>
+              <Volume2 className="w-5 h-5 text-ivory/90 group-hover:text-gold transition-colors" />
+            </>
+          ) : (
+            <>
+              <div className="w-2.5 h-2.5 rounded-full bg-ivory/20" />
+              <VolumeX className="w-5 h-5 text-ivory/40 group-hover:text-ivory/70 transition-colors" />
+            </>
+          )}
+        </div>
+        <div className="hidden sm:flex flex-col items-start gap-1 relative z-10">
+          <span className="font-mono text-[8px] text-ivory/50 tracking-[0.4em] uppercase">Reliquary_Acoustics</span>
+          <span className={`font-mono text-[10px] tracking-[0.2em] uppercase font-bold ${audioEnabled ? 'text-gold drop-shadow-[0_0_5px_rgba(220,197,123,0.8)]' : 'text-ivory/30'}`}>
+            {audioEnabled ? "Resonating" : "Silenced"}
+          </span>
+        </div>
+        {audioEnabled && analyserNode && (
+          <div className="ml-2 hidden sm:block">
+            <AudioVisualizer analyser={analyserNode} />
+          </div>
+        )}
+      </button>
+
+      <div className="max-w-7xl mx-auto w-full relative z-10 mt-16">
+        {/* Header Grid */}
+        <div className="flex flex-col xl:flex-row justify-between items-start xl:items-end mb-16 border-b border-ivory/20 pb-8 gap-8">
+          <div>
+            <h2 className="font-serif text-5xl lg:text-7xl text-ivory font-light drop-shadow-[0_0_15px_rgba(255,255,255,0.15)]">
+              The Reliquary <span className="text-oxblood italic drop-shadow-[0_0_10px_rgba(147,0,10,0.8)]">.</span>
+            </h2>
+            <p className="mt-4 text-xs md:text-sm text-ivory/50 font-mono tracking-[0.3em] uppercase">
+              Secure Indexing // Sovereign Database
+            </p>
+          </div>
           
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center justify-center relative aspect-[3/4] w-full group overflow-hidden"
-          >
-            <div className="relative w-full h-full overflow-hidden filter grayscale-[0.9] contrast-[1.2] group-hover:grayscale-0 group-hover:contrast-100 transition-all duration-[2s]">
-              <Image
-                src={codexMedia}
-                alt="Codex Media"
-                fill
-                className="object-cover scale-105 group-hover:scale-100 transition-transform duration-[2.5s] ease-[0.16,1,0.3,1]"
-                referrerPolicy="no-referrer"
+          {/* High-Contrast Search & Actions Interface */}
+          <div className="relative w-full xl:w-auto flex flex-col md:flex-row items-stretch md:items-center gap-4">
+            <div className="relative w-full md:w-[400px]">
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-ivory/30" />
+              <input
+                type="text"
+                placeholder="Search Identity, Architecture..."
+                value={searchQuery}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                className="w-full bg-void border border-ivory/20 px-12 py-4 font-mono text-sm text-ivory tracking-widest focus:outline-none focus:border-gold focus:shadow-[0_0_15px_rgba(220,197,123,0.3)] transition-all placeholder:text-ivory/20 shadow-[inset_0_0_20px_rgba(0,0,0,0.8)]"
               />
-              <div className="absolute inset-0 bg-void/10 mix-blend-multiply" />
+              {searchQuery && (
+                <button 
+                  onClick={() => handleSearchChange("")}
+                  className="absolute right-5 top-1/2 -translate-y-1/2 text-ivory/40 hover:text-ivory font-mono text-[10px] tracking-[0.2em] uppercase transition-colors"
+                >
+                  Clear
+                </button>
+              )}
             </div>
             
-            {/* Ambient inner shadow */}
-            <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(5,5,5,0.8)] pointer-events-none" />
-
-            {/* Minimal overlays */}
-            <div className="absolute bottom-8 left-8 flex flex-col gap-2 z-10">
-               <span className="font-mono text-[8px] text-ivory tracking-[0.5em] uppercase mix-blend-difference drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">Exhibit_A</span>
-               <span className="font-mono text-[8px] text-ivory/50 tracking-[0.5em] uppercase mix-blend-difference">Auth_Level_00</span>
-            </div>
-            {/* Scanline overlay */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,#fff_2px,#fff_4px)] mix-blend-overlay" />
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <div className="pl-0 lg:pl-12 flex flex-col gap-12">
-              <div className="flex items-center gap-6">
-                 <span className="font-mono text-[9px] tracking-[0.5em] text-ivory/50 uppercase flex items-center gap-2">
-                   <div className="w-1.5 h-1.5 bg-ivory/50 animate-pulse" /> The Purpose / 01
-                 </span>
-                 <span className="w-16 h-[1px] bg-ivory/20" />
-              </div>
-
-              <h2 className="font-serif text-6xl md:text-8xl text-ivory leading-[0.8] font-light tracking-tighter uppercase relative group">
-                The Gold <br />
-                <span className="italic opacity-60 relative pr-4 group-hover:opacity-100 transition-opacity duration-1000">
-                  Standard.
-                  <motion.div 
-                    initial={{ scaleX: 0 }} 
-                    whileInView={{ scaleX: 1 }} 
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.5, delay: 0.5, ease: [0.16,1,0.3,1] }}
-                    className="absolute top-1/2 left-0 w-full h-[1px] bg-[#b76e79]/30 origin-left" 
-                  />
-                </span>
-              </h2>
-
-              <div className="max-w-xl space-y-8 relative">
-                {/* Visual accent vertical line */}
-                <div className="absolute -left-12 top-0 w-[1px] h-full bg-gradient-to-b from-[#b76e79]/30 to-transparent hidden lg:block" />
-
-                <p className="font-serif text-2xl md:text-3xl text-ivory/80 leading-relaxed font-light">
-                  KingShadP is more than an artist name. It is a statement, a signal, and a standard.
-                </p>
-                <p className="font-sans text-sm md:text-base text-ivory/40 leading-relaxed font-light">
-                  Through music, luxury fashion, dark visuals, and premium storytelling, the creator became the creation. I don&apos;t cater, I&apos;m the creator that makes your life greater.
-                </p>
-
-                <button 
-                  onClick={() => setIsReaderOpen(true)}
-                  className="group/btn mt-12 flex items-center gap-6 relative overflow-hidden py-2"
-                >
-                  <span className="font-mono text-[9px] tracking-[0.5em] text-ivory/60 uppercase group-hover/btn:text-ivory transition-colors duration-500">Read Terminal</span>
-                  <div className="w-12 h-[1px] bg-ivory/30 group-hover/btn:bg-ivory group-hover/btn:w-32 transition-all duration-700 ease-[0.16,1,0.3,1] relative">
-                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-ivory opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500 shadow-[0_0_8px_#fff]" />
-                  </div>
-                </button>
-              </div>
-            </div>
-          </motion.div>
-
+            <button 
+              onClick={triggerChaos}
+              className="px-8 py-4 border border-oxblood/40 bg-void hover:bg-oxblood/10 hover:border-oxblood hover:shadow-[0_0_20px_rgba(147,0,10,0.4)] font-mono text-xs uppercase tracking-widest text-ivory transition-all flex items-center justify-center gap-3 overflow-hidden relative group"
+            >
+              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjMjIyMiIvPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSIxIiBmaWxsPSIjMDAwMCIvPjwvc3ZnPg==')] opacity-0 group-hover:opacity-40 transition-opacity pointer-events-none" />
+              <Flame className="w-4 h-4 text-oxblood group-hover:scale-125 transition-transform duration-500" />
+              <span className="relative z-10">Chaos Mode</span>
+            </button>
+          </div>
         </div>
 
-        {/* Artifact Grid Header */}
-        <div className="flex flex-col gap-12 border-t border-ivory/15 pt-24 relative">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-[1px] bg-gradient-to-r from-transparent via-ivory to-transparent opacity-20" />
-          
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12 relative z-10">
-            <div>
-              <span className="font-mono text-[9px] tracking-[0.5em] text-ivory/50 uppercase block mb-4 flex items-center gap-3">
-                <span className="w-1.5 h-1.5 bg-ivory/50" /> Database_Connection
-              </span>
-              <h3 className="font-serif text-4xl md:text-5xl text-ivory font-light italic drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">The Archives</h3>
-            </div>
-            
-            <div className="relative group w-full md:w-auto">
-              <Search className="w-4 h-4 text-ivory/30 absolute left-0 bottom-3 group-focus-within:text-ivory transition-colors" />
-              <input 
-                type="text" 
-                placeholder="Search..." 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-transparent border-b border-ivory/20 text-ivory font-serif text-xl focus:outline-none focus:border-ivory transition-colors pl-8 pr-4 py-2 placeholder:text-ivory/20 w-full md:w-64"
-              />
-              <div className="absolute bottom-0 left-0 w-0 h-px bg-ivory transition-all duration-500 ease-[0.16,1,0.3,1] group-focus-within:w-full" />
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border border-ivory/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] bg-void relative">
-             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_#050505_100%)] pointer-events-none opacity-80 z-10" />
-             <AnimatePresence mode="popLayout">
-               {filteredFragments.map((frag, idx) => (
-                 <motion.div
-                   key={frag.id}
-                   initial={{ opacity: 0, y: 10 }}
-                   animate={{ opacity: 1, y: 0 }}
-                   exit={{ opacity: 0, scale: 0.98 }}
-                   transition={{ duration: 0.8, delay: idx * 0.05 }}
-                   layout
-                   className="border-r border-b border-ivory/10 last:border-r-0 lg:[&:nth-child(3n)]:border-r-0 hover:bg-ivory/[0.015] transition-colors duration-500 relative z-20"
-                 >
-                   <ArtifactCard {...frag} delay={idx * 0.1} />
-                 </motion.div>
-               ))}
-               {filteredFragments.length === 0 && (
-                 <div className="col-span-full py-32 text-center flex flex-col items-center justify-center relative z-20">
-                   <motion.div
-                     initial={{ opacity: 0 }}
-                     animate={{ opacity: 1 }}
-                     className="font-mono text-[9px] tracking-[0.5em] text-ivory/30 uppercase animate-pulse"
-                   >
-                     0_Records_Found
-                   </motion.div>
-                 </div>
-               )}
-             </AnimatePresence>
-          </div>
+        {/* Dynamic Display Indicators */}
+        <div className="mb-10 flex justify-between items-center px-1">
+          <span className="font-mono text-[10px] text-ivory/40 uppercase tracking-[0.3em] flex items-center gap-3">
+            <span className="w-1.5 h-1.5 bg-ivory/40 rounded-full animate-ping" />
+            Vault Query: Found {filteredArchives.length} matches
+          </span>
+        </div>
+        
+        {/* Animated Staggered Layout Grid */}
+        <div ref={gridContainerRef} className="will-change-transform origin-top z-20 relative transition-none">
+          <motion.div 
+            layout
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 w-full"
+          >
+            <AnimatePresence mode="popLayout">
+              {filteredArchives.map((item, i) => (
+                <motion.div
+                  key={item.id}
+                  layout
+                  variants={itemVariants}
+                  exit="exit"
+                  className="w-full relative z-20 will-change-transform"
+                >
+                  <ArtifactCard data={item} index={i} />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
         </div>
       </div>
 
-      {/* Reader Modal */}
+      {/* Deep Link Modal Trigger */}
       <AnimatePresence>
-        {isReaderOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-[100] bg-void/95 backdrop-blur-xl flex flex-col items-center justify-start p-0 overflow-hidden"
-          >
-            {/* Modal scanlines / cinematic overlay */}
-            <div className="absolute inset-0 pointer-events-none bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,#fff_2px,#fff_4px)] mix-blend-overlay opacity-[0.03]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#050505_100%)] pointer-events-none opacity-80" />
-
-            <div className="absolute inset-0 overflow-y-auto px-6 py-24 md:px-12 flex flex-col items-center">
-               <button 
-                  onClick={() => setIsReaderOpen(false)}
-                  className="fixed top-12 right-12 z-50 text-ivory/40 hover:text-ivory transition-colors flex gap-4 items-center font-mono text-[9px] tracking-[0.4em] uppercase group"
-                >
-                  <span className="group-hover:-translate-x-2 transition-transform duration-500">Close</span>
-                  <div className="w-10 h-10 border border-ivory/20 flex items-center justify-center rounded-none hover:bg-ivory/5 group-hover:border-ivory transition-all duration-500">
-                    <X className="w-4 h-4" />
-                  </div>
-                </button>
-
-                <div className="w-full max-w-3xl flex flex-col gap-12 mt-12 relative z-10">
-                   <motion.div 
-                     initial={{ y: 20, opacity: 0 }}
-                     animate={{ y: 0, opacity: 1 }}
-                     transition={{ duration: 1, delay: 0.2 }}
-                     className="pb-16 border-b border-[#b76e79]/15 relative"
-                   >
-                      <div className="absolute bottom-0 left-0 w-1/4 h-[1px] bg-gradient-to-r from-ivory to-transparent" />
-                      <span className="font-mono text-[9px] tracking-[0.5em] text-[#b76e79]/50 uppercase mb-8 block flex items-center gap-3">
-                        <div className="w-1.5 h-1.5 bg-ivory rotate-45 animate-pulse" /> The Purpose // SECURE
-                      </span>
-                      <h3 className="font-serif text-6xl md:text-8xl text-ivory font-light uppercase tracking-tighter leading-[0.85] drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-                        The God. <br/><span className="text-[#b76e79]/60 italic">The Gold Standard.</span>
-                      </h3>
-                   </motion.div>
-
-                   <motion.div 
-                     initial={{ y: 20, opacity: 0 }}
-                     animate={{ y: 0, opacity: 1 }}
-                     transition={{ duration: 1, delay: 0.4 }}
-                     className="prose prose-invert max-w-none text-left space-y-12"
-                   >
-                       <p className="font-serif text-3xl md:text-4xl text-ivory/90 leading-relaxed font-light italic">
-                         KingShadP represents the transformation of identity into mythology.
-                       </p>
-                       <p className="font-sans text-lg text-ivory/70 font-light leading-relaxed">
-                         At its center, KingShadP carries purpose. Moreover, that purpose moves through music, image, fashion, and self-expression. It speaks to people who want more than attention. Instead, it speaks to those who want identity.
-                       </p>
-                       <p className="font-sans text-lg text-ivory/70 font-light leading-relaxed">
-                         The &ldquo;King&rdquo; energy speaks to leadership. The &ldquo;ShadP&rdquo; identity makes it personal. Together, the name creates a character with presence. Therefore, KingShadP feels both intimate and larger than life. The brand says that self-expression deserves power. It says originality should feel expensive.
-                       </p>
-                       
-                       <div className="py-16 flex justify-center w-full">
-                          <div className="w-px h-32 bg-gradient-to-b from-transparent via-[#b76e79]/30 to-transparent" />
-                       </div>
-                       
-                       <p className="font-serif text-2xl text-ivory/90 font-light leading-relaxed text-center italic drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
-                         Not built for trends. Built for permanence. <br/> KingShadP is not chasing the gold standard. KingShadP is becoming it.
-                       </p>
-                   </motion.div>
-                </div>
-            </div>
-          </motion.div>
+        {activeDeepLinkItem && (
+          <Modal 
+            data={activeDeepLinkItem} 
+            onClose={() => {
+              // Clear URL parameter when manual close happens to keep address clean
+              if (typeof window !== "undefined") {
+                const url = new URL(window.location.href);
+                url.searchParams.delete("vault");
+                window.history.replaceState({}, "", url.toString());
+              }
+              setActiveDeepLinkItem(null);
+            }} 
+            baseColorRGB={
+              activeDeepLinkItem.classification === "Manifesto" ? "59, 130, 246" :
+              activeDeepLinkItem.classification === "Visual Code" ? "139, 92, 246" :
+              activeDeepLinkItem.classification === "Aural Grid" ? "16, 185, 129" :
+              "220, 197, 123"
+            } 
+          />
         )}
       </AnimatePresence>
     </section>
   );
-}
-
+});

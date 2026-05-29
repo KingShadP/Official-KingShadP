@@ -1,142 +1,94 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "motion/react";
-import { useTextScramble } from "@/lib/hooks/useTextScramble";
+import { memo } from "react";
+import { motion } from "framer-motion";
+import { ScrambleText } from "./ScrambleText";
 
-export function Hero() {
-  const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 1000], [0, 300]);
-  const opacity1 = useTransform(scrollY, [0, 600], [1, 0]);
-  const textY = useTransform(scrollY, [0, 800], [0, 400]);
-  const blurValue = useTransform(scrollY, [0, 600], ["blur(0px)", "blur(20px)"]);
-  
-  const title1 = useTextScramble("THE GOD.");
-  const title2 = useTextScramble("KINGSHADP");
-
+export const Hero = memo(function Hero() {
   return (
-    <section id="vault" className="relative h-screen min-h-[800px] w-full flex items-center justify-center overflow-hidden bg-void">
-      {/* Background Media Architecture */}
-      <motion.div 
-        className="absolute inset-x-0 top-0 h-[100vh] origin-top will-change-transform"
-        style={{ y: y1, opacity: opacity1, filter: blurValue }}
-      >
+    <section className="relative w-full min-h-screen flex flex-col justify-center px-6 lg:px-24 overflow-hidden z-10 selection:bg-ivory selection:text-void">
+      <div className="absolute inset-0 z-0 opacity-40 mix-blend-screen pointer-events-none">
+        <video 
+          autoPlay 
+          muted 
+          loop 
+          playsInline 
+          className="w-full h-full object-cover filter contrast-125 saturate-50 brightness-75"
+        >
+          <source src="/Model_wearing_KingShadP_hoodie_202605270727.mp4.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-void/20 via-void/50 to-void pointer-events-none" />
+      </div>
+
+      <div className="absolute right-[-10vw] top-[10vh] text-[15vw] font-mono text-ivory/[0.02] mix-blend-overlay rotate-90 pointer-events-none uppercase whitespace-nowrap overflow-hidden">
+        <ScrambleText text="[ SYSTEM CORE PRIME ]" duration={20000} delay={500} />
+      </div>
+
+      <div className="absolute left-6 lg:left-12 top-1/2 -translate-y-1/2 hidden md:flex flex-col gap-12 text-[10px] font-mono text-ivory/30 tracking-[0.3em] uppercase">
+        <span className="origin-left -rotate-90">Archive_v9.0</span>
+        <span className="origin-left -rotate-90 text-oxblood">Sovereign_Active</span>
+        <span className="origin-left -rotate-90">Class_Omega</span>
+      </div>
+
+      <div className="max-w-7xl mx-auto w-full pt-20">
         <motion.div
-           initial={{ opacity: 0, scale: 1.15 }}
-           animate={{ opacity: 1, scale: 1 }}
-           transition={{ duration: 6, ease: [0.16, 1, 0.3, 1] }}
-           className="w-full h-full relative"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="flex items-center gap-4 mb-6"
         >
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-full object-cover filter grayscale-[0.8] contrast-[1.4] sepia-[0.3] opacity-60 mix-blend-screen"
-          >
-            <source src="/imagine-0a15cc32.mp4" type="video/mp4" />
-          </video>
-          {/* Subtle slow pulsing radiant aura behind the text */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent opacity-40 animate-pulse" style={{ animationDuration: "8s" }} />
+          <div className="w-12 h-[1px] bg-gold shadow-[0_0_10px_rgba(220,197,123,0.8)]" />
+          <span className="font-mono text-xs text-oxblood uppercase tracking-[0.4em] font-bold drop-shadow-[0_0_8px_rgba(147,0,10,0.8)]">
+            <ScrambleText text="System Initialization Required" duration={800} />
+          </span>
         </motion.div>
-        
-        {/* Cinematic Vignette */}
-        <div className="absolute inset-0 bg-gradient-to-b from-void/60 via-void/5 to-void z-10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent z-10" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#050505_100%)] z-10 opacity-80" />
-      </motion.div>
 
-      {/* Noise Texture Overlay */}
-      <div className="absolute inset-0 z-10 w-full h-full pointer-events-none opacity-30 mix-blend-overlay flex justify-center items-center overflow-hidden">
-        <svg height="100%" width="100%">
-          <filter id="noise">
-            <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" stitchTiles="stitch" />
-            <feColorMatrix type="saturate" values="0" />
-          </filter>
-          <rect width="100%" height="100%" filter="url(#noise)" opacity="0.6" />
-        </svg>
-      </div>
-
-      {/* Structural Grids */}
-      <div className="absolute inset-0 z-10 grid grid-cols-4 max-w-screen-2xl mx-auto pointer-events-none opacity-[0.03]">
-        <div className="border-r border-ivory h-full w-full" />
-        <div className="border-r border-ivory h-full w-full" />
-        <div className="border-r border-ivory h-full w-full" />
-        <div className="h-full w-full" />
-      </div>
-
-      <motion.div 
-        className="relative z-20 flex flex-col items-center justify-center text-center w-full px-4 mix-blend-difference"
-        style={{ y: textY }}
-      >
-        <div className="flex flex-col items-center">
-          {/* Status Badge */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center gap-6 mb-12"
+        <div className="relative overflow-visible leading-[0.85] pb-4 group">
+          <motion.h1
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            className="font-serif text-[5.5rem] sm:text-[8rem] md:text-[10rem] lg:text-[13rem] leading-[0.85] text-transparent font-light tracking-tighter"
+            style={{
+              WebkitTextStroke: "1px rgba(220, 197, 123, 0.2)",
+              color: "rgba(244, 240, 236, 0.95)"
+            }}
           >
-            <span className="w-16 h-[1px] bg-ivory/30"></span>
-            <div className="flex items-center gap-3">
-              <div className="w-1.5 h-1.5 bg-ivory shadow-[0_0_15px_#fff] animate-pulse" />
-              <span className="font-mono text-[9px] uppercase tracking-[0.5em] text-ivory/90 font-semibold">
-                Origin_Node // Established
-              </span>
-            </div>
-            <span className="w-16 h-[1px] bg-ivory/30"></span>
+            <span className="glitch-text-hover inline-block cursor-auto select-none drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">KING</span><br />
+            <span className="glitch-text-hover inline-block cursor-auto select-none text-transparent bg-clip-text bg-gradient-to-b from-ivory to-ivory/20 drop-shadow-[0_0_60px_rgba(220,197,123,0.15)] relative">
+              SHADP.
+              <span className="absolute inset-0 bg-noise mix-blend-overlay opacity-50 pointer-events-none" />
+            </span>
+          </motion.h1>
+        </div>
+
+        <div className="mt-12 max-w-2xl">
+           <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1, ease: "easeOut" }}
+            className="font-serif text-2xl md:text-3xl text-ivory/90 leading-relaxed font-light drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+          >
+            <ScrambleText text="The Creator. The Myth. The System Archive." delay={1000} duration={800} />
           </motion.div>
-
-          {/* Typography Masked Reveal */}
-          <div className="overflow-hidden relative leading-[0.8] pb-4">
-             <motion.h1 
-                initial={{ y: "150%" }}
-                animate={{ y: "0%" }}
-                transition={{ duration: 2, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="font-serif text-[18vw] md:text-[15vw] font-light text-ivory tracking-tighter mix-blend-lighten drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]"
-             >
-               {title1}
-             </motion.h1>
-          </div>
-          <div className="overflow-hidden relative leading-[0.8]">
-             <motion.h1 
-                initial={{ y: "150%" }}
-                animate={{ y: "0%" }}
-                transition={{ duration: 2, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                className="font-serif text-[18vw] md:text-[15vw] font-light text-transparent bg-clip-text bg-gradient-to-b from-ivory via-ivory/80 to-ivory/20 tracking-tighter mix-blend-plus-lighter"
-             >
-               {title2}
-             </motion.h1>
-          </div>
+          
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1.5, ease: "easeOut" }}
+            className="mt-4 font-mono text-xs md:text-sm text-ivory/40 uppercase tracking-[0.2em] max-w-xl"
+          >
+            <ScrambleText text="I don't cater. I'm the creator that makes your universe greater." delay={1500} duration={1200} />
+          </motion.div>
         </div>
-
-        <motion.p
-          initial={{ opacity: 0, filter: "blur(10px)" }}
-          animate={{ opacity: 1, filter: "blur(0px)" }}
-          transition={{ duration: 3, delay: 1.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-16 max-w-2xl font-serif text-lg sm:text-xl md:text-2xl text-ivory/50 leading-relaxed font-light mx-auto tracking-wide"
-        >
-          <span className="text-ivory/80">The God. The Gold Standard.</span> <br /> 
-          Identity transformed into mythology.
-        </motion.p>
-      </motion.div>
-
-      {/* Down indicator */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 3, delay: 2.5 }}
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-4 group cursor-pointer"
-        onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
-      >
-        <span className="font-mono text-[8px] uppercase tracking-[0.4em] text-ivory/30 group-hover:text-ivory/80 transition-colors duration-500">Descend</span>
-        <div className="w-[1px] h-16 bg-ivory/10 overflow-hidden relative">
-          <motion.div 
-            animate={{ y: ["-100%", "200%"] }}
-            transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}
-            className="absolute inset-0 bg-gradient-to-b from-transparent via-ivory to-transparent"
-          />
-        </div>
-      </motion.div>
+        
+        <motion.div 
+          initial={{ width: 0 }}
+          animate={{ width: "100%" }}
+          transition={{ duration: 2, delay: 1.4, ease: [0.16, 1, 0.3, 1] }}
+          className="h-[1px] bg-gradient-to-r from-ivory/30 via-gold/40 to-transparent max-w-lg mt-16 shadow-[0_0_15px_rgba(220,197,123,0.6)]"
+        />
+      </div>
     </section>
   );
-}
+});

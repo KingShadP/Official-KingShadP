@@ -1,29 +1,28 @@
 "use client";
 
-import { motion } from "motion/react";
+import { memo } from "react";
+import { Activity } from "lucide-react";
 
-export function Footer() {
+export const Footer = memo(function Footer() {
   return (
-    <footer className="bg-void pt-32 pb-16 px-6 lg:px-12 relative overflow-hidden">
-      <div className="max-w-[100rem] mx-auto border-t border-ivory/10 pt-20 flex flex-col md:flex-row justify-between items-center gap-12 text-center md:text-left">
+    <footer className="w-full py-12 px-6 lg:px-24 border-t border-ivory/10 z-10 bg-void relative">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+        <div className="flex flex-col gap-2">
+          <span className="font-serif text-2xl italic font-light text-ivory/80">KingShadP<span className="text-oxblood">.</span></span>
+          <span className="font-mono text-[8px] uppercase tracking-[0.3em] text-ivory/30">
+            Sovereign Architecture // All Rights Reserved
+          </span>
+        </div>
         
-        <div>
-           <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-ivory/50 block mb-2">Platform</span>
-           <span className="font-serif text-3xl font-light italic text-ivory/80 block">Archive System</span>
+        <div className="flex items-center gap-6 font-mono text-[9px] uppercase tracking-[0.4em] text-ivory/40">
+          <div className="flex items-center gap-2">
+            <Activity className="w-3 h-3 text-gold" />
+            <span>Sys.Online</span>
+          </div>
+          <span className="w-[1px] h-3 bg-ivory/20" />
+          <span>v9.0.01</span>
         </div>
-
-        <div className="flex gap-12 font-mono text-[9px] uppercase tracking-[0.4em] text-ivory/40">
-           <a href="#vault" className="hover:text-ivory transition-colors">Vault</a>
-           <a href="#codex" className="hover:text-ivory transition-colors">Codex</a>
-           <a href="#oracle" className="hover:text-ivory transition-colors">Oracle</a>
-        </div>
-
-        <div className="font-mono text-[9px] uppercase tracking-[0.4em] text-ivory/30">
-          Intx {new Date().getFullYear()} &copy;
-        </div>
-
       </div>
     </footer>
   );
-}
-
+});

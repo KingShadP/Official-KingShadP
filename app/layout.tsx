@@ -1,61 +1,36 @@
-import type {Metadata, Viewport} from 'next';
-import { Cormorant_Garamond, Inter, JetBrains_Mono } from 'next/font/google';
-import './globals.css';
-import { CustomCursor } from '@/components/CustomCursor';
-import { AmbientAudio } from '@/components/AmbientAudio';
+import type { Metadata } from "next";
+import { Playfair_Display, JetBrains_Mono } from "next/font/google";
+import "./globals.css";
+import { BackgroundEffects } from "@/components/BackgroundEffects";
+import { CustomCursor } from "@/components/CustomCursor";
+import { CelestialEventToast } from "@/components/CelestialEventToast";
+import { ScrollProgress } from "@/components/ScrollProgress";
 
-const cormorant = Cormorant_Garamond({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-cormorant',
-});
+import { EngineProvider } from "@/components/EngineProvider";
 
-const sans = Inter({
-  subsets: ['latin'],
-  variable: '--font-sans',
-});
-
-const mono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-});
-
-export const viewport: Viewport = {
-  themeColor: '#B21F36',
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-};
-
-import { SmoothScroll } from '@/components/SmoothScroll';
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
+const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-  title: 'Official KingShadP',
-  description: 'The luxury cinematic vault and official digital residence of KingShadP.',
-  icons: {
-    icon: '/icon.png',
-    apple: '/icon.png',
-  },
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: 'default',
-    title: 'KingShadP',
-  },
-  formatDetection: {
-    telephone: false,
-  },
+  title: "KingShadP // Archive",
+  description: "The Sovereign System Archive of KingShadP",
 };
 
-export default function RootLayout({children}: {children: React.ReactNode}) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
-      <body className={`${cormorant.variable} ${sans.variable} ${mono.variable} antialiased bg-void text-platinum font-sans relative`} suppressHydrationWarning>
-        <SmoothScroll />
-        <CustomCursor />
-        <AmbientAudio />
-        <div className="atmosphere fixed inset-0 z-[-1]" />
-        {children}
+    <html lang="en" className={`${playfair.variable} ${jetbrains.variable} scroll-smooth`}>
+      <body className="font-sans antialiased bg-void text-ivory cursor-none">
+        <EngineProvider>
+          <ScrollProgress />
+          <BackgroundEffects />
+          <CustomCursor />
+          {children}
+          <CelestialEventToast />
+        </EngineProvider>
       </body>
     </html>
   );
