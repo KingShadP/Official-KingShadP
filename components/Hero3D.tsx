@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Environment, Float, useGLTF, Text, Center, useScroll, ScrollControls, Scroll } from "@react-three/drei";
+import { Environment, Float, useGLTF, Text, Center, useScroll, ScrollControls, Scroll, Stars } from "@react-three/drei";
 import { Suspense, useRef, useLayoutEffect, useState, useEffect } from "react";
 import * as THREE from "three";
 import { motion } from "framer-motion";
@@ -18,49 +18,118 @@ function CameraRig() {
     const r1 = scroll.range(0, 1);
     
     // Adjust camera position based on scroll
-    camera.position.z = THREE.MathUtils.lerp(camera.position.z, 5 - r1 * 3, 0.1);
-    camera.position.y = THREE.MathUtils.lerp(camera.position.y, r1 * 2, 0.1);
-    camera.lookAt(0, 0, 0);
+    camera.position.z = THREE.MathUtils.lerp(camera.position.z, 2 - r1 * 10, 0.1);
+    camera.position.y = THREE.MathUtils.lerp(camera.position.y, r1 * 0.5, 0.1);
+    camera.lookAt(0, 0, -20);
   });
 
   return null;
 }
 
 // 3D Object (Helmet / Abstract Geometry)
-function CentralArtifact() {
-  const meshRef = useRef<THREE.Group>(null);
+function MagmaShards() {
+  const meshRef = useRef<THREE.InstancedMesh>(null);
   const scroll = useScroll();
+  const count = 300;
+  
+  const dummy = new THREE.Object3D();
+  const initialPositions = useRef<THREE.Vector3[]>([]);
+  const targetPositions = useRef<THREE.Vector3[]>([]);
+  const rotations = useRef<THREE.Euler[]>([]);
+  
+  useLayoutEffect(() => {
+    initialPositions.current = [];
+    targetPositions.current = [];
+    rotations.current = [];
+    for (let i = 0; i < count; i++) {
+        const phi = Math.acos(-1 + (2 * i) / count);
+        const theta = Math.sqrt(count * Math.PI) * phi;
+        const radius = Math.random() * 1.5;
+        const x = radius * Math.cos(theta) * Math.sin(phi);
+        const y = radius * Math.sin(theta) * Math.sin(phi);
+        const z = radius * Math.cos(phi);
+        
+        initialPositions.current.push(new THREE.Vector3(x, y, z));
+        
+        const targetRadius = 15 + Math.random() * 20;
+        targetPositions.current.push(new THREE.Vector3(
+           (x / radius || 0) * targetRadius,
+           (y / radius || 0) * targetRadius,
+           (z / radius || 0) * targetRadius,
+        ));
+        
+        rotations.current.push(new THREE.Euler(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI));
+    }
+  }, []);
 
-  // Architecture for Draco compression (Helmet-21.glb example)
-  // To actually use this: ensure draco binaries are in public/draco/
-  /*
-  const { scene } = useGLTF('/helmet-21.glb', '/draco-gltf/'); 
-  */
-
-  useFrame((state, delta) => {
+  useFrame(() => {
     if (!meshRef.current || !scroll) return;
-    
-    // Rotate object based on scroll
     const r1 = scroll.range(0, 1);
-    meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, state.clock.elapsedTime * 0.2 + r1 * Math.PI * 2, 0.1);
-    meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, r1 * Math.PI, 0.1);
+    
+    // Burst starts around 0.1 scroll
+    let progress = Math.max(0, Math.min(1, (r1 - 0.1) / 0.4));
+    progress = 1 - Math.pow(1 - progress, 3);
+    
+    for (let i = 0; i < count; i++) {
+        const p0 = initialPositions.current[i];
+        const p1 = targetPositions.current[i];
+        
+        dummy.position.lerpVectors(p0, p1, progress);
+        
+        dummy.rotation.x = rotations.current[i].x + r1 * 20;
+        dummy.rotation.y = rotations.current[i].y + r1 * 20;
+        dummy.rotation.z = rotations.current[i].z + r1 * 20;
+        
+        dummy.updateMatrix();
+        meshRef.current.setMatrixAt(i, dummy.matrix);
+    }
+    meshRef.current.instanceMatrix.needsUpdate = true;
   });
 
   return (
-    <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
-      <group ref={meshRef}>
-        <mesh>
-          <icosahedronGeometry args={[1.5, 4]} />
-          <meshStandardMaterial 
-            color="#dcc57b"
-            metalness={0.9} 
-            roughness={0.1} 
-            envMapIntensity={1.5}
-            wireframe={false}
-          />
+    <instancedMesh ref={meshRef} args={[undefined, undefined, count]} position={[0,0,-4]}>
+      <tetrahedronGeometry args={[0.15, 0]} />
+      <meshStandardMaterial color="#FFD700" emissive="#FF4500" emissiveIntensity={0.8} metalness={0.5} roughness={0.1} />
+    </instancedMesh>
+  );
+}
+
+function WhiteLine() {
+   return (
+    <mesh position={[0, -1, -50]} rotation={[Math.PI / 2, 0, 0]}>
+       <cylinderGeometry args={[0.015, 0.015, 200, 8]} />
+       <meshBasicMaterial color="#ffffff" transparent opacity={0.8} />
+    </mesh>
+   )
+}
+
+function Spaceship() {
+  const groupRef = useRef<THREE.Group>(null);
+  const scroll = useScroll();
+  
+  useFrame(() => {
+      if (!groupRef.current || !scroll) return;
+      const r1 = scroll.range(0, 1);
+      groupRef.current.position.z = THREE.MathUtils.lerp(10, -80, r1 * 1.5);
+      groupRef.current.rotation.z = Math.sin(r1 * Math.PI * 8) * 0.2;
+      groupRef.current.position.x = Math.sin(r1 * Math.PI * 3) * 1.5;
+  });
+  
+  return (
+    <group ref={groupRef} position={[2, 0, 10]} rotation={[0, Math.PI, 0]}>
+        <mesh position={[0, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+            <coneGeometry args={[0.4, 2, 4]} />
+            <meshStandardMaterial color="#ffffff" metalness={0.9} roughness={0.1} />
         </mesh>
-      </group>
-    </Float>
+        <mesh position={[0, 0, 0.6]}>
+            <boxGeometry args={[1.6, 0.1, 0.8]} />
+            <meshStandardMaterial color="#333333" metalness={1} roughness={0.2} />
+        </mesh>
+        <mesh position={[0, 0, 1]}>
+            <sphereGeometry args={[0.2, 16, 16]} />
+            <meshBasicMaterial color="#00ffff" />
+        </mesh>
+    </group>
   );
 }
 
@@ -89,13 +158,16 @@ export function Hero3D() {
         dpr={[1, 2]}
       >
         <Suspense fallback={null}>
-          <ScrollControls pages={3} damping={0.1}>
+          <ScrollControls pages={5} damping={0.1}>
             <DynamicEnvironment />
             <ambientLight intensity={0.2} />
             <directionalLight position={[10, 10, 5]} intensity={1} color="#f4f1eb" />
             <directionalLight position={[-10, -10, -5]} intensity={0.5} color="#93000a" />
             
-            <CentralArtifact />
+            <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+            <MagmaShards />
+            <WhiteLine />
+            <Spaceship />
             <CameraRig />
             
             <Scroll>
@@ -118,10 +190,22 @@ export function Hero3D() {
             </Scroll>
 
             <Scroll html>
-              <div className="w-screen flex justify-center pt-[50vh] pb-[100vh]">
-                <h1 className="text-ivory font-serif text-5xl md:text-8xl opacity-20 pointer-events-none text-center mix-blend-difference">
+              <div className="w-screen flex flex-col pt-[50vh]">
+                <h1 className="text-ivory font-serif text-5xl md:text-8xl opacity-20 pointer-events-none text-center mix-blend-difference pb-[100vh]">
                   SCROLL TO INITIALIZE
                 </h1>
+                
+                <h2 className="text-ivory font-serif text-4xl md:text-6xl text-center pb-[100vh]">
+                  FRAGMENTATION
+                </h2>
+
+                <h2 className="text-ivory font-serif text-4xl md:text-6xl text-center pb-[100vh]">
+                  THE WHITE LINE
+                </h2>
+
+                <h2 className="text-ivory font-serif text-4xl md:text-6xl text-center pb-[100vh]">
+                  DIGITAL GALAXY
+                </h2>
               </div>
             </Scroll>
           </ScrollControls>

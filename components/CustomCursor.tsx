@@ -45,7 +45,7 @@ export const CustomCursor = memo(function CustomCursor() {
         <>
           {/* Trailing Neon Ring */}
           <motion.div
-            className="fixed top-0 left-0 z-[9998] pointer-events-none rounded-full border border-solid"
+            className="fixed top-0 left-0 z-[9998] pointer-events-none rounded-full border border-solid mix-blend-difference"
             style={{ 
                x: springX, 
                y: springY, 
@@ -53,9 +53,7 @@ export const CustomCursor = memo(function CustomCursor() {
                translateY: "-50%",
                width: ringSize,
                height: ringSize,
-               borderColor: isHovering ? '#5E0008' : 'rgba(220,197,123,0.4)',
-               boxShadow: isHovering ? '0 0 25px rgba(94, 0, 8, 0.8), inset 0 0 15px rgba(94, 0, 8, 0.4)' : '0 0 10px rgba(220,197,123,0.1)',
-               backgroundColor: isHovering ? 'rgba(94, 0, 8, 0.15)' : 'transparent',
+               borderColor: 'rgba(255,255,255,1)',
             }}
             animate={isHovering ? { scale: [1, 1.05, 1] } : { scale: 1 }}
             transition={{ 
@@ -68,7 +66,7 @@ export const CustomCursor = memo(function CustomCursor() {
           
           {/* Central Matte Dot */}
           <motion.div
-            className="fixed top-0 left-0 z-[9999] pointer-events-none rounded-full"
+            className="fixed top-0 left-0 z-[9999] pointer-events-none rounded-full bg-white mix-blend-difference"
             style={{ 
                x: cursorX, 
                y: cursorY, 
@@ -76,8 +74,6 @@ export const CustomCursor = memo(function CustomCursor() {
                translateY: "-50%",
                width: dotSize,
                height: dotSize,
-               backgroundColor: isHovering ? '#5E0008' : '#0a0a0a',
-               boxShadow: isHovering ? '0 0 12px #93000a' : 'none'
             }}
           />
         </>
