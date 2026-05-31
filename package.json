@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && rm -rf dist && mv out dist",
+    "build": "rm -rf .next && next build",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
