@@ -1,0 +1,8 @@
+{
+  "name": "KingShadP System Orbit",
+  "description": "An immersive digital universe mythology spanning music, visuals, and aerospace-style telemetry archives.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

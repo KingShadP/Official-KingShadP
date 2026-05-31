@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "rm -rf .next && next build",
+    "build": "node build-theme.js && next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -28,6 +28,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.5.0",
+    "bestzip": "^3.0.1",
     "eslint": "^8",
     "eslint-config-next": "15.0.0",
     "postcss": "^8.4.47",
