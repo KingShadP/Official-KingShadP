@@ -2,6 +2,7 @@
 
 import { memo } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { ScrollParticleBurst } from "@/components/ScrollParticleBurst";
 
 export const TheVerse = memo(function TheVerse() {
   const shouldReduceMotion = useReducedMotion();
@@ -103,6 +104,7 @@ export const TheVerse = memo(function TheVerse() {
         </motion.div>
 
         {/* Visual Vault */}
+        <ScrollParticleBurst />
         <motion.div
           initial={{ opacity: 0, y: yOffset(20) }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -241,6 +243,7 @@ export const TheVerse = memo(function TheVerse() {
           </motion.div>
 
           {/* The Ruler Code */}
+          <ScrollParticleBurst />
           <motion.div
             initial={{ opacity: 0, y: yOffset(20) }}
             whileInView={{ opacity: 1, y: 0 }}
