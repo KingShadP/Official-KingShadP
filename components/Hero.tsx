@@ -6,20 +6,7 @@ import { ScrambleText } from "./ScrambleText";
 
 export const Hero = memo(function Hero() {
   return (
-    <section className="relative w-full min-h-screen flex flex-col justify-center px-6 lg:px-24 overflow-hidden z-10 selection:bg-ivory selection:text-void">
-      <div className="absolute inset-0 z-0 opacity-40 mix-blend-multiply pointer-events-none">
-        <video 
-          autoPlay 
-          muted 
-          loop 
-          playsInline 
-          className="w-full h-full object-cover filter contrast-[1.1] saturate-50 brightness-[0.85]"
-        >
-          <source src="/Model_wearing_KingShadP_hoodie_202605270727.mp4.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-void/20 via-void/50 to-void pointer-events-none" />
-      </div>
-
+    <section className="relative w-full min-h-screen flex flex-col justify-center px-6 lg:px-24 overflow-hidden z-10 selection:bg-ivory selection:text-void pointer-events-none">
       <div className="absolute right-[-10vw] top-[10vh] text-[15vw] font-mono text-ivory/[0.02] mix-blend-overlay rotate-90 pointer-events-none uppercase whitespace-nowrap overflow-hidden">
         <ScrambleText text="[ PROTOCOL V9 ]" duration={20000} delay={500} />
       </div>

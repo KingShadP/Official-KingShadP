@@ -1,16 +1,19 @@
 "use client";
 
 import { memo } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 export const TheVerse = memo(function TheVerse() {
+  const shouldReduceMotion = useReducedMotion();
+  const yOffset = (val: number) => shouldReduceMotion ? 0 : val;
+
   return (
-    <section id="the-verse" className="relative w-full py-32 px-6 lg:px-24 z-10 border-t border-ivory/10 bg-void overflow-hidden">
+    <section id="the-verse" className="relative w-full py-32 px-6 lg:px-24 z-10 border-t border-ivory/10 bg-transparent overflow-hidden">
       <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col gap-32">
         
         {/* Primary Artifacts */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: yOffset(20) }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
@@ -40,7 +43,7 @@ export const TheVerse = memo(function TheVerse() {
 
         {/* Decrypted Directory / The Sonic Vault */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: yOffset(20) }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
@@ -61,7 +64,7 @@ export const TheVerse = memo(function TheVerse() {
 
         {/* Cinema Vault */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: yOffset(20) }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
@@ -101,7 +104,7 @@ export const TheVerse = memo(function TheVerse() {
 
         {/* Visual Vault */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: yOffset(20) }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
@@ -111,34 +114,73 @@ export const TheVerse = memo(function TheVerse() {
           <h2 className="font-serif text-5xl lg:text-7xl text-ivory font-light mb-12">
             Visual Vault
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="flex flex-col gap-4 relative group">
-              <div className="aspect-[3/4] border border-ivory/10 relative overflow-hidden bg-ivory/5">
-                <img src="/ChatGPT Image May 28, 2026, 02_10_07 AM (5).png" alt="Artifact" className="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-500" />
-              </div>
-              <h4 className="font-serif text-xl text-ivory">The Crowned Standard</h4>
-              <p className="font-mono text-[10px] text-ivory/50 tracking-[0.2em] uppercase">Legacy / Artifact 01</p>
-            </div>
-            <div className="flex flex-col gap-4 relative group lg:mt-12">
-              <div className="aspect-[3/4] border border-ivory/10 relative overflow-hidden bg-ivory/5">
-                <img src="/ChatGPT Image May 28, 2026, 02_10_07 AM (6)-1.png" alt="Artifact" className="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-500" />
-              </div>
-              <h4 className="font-serif text-xl text-ivory">Crafted Silence</h4>
-              <p className="font-mono text-[10px] text-ivory/50 tracking-[0.2em] uppercase">Vision / Artifact 02</p>
-            </div>
-            <div className="flex flex-col gap-4 relative group">
-              <div className="aspect-[3/4] border border-ivory/10 relative overflow-hidden bg-ivory/5">
-                <img src="/ChatGPT Image May 28, 2026, 02_10_36 AM (1)-1.png" alt="Artifact" className="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-500" />
-              </div>
-              <h4 className="font-serif text-xl text-ivory">Private Command</h4>
-              <p className="font-mono text-[10px] text-ivory/50 tracking-[0.2em] uppercase">Motion / Artifact 03</p>
-            </div>
-            <div className="flex flex-col gap-4 relative group lg:mt-12">
-              <div className="aspect-[3/4] border border-ivory/10 relative overflow-hidden bg-ivory/5">
-                <img src="/ChatGPT Image May 28, 2026, 02_11_23 AM (1).png" alt="Artifact" className="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-500" />
-              </div>
-              <h4 className="font-serif text-xl text-ivory">Archive Presence</h4>
-              <p className="font-mono text-[10px] text-ivory/50 tracking-[0.2em] uppercase">Myth / Artifact 04</p>
+          <div className="relative w-full pb-24">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 relative items-start">
+              {/* Broken Grid Items */}
+              <motion.div 
+                className="md:col-span-5 md:col-start-1 relative z-10"
+                initial={{ opacity: 0, y: yOffset(40) }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-10%" }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+              >
+                <div className="aspect-[3/4] border border-ivory/10 relative overflow-hidden bg-ivory/5 group">
+                  <img src="/ChatGPT Image May 28, 2026, 02_10_07 AM (5).png" alt="Artifact" className="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent opacity-60" />
+                </div>
+                <div className="mt-6 md:-mt-12 md:pl-8 relative z-20 mix-blend-difference">
+                  <h4 className="font-serif text-3xl md:text-5xl text-ivory italic">The Crowned Standard</h4>
+                  <p className="font-mono text-[10px] text-ivory/60 tracking-[0.2em] uppercase mt-2">Legacy / Artifact 01</p>
+                </div>
+              </motion.div>
+
+              <motion.div 
+                className="md:col-span-5 md:col-start-8 mt-16 md:mt-48 relative z-0"
+                initial={{ opacity: 0, y: yOffset(80) }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-10%" }}
+                transition={{ duration: 1, ease: "easeOut" }}
+              >
+                <div className="aspect-[4/3] border border-ivory/10 relative overflow-hidden bg-ivory/5 group">
+                  <img src="/ChatGPT Image May 28, 2026, 02_10_07 AM (6)-1.png" alt="Artifact" className="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-700" />
+                </div>
+                <div className="mt-6">
+                  <h4 className="font-serif text-2xl text-ivory">Crafted Silence</h4>
+                  <p className="font-mono text-[10px] text-ivory/50 tracking-[0.2em] uppercase mt-1">Vision / Artifact 02</p>
+                </div>
+              </motion.div>
+
+              <motion.div 
+                className="md:col-span-6 md:col-start-4 mt-16 md:-mt-24 relative z-20"
+                initial={{ opacity: 0, y: yOffset(60) }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-10%" }}
+                transition={{ duration: 0.9, ease: "easeOut" }}
+              >
+                <div className="aspect-[16/9] border border-ivory/10 relative overflow-hidden bg-ivory/5 group">
+                  <img src="/ChatGPT Image May 28, 2026, 02_10_36 AM (1)-1.png" alt="Artifact" className="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-700" />
+                </div>
+                <div className="mt-6 bg-void/80 backdrop-blur-sm p-6 border border-ivory/5 -ml-4 md:-ml-8 mr-4 md:mr-0 inline-block shadow-2xl">
+                  <h4 className="font-serif text-2xl text-ivory font-light italic">Private Command</h4>
+                  <p className="font-mono text-[10px] text-ivory/50 tracking-[0.2em] uppercase mt-1">Motion / Artifact 03</p>
+                </div>
+              </motion.div>
+              
+              <motion.div 
+                className="md:col-span-4 md:col-start-9 mt-16 md:mt-32 relative z-10"
+                initial={{ opacity: 0, y: yOffset(100) }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-10%" }}
+                transition={{ duration: 1.2, ease: "easeOut" }}
+              >
+                <div className="aspect-square border border-ivory/10 relative overflow-hidden bg-ivory/5 group">
+                  <img src="/ChatGPT Image May 28, 2026, 02_11_23 AM (1).png" alt="Artifact" className="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-700" />
+                </div>
+                <div className="mt-6 text-right md:pr-8 md:-mt-12 relative z-20 mix-blend-difference">
+                  <h4 className="font-serif text-2xl text-ivory">Archive Presence</h4>
+                  <p className="font-mono text-[10px] text-ivory/50 tracking-[0.2em] uppercase mt-1">Myth / Artifact 04</p>
+                </div>
+              </motion.div>
             </div>
           </div>
         </motion.div>
@@ -146,7 +188,7 @@ export const TheVerse = memo(function TheVerse() {
         {/* The Official Intelligence */}
         <div className="border-t border-ivory/10 pt-16 mt-8 max-w-4xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: yOffset(20) }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1 }}
@@ -172,7 +214,7 @@ export const TheVerse = memo(function TheVerse() {
 
           {/* The Creator and The Create */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: yOffset(20) }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1 }}
@@ -200,7 +242,7 @@ export const TheVerse = memo(function TheVerse() {
 
           {/* The Ruler Code */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: yOffset(20) }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1 }}
@@ -228,7 +270,7 @@ export const TheVerse = memo(function TheVerse() {
 
           {/* The Luxury of Silence */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: yOffset(20) }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1 }}
@@ -256,7 +298,7 @@ export const TheVerse = memo(function TheVerse() {
           
           {/* Protocols */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: yOffset(20) }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1 }}

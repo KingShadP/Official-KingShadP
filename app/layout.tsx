@@ -7,6 +7,8 @@ import { CelestialEventToast } from "@/components/CelestialEventToast";
 import { ScrollProgress } from "@/components/ScrollProgress";
 
 import { EngineProvider } from "@/components/EngineProvider";
+import { SmoothScroller } from "@/components/SmoothScroller";
+import { FloatingActionButton } from "@/components/FloatingActionButton";
 
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
@@ -25,10 +27,12 @@ export default function RootLayout({
     <html lang="en" className={`${playfair.variable} ${jetbrains.variable} scroll-smooth`}>
       <body className="font-sans antialiased bg-void text-ivory cursor-none">
         <EngineProvider>
+          <SmoothScroller />
           <ScrollProgress />
           <BackgroundEffects />
           <CustomCursor />
           {children}
+          <FloatingActionButton />
           <CelestialEventToast />
         </EngineProvider>
       </body>
