@@ -13,8 +13,8 @@ const config: Config = {
         mono: ["var(--font-mono)"],
       },
       colors: {
-        void: "#030303",
-        ivory: "#f4f1eb",
+        void: "#fdfbf7",
+        ivory: "#0a0a0a",
         oxblood: "#93000a",
         gold: "#dcc57b",
       },

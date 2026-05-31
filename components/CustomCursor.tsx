@@ -76,7 +76,7 @@ export const CustomCursor = memo(function CustomCursor() {
                translateY: "-50%",
                width: dotSize,
                height: dotSize,
-               backgroundColor: isHovering ? '#5E0008' : '#f4f1eb',
+               backgroundColor: isHovering ? '#5E0008' : '#0a0a0a',
                boxShadow: isHovering ? '0 0 12px #93000a' : 'none'
             }}
           />

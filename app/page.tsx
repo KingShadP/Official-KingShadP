@@ -2,8 +2,7 @@
 
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
-import { LoreArchive } from "@/components/LoreArchive";
-import { CommerceCore } from "@/components/CommerceCore";
+import { TheVerse } from "@/components/TheVerse";
 import { Footer } from "@/components/Footer";
 
 export default function Home() {
@@ -11,8 +10,7 @@ export default function Home() {
     <main className="relative min-h-screen z-10 selection:bg-ivory selection:text-void flex flex-col items-center w-full">
       <Nav />
       <Hero />
-      <LoreArchive />
-      <CommerceCore />
+      <TheVerse />
       <Footer />
     </main>
   );

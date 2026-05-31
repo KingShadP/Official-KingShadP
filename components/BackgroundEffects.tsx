@@ -16,9 +16,9 @@ export const BackgroundEffects = memo(function BackgroundEffects() {
       <div className="fixed inset-0 z-[-2] bg-void" />
 
       {/* Massive Geometries */}
-      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180vw] h-[180vw] max-w-[2800px] max-h-[2800px] border border-ivory/5 rounded-full pointer-events-none opacity-20 mix-blend-screen animate-[spin_240s_linear_infinite]" />
-      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] h-[150vw] max-w-[2200px] max-h-[2200px] border border-oxblood/10 rounded-full border-dashed pointer-events-none opacity-20 mix-blend-screen animate-[spin_180s_linear_infinite_reverse]" />
-      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] max-w-[1200px] max-h-[1200px] border-4 border-t-gold/5 border-r-transparent border-b-oxblood/10 border-l-transparent rounded-full pointer-events-none opacity-30 mix-blend-screen animate-[spin_60s_linear_infinite]" />
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180vw] h-[180vw] max-w-[2800px] max-h-[2800px] border border-ivory/5 rounded-full pointer-events-none opacity-20 mix-blend-multiply animate-[spin_240s_linear_infinite]" />
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] h-[150vw] max-w-[2200px] max-h-[2200px] border border-oxblood/10 rounded-full border-dashed pointer-events-none opacity-20 mix-blend-multiply animate-[spin_180s_linear_infinite_reverse]" />
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] max-w-[1200px] max-h-[1200px] border-4 border-t-gold/5 border-r-transparent border-b-oxblood/10 border-l-transparent rounded-full pointer-events-none opacity-30 mix-blend-multiply animate-[spin_60s_linear_infinite]" />
 
       <div 
         ref={gridRef}

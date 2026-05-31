@@ -85,6 +85,49 @@ export const ArtifactCard = memo(function ArtifactCard({ data, index }: { data: 
     hoverActive.set(1);
   };
 
+  const handleMouseEnter = () => {
+    try {
+      const AudioContextCtor = window.AudioContext || (window as any).webkitAudioContext;
+      if (AudioContextCtor) {
+        const audioCtx = new AudioContextCtor();
+        
+        const bufferSize = audioCtx.sampleRate * 0.1; // 100ms static
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const channelData = buffer.getChannelData(0);
+        
+        for (let i = 0; i < bufferSize; i++) {
+          channelData[i] = Math.random() * 2 - 1;
+        }
+
+        const noiseNode = audioCtx.createBufferSource();
+        noiseNode.buffer = buffer;
+
+        // Bandpass filter to make it sound like data hiss / static
+        const bandpass = audioCtx.createBiquadFilter();
+        bandpass.type = "bandpass";
+        bandpass.frequency.value = 4000;
+        bandpass.Q.value = 1.5;
+
+        // Gain node for faint, brief sound
+        const gainNode = audioCtx.createGain();
+        gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.03, audioCtx.currentTime + 0.02);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+
+        noiseNode.connect(bandpass);
+        bandpass.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        noiseNode.start();
+        noiseNode.stop(audioCtx.currentTime + 0.1);
+        
+        setTimeout(() => audioCtx.close(), 150);
+      }
+    } catch (e) {
+      console.warn("Web Audio API short static setup failed", e);
+    }
+  };
+
   const handleMouseLeave = () => {
     x.set(0.5);
     y.set(0.5);
@@ -95,6 +138,7 @@ export const ArtifactCard = memo(function ArtifactCard({ data, index }: { data: 
     <>
       <motion.div
         ref={cardRef}
+        onMouseEnter={handleMouseEnter}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         onClick={() => setIsOpen(true)}
@@ -194,6 +238,58 @@ export const ArtifactCard = memo(function ArtifactCard({ data, index }: { data: 
 export function Modal({ data, onClose, baseColorRGB }: { data: CardData, onClose: () => void, baseColorRGB: string }) {
   const [copied, setCopied] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    let audioCtx: AudioContext | null = null;
+    let oscillator1: OscillatorNode | null = null;
+    let oscillator2: OscillatorNode | null = null;
+    let gainNode: GainNode | null = null;
+
+    try {
+      const AudioContextCtor = window.AudioContext || (window as any).webkitAudioContext;
+      if (AudioContextCtor) {
+        audioCtx = new AudioContextCtor();
+        gainNode = audioCtx.createGain();
+
+        // Subtle ambient drone config
+        oscillator1 = audioCtx.createOscillator();
+        oscillator1.type = "sine";
+        oscillator1.frequency.setValueAtTime(55, audioCtx.currentTime); // A1
+
+        oscillator2 = audioCtx.createOscillator();
+        oscillator2.type = "sine";
+        oscillator2.frequency.setValueAtTime(55.5, audioCtx.currentTime); // Slight detune for pulsing
+
+        gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 3); // 3 second slow fade in
+
+        oscillator1.connect(gainNode);
+        oscillator2.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        oscillator1.start();
+        oscillator2.start();
+      }
+    } catch (error) {
+      console.warn("Web Audio API setup failed", error);
+    }
+
+    return () => {
+      try {
+        if (gainNode && audioCtx) {
+          gainNode.gain.setValueAtTime(gainNode.gain.value, audioCtx.currentTime);
+          gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.1);
+        }
+        setTimeout(() => {
+          try {
+            oscillator1?.stop();
+            oscillator2?.stop();
+            audioCtx?.close();
+          } catch(e) {}
+        }, 150);
+      } catch (e) {}
+    };
+  }, []);
 
   const handleShare = (e: React.MouseEvent) => {
     e.stopPropagation();
