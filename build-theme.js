@@ -5,6 +5,7 @@ const path = require('path');
 const themeDir = path.join(__dirname, 'shopify-theme');
 const subDirs = ['layout', 'templates', 'sections', 'snippets', 'config', 'locales', 'assets'];
 
+
 console.log('// Initializing Shopify Theme Directory Structure...');
 subDirs.forEach(dir => {
   const p = path.join(themeDir, dir);
