@@ -1,0 +1,114 @@
+{% schema %}
+{
+  "name": "Editorial Mythos Prose",
+  "tag": "section",
+  "class": "section-editorial-prose",
+  "settings": [
+    {
+      "type": "text",
+      "id": "branding_title",
+      "label": "Identity Brand Name",
+      "default": "TheOfficialIntelligence"
+    },
+    {
+      "type": "header",
+      "content": "Story block 1: The Splits"
+    },
+    {
+      "type": "text",
+      "id": "block1_heading",
+      "label": "Block 1 Heading",
+      "default": "The Creator and The Create"
+    },
+    {
+      "type": "richtext",
+      "id": "block1_content",
+      "label": "Block 1 Copy",
+      "default": "<p>At the center of KingShadP lives a split: The Creator // The Create. This is not just a clever phrase. It is the psychological engine of the entire world.</p><p>The Creator is the architect. He is the part of the self that chooses the name, designs the symbols, imagines the room, selects the palette, shapes the sound, and decides how the world should feel.</p><p>The Create is the result. He is what happens after the dream takes form. He is the human who must live inside the persona, experiencing the weight of being seen.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Story block 2: The Rules"
+    },
+    {
+      "type": "text",
+      "id": "block2_heading",
+      "label": "Block 2 Heading",
+      "default": "The Ruler Code"
+    },
+    {
+      "type": "richtext",
+      "id": "block2_content",
+      "label": "Block 2 Copy",
+      "default": "<p>The Ruler code begins with hierarchy. Everything in the world of KingShadP needs rank. The crest carries recognition and house authority. The wordmark carries official naming.</p><p>A true Ruler does not beg. Begging energy weakens the brand faster than imperfection does. The Ruler code says: do the work, define the standard, and let recognition grow from consistency.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Story block 3: The Restraints"
+    },
+    {
+      "type": "text",
+      "id": "block3_heading",
+      "label": "Block 3 Heading",
+      "default": "The Luxury of Silence"
+    },
+    {
+      "type": "richtext",
+      "id": "block3_content",
+      "label": "Block 3 Copy",
+      "default": "<p>Taste is the ability to know what not to add. The risk is not emptiness. The risk is excess without hierarchy.</p><p>The luxury of silence is that it lets the audience lean in. When everything is obvious, the audience consumes and leaves. When something is withheld, they interpret. They search. They remember.</p>"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="relative w-full py-20 px-6 lg:px-24 z-10 border-t border-ivory/10 bg-transparent overflow-hidden">
+  <div class="max-w-4xl mx-auto w-full relative z-10">
+    <h2 class="font-serif text-5xl lg:text-7xl text-ivory font-light mb-8 scramble-text">
+      {{ section.settings.branding_title }}<span class="text-gold">.</span>
+    </h2>
+
+    <div class="font-serif text-lg md:text-xl text-ivory/80 leading-relaxed font-light space-y-6">
+      <p>
+        The Verse begins as a name, but the name is only the surface. Beneath it is a system of identity, taste, self-invention, contradiction, confidence, pain, performance, discipline, symbolism, and transformation.
+      </p>
+      <p>
+        The world of KingShadP is luxurious, but luxury alone is too common. Luxury without meaning becomes costume. Power without restraint becomes noise. Confidence without emotional intelligence becomes arrogance. Mythology without truth becomes fantasy that collapses under its own decoration.
+      </p>
+    </div>
+
+    <!-- Section Block 1 -->
+    <div class="mt-24">
+      <h3 class="font-serif text-3xl lg:text-4xl text-ivory font-light mb-6 flex items-center gap-4">
+        <span class="w-8 h-[1px] bg-gold"></span>
+        {{ section.settings.block1_heading }}
+      </h3>
+      <div class="font-serif text-base md:text-lg text-ivory/70 leading-relaxed font-light space-y-6">
+        {{ section.settings.block1_content }}
+      </div>
+    </div>
+
+    <!-- Section Block 2 -->
+    <div class="mt-24">
+      <h3 class="font-serif text-3xl lg:text-4xl text-ivory font-light mb-6 flex items-center gap-4">
+        <span class="w-8 h-[1px] bg-oxblood"></span>
+        {{ section.settings.block2_heading }}
+      </h3>
+      <div class="font-serif text-base md:text-lg text-ivory/70 leading-relaxed font-light space-y-6">
+        {{ section.settings.block2_content }}
+      </div>
+    </div>
+
+    <!-- Section Block 3 -->
+    <div class="mt-24">
+      <h3 class="font-serif text-3xl lg:text-4xl text-ivory font-light mb-6 flex items-center gap-4">
+        <span class="w-8 h-[1px] bg-ivory/50"></span>
+        {{ section.settings.block3_heading }}
+      </h3>
+      <div class="font-serif text-base md:text-lg text-ivory/70 leading-relaxed font-light space-y-6">
+        {{ section.settings.block3_content }}
+      </div>
+    </div>
+
+  </div>
+</section>

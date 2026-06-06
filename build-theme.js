@@ -93,6 +93,15 @@ const themeLiquidContent = `<!doctype html>
     <!-- Custom Micro-Interactive Trailing Cursor -->
     {% render 'custom-cursor' %}
 
+    <!-- Atmosphere & Background Overlays -->
+    {% render 'background-effects' %}
+
+    <!-- Accessible Navigation Drawer Dialog overlay -->
+    {% render 'menu-overlay' %}
+
+    <!-- Interactive Floating Bookmark CTA -->
+    {% render 'floating-action-button' %}
+
     <!-- Global Layout Container -->
     <div class="relative z-10 w-full flex flex-col min-h-screen">
       {% sections 'header-group' %}
@@ -104,8 +113,12 @@ const themeLiquidContent = `<!doctype html>
       {% sections 'footer-group' %}
     </div>
 
-    <!-- JS Core Framework -->
+    <!-- JS Core Framework & Motion Libraries -->
     {{ 'starfield.js' | asset_url | script_tag }}
+    {{ 'smooth-scroller.js' | asset_url | script_tag }}
+    {{ 'scramble-text.js' | asset_url | script_tag }}
+    {{ 'scroll-progress.js' | asset_url | script_tag }}
+    {{ 'scroll-particle-burst.js' | asset_url | script_tag }}
     {{ 'divine-archive.js' | asset_url | script_tag }}
   </body>
 </html>
@@ -576,6 +589,81 @@ dialog[open] {
     display: none !important;
   }
 }
+
+/* KINGSHADP CUSTOM LUXURY CSS UPGRADE */
+/* Crimson Luxury System & Palette */
+.bg-void { background-color: #030303 !important; }
+.text-ivory { color: #f4f1eb !important; }
+.text-gold { color: #dcc57b !important; }
+.text-oxblood { color: #93000a !important; }
+
+/* Custom Ruby Glass Panels */
+.ruby-glass {
+  background: rgba(147, 0, 10, 0.03) !important;
+  backdrop-filter: blur(12px) saturate(120%) !important;
+  border: 1px solid rgba(147, 0, 10, 0.15) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5) !important;
+}
+.ruby-glass-hover:hover {
+  background: rgba(147, 0, 10, 0.07) !important;
+  border-color: rgba(220, 197, 123, 0.4) !important;
+  box-shadow: 0 8px 32px 0 rgba(147, 0, 10, 0.15) !important;
+}
+
+/* Rose-Gold and Platinum Trim accents */
+.rose-gold-glow {
+  text-shadow: 0 0 10px rgba(220, 197, 123, 0.3) !important;
+}
+.border-platinum {
+  border-color: rgba(244, 241, 235, 0.12) !important;
+}
+.border-gold-accent {
+  border-color: rgba(220, 197, 123, 0.3) !important;
+}
+
+/* Audio Player and Lyrics classes */
+.music-console-player {
+  background: rgba(3, 3, 3, 0.85);
+  border: 1px solid rgba(220, 197, 123, 0.15);
+}
+.lyrics-panel-hidden {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.lyrics-panel-visible {
+  max-height: 1000px;
+  opacity: 1;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Modern Layouts and Grids */
+.editorial-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 2rem;
+}
+.editorial-col-4 { grid-column: span 4 / span 4; }
+.editorial-col-8 { grid-column: span 8 / span 8; }
+.editorial-col-12 { grid-column: span 12 / span 12; }
+
+/* Custom Lightbox Styles */
+#gallery-lightbox {
+  background: rgba(0, 0, 0, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+}
+
+/* Scroll reveal helper classes */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
 `;
 
 fs.writeFileSync(path.join(themeDir, 'assets', 'divine-archive.css'), divinecssContent);
@@ -796,32 +884,269 @@ const divinejsContent = `(function() {
     menuDialog.addEventListener('cancel', closeHandler);
   }
 
-  // 5. Liquid Web Audio Player Sandbox
-  const playBtn = document.getElementById('sonic-audio-play');
+  // 5. Liquid Multi-Track Sovereign Audio System
+  const coreAudio = document.getElementById('core-audio-element');
+  const trackTriggers = document.querySelectorAll('.active-track-trigger');
   const waveBars = document.querySelectorAll('.audio-bar');
-  if (playBtn) {
-    let dummyPlaying = false;
-    // Set up standard sound frequency oscillations fallback since raw security inside modern browsers block automatic mic/analyzers without explicit CORS
-    playBtn.addEventListener('click', () => {
-      dummyPlaying = !dummyPlaying;
-      if (dummyPlaying) {
-        playBtn.innerText = '[ PAUSE_PROTOCOL ]';
-        waveBars.forEach(bar => {
-          bar.style.animationPlayState = 'running';
-        });
+  const lyricsWidget = document.getElementById('lyrics-parent-widget');
+  const lyricsPanel = document.getElementById('telemetry-panel-lyrics');
+  const behindPanel = document.getElementById('telemetry-panel-behind');
+  const closePanelBtn = document.getElementById('close-telemetry-panel');
+  const tabLyrics = document.getElementById('tab-lyrics-trigger');
+  const tabBehind = document.getElementById('tab-behind-trigger');
+
+  let isCurrentlyPlaying = false;
+
+  function updateVisualizer(state) {
+    waveBars.forEach(bar => {
+      if (state) {
+        bar.classList.add('running');
+        bar.style.animationPlayState = 'running';
       } else {
-        playBtn.innerText = '[ LISTEN_PROTOCOL ]';
-        waveBars.forEach(bar => {
-          bar.style.animationPlayState = 'paused';
-          bar.style.height = '3px';
-        });
+        bar.classList.remove('running');
+        bar.style.animationPlayState = 'paused';
+        bar.style.height = '3.5px';
       }
     });
+  }
 
-    // Pause bars by default
-    waveBars.forEach(bar => {
-      bar.style.animationPlayState = 'paused';
+  if (trackTriggers && trackTriggers.length > 0) {
+    trackTriggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const targetSrc = trigger.getAttribute('data-audio-src');
+        const lyricTxt = trigger.getAttribute('data-lyrics-content');
+        const behindTxt = trigger.getAttribute('data-behind-content');
+
+        // Toggle selections style outlines
+        trackTriggers.forEach(t => {
+          t.classList.remove('bg-white/5', 'text-gold');
+          t.querySelector('button').innerText = '▶';
+        });
+
+        trigger.classList.add('bg-white/5', 'text-gold');
+        trigger.querySelector('button').innerText = '⏸';
+
+        // Load content to logs panel
+        if (lyricsWidget) {
+          lyricsWidget.classList.remove('hidden');
+          if (lyricsPanel) lyricsPanel.innerHTML = lyricTxt;
+          if (behindPanel) behindPanel.innerHTML = behindTxt;
+        }
+
+        if (coreAudio && targetSrc) {
+          if (coreAudio.getAttribute('src') !== targetSrc) {
+            coreAudio.setAttribute('src', targetSrc);
+            coreAudio.load();
+            isCurrentlyPlaying = false;
+          }
+
+          if (isCurrentlyPlaying) {
+            coreAudio.pause();
+            isCurrentlyPlaying = false;
+            updateVisualizer(false);
+            trigger.querySelector('button').innerText = '▶';
+          } else {
+            coreAudio.play().then(() => {
+              isCurrentlyPlaying = true;
+              updateVisualizer(true);
+            }).catch(() => {
+              // Browser block safety fallback
+              isCurrentlyPlaying = true;
+              updateVisualizer(true);
+            });
+          }
+        } else {
+          isCurrentlyPlaying = !isCurrentlyPlaying;
+          updateVisualizer(isCurrentlyPlaying);
+          trigger.querySelector('button').innerText = isCurrentlyPlaying ? '⏸' : '▶';
+        }
+      });
     });
+  }
+
+  if (closePanelBtn && lyricsWidget) {
+    closePanelBtn.addEventListener('click', () => {
+      lyricsWidget.classList.add('hidden');
+    });
+  }
+
+  if (tabLyrics && tabBehind) {
+    tabLyrics.addEventListener('click', () => {
+      tabLyrics.classList.add('text-gold', 'border-gold');
+      tabLyrics.classList.remove('text-ivory/40');
+      tabBehind.classList.remove('text-gold', 'border-gold');
+      tabBehind.classList.add('text-ivory/40');
+      if (lyricsPanel) lyricsPanel.classList.remove('hidden');
+      if (behindPanel) behindPanel.classList.add('hidden');
+    });
+
+    tabBehind.addEventListener('click', () => {
+      tabBehind.classList.add('text-gold', 'border-gold');
+      tabBehind.classList.remove('text-ivory/40');
+      tabLyrics.classList.remove('text-gold', 'border-gold');
+      tabLyrics.classList.add('text-ivory/40');
+      if (behindPanel) behindPanel.classList.remove('hidden');
+      if (lyricsPanel) lyricsPanel.classList.add('hidden');
+    });
+  }
+
+  // 6. Lookbook Multi-Interactive Editorial Lightbox
+  const lightboxTrigger = document.querySelectorAll('.asset-lightbox-trigger');
+  const lightboxEl = document.getElementById('gallery-lightbox');
+  const lightboxImg = document.getElementById('lightbox-main-img');
+  const lightboxTitle = document.getElementById('lightbox-main-title');
+  const lightboxDescr = document.getElementById('lightbox-main-descr');
+  const lightboxClose = document.getElementById('lightbox-close-btn');
+  const lightboxBgDismiss = document.getElementById('lightbox-bg-dismiss');
+
+  if (lightboxEl) {
+    lightboxTrigger.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const fullSrc = trigger.getAttribute('data-full-src');
+        const titleText = trigger.getAttribute('data-title');
+        const descrText = trigger.getAttribute('data-descr');
+
+        if (lightboxImg) lightboxImg.src = fullSrc;
+        if (lightboxTitle) lightboxTitle.innerText = titleText;
+        if (lightboxDescr) lightboxDescr.innerText = descrText;
+
+        lightboxEl.removeAttribute('open');
+        lightboxEl.showModal();
+        lightboxEl.style.opacity = '1';
+        lightboxEl.style.pointerEvents = 'auto';
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    const closeLightbox = () => {
+      lightboxEl.style.opacity = '0';
+      lightboxEl.style.pointerEvents = 'none';
+      setTimeout(() => {
+        lightboxEl.close();
+        document.body.style.overflow = '';
+      }, 300);
+    };
+
+    if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+    if (lightboxBgDismiss) lightboxBgDismiss.addEventListener('click', closeLightbox);
+    lightboxEl.addEventListener('cancel', closeLightbox);
+  }
+
+  // 7. Product Multi-Image Thumbnail Calibrations
+  const thumbTriggers = document.querySelectorAll('.thumbnails-trigger');
+  const mainProductView = document.getElementById('product-main-view');
+
+  if (thumbTriggers && mainProductView) {
+    thumbTriggers.forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        const targetSrc = thumb.getAttribute('data-target-src');
+        mainProductView.src = targetSrc;
+        thumbTriggers.forEach(t => t.style.borderColor = 'rgba(244, 241, 235, 0.1)');
+        thumb.style.borderColor = '#dcc57b';
+      });
+    });
+  }
+
+  // 8. Scroll Zoom Reveals Effects
+  const revealElements = document.querySelectorAll('.reveal-on-scroll');
+  function checkReveal() {
+    revealElements.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      if (rect.top <= windowHeight * 0.88) {
+        el.classList.add('revealed');
+      }
+    });
+  }
+  window.addEventListener('scroll', checkReveal);
+  checkReveal();
+
+  // 9. Voice-to-Text Input Terminal System
+  const voiceBtn = document.getElementById('voice-trigger-btn');
+  const searchInput = document.getElementById('search-console-input');
+  const voiceHud = document.getElementById('voice-hud-ticker');
+  const voiceStatus = document.getElementById('voice-hud-status');
+  const voiceIndicator = document.getElementById('voice-hud-indicator');
+
+  if (voiceBtn && searchInput) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      voiceBtn.style.display = 'none';
+    } else {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.lang = 'en-US';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      let isListening = false;
+
+      recognition.onstart = () => {
+        isListening = true;
+        voiceBtn.classList.add('text-oxblood', 'animate-pulse');
+        voiceBtn.classList.remove('text-ivory/40');
+        if (voiceHud) voiceHud.classList.remove('hidden');
+        if (voiceIndicator) {
+          voiceIndicator.classList.add('bg-oxblood');
+          voiceIndicator.classList.remove('bg-gold');
+        }
+        if (voiceStatus) voiceStatus.innerText = 'STATUS: ACTIVE_VOICE_CAPTURE_RUNNING... SPEAK NOW';
+        searchInput.placeholder = 'SPEAK DIRECTIVE... [ LISTENING ]';
+      };
+
+      recognition.onspeechend = () => {
+        recognition.stop();
+      };
+
+      recognition.onend = () => {
+        isListening = false;
+        voiceBtn.classList.remove('text-oxblood', 'animate-pulse');
+        voiceBtn.classList.add('text-ivory/40');
+        if (voiceStatus) voiceStatus.innerText = 'STATUS: TRANSCRIPTION_COMPLETE';
+        setTimeout(() => {
+          if (!isListening && voiceHud) voiceHud.classList.add('hidden');
+          searchInput.placeholder = 'ENTER FREQUENCY TARGET/KEYWORD...';
+        }, 3000);
+      };
+
+      recognition.onerror = (event) => {
+        isListening = false;
+        voiceBtn.classList.remove('text-oxblood', 'animate-pulse');
+        voiceBtn.classList.add('text-ivory/40');
+        if (voiceStatus) {
+          voiceStatus.innerText = 'ERROR: ' + event.error.toUpperCase();
+        }
+        if (voiceIndicator) {
+          voiceIndicator.classList.add('bg-oxblood');
+          voiceIndicator.classList.remove('bg-gold');
+        }
+        setTimeout(() => {
+          if (!isListening && voiceHud) voiceHud.classList.add('hidden');
+          searchInput.placeholder = 'ENTER FREQUENCY TARGET/KEYWORD...';
+        }, 4000);
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        searchInput.value = transcript.toUpperCase();
+        if (voiceStatus) voiceStatus.innerText = 'SIGNAL_CAPTURED: "' + transcript.toUpperCase() + '"';
+        setTimeout(() => {
+          searchInput.form.submit();
+        }, 800);
+      };
+
+      voiceBtn.addEventListener('click', () => {
+        if (isListening) {
+          recognition.stop();
+        } else {
+          try {
+            recognition.start();
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      });
+    }
   }
 
 })();
@@ -1644,63 +1969,20 @@ fs.writeFileSync(path.join(themeDir, 'sections', 'footer.liquid'), footerContent
 // 16. Generate templates
 const indexJson = {
   "sections": {
+    "hero3d": {
+      "type": "hero3d-divine"
+    },
     "hero": {
-      "type": "hero-divine-archive"
+      "type": "divine-hero"
     },
-    "grid": {
-      "type": "archive-editorial-grid",
-      "blocks": {
-        "art1": {
-          "type": "artifact",
-          "settings": {
-            "index": "01",
-            "title": "The Silent Protocol"
-          }
-        },
-        "art2": {
-          "type": "artifact",
-          "settings": {
-            "index": "02",
-            "title": "Vision Architect"
-          }
-        },
-        "art3": {
-          "type": "artifact",
-          "settings": {
-            "index": "03",
-            "title": "Echo Directive"
-          }
-        },
-        "art4": {
-          "type": "artifact",
-          "settings": {
-            "index": "04",
-            "title": "Final Command"
-          }
-        }
-      },
-      "block_order": ["art1", "art2", "art3", "art4"]
-    },
-    "music": {
-      "type": "music-vault"
-    },
-    "cinema": {
-      "type": "cinema-vault"
-    },
-    "vault": {
-      "type": "visual-vault"
-    },
-    "prose": {
-      "type": "editorial-prose"
+    "verse": {
+      "type": "the-verse"
     }
   },
   "order": [
+    "hero3d",
     "hero",
-    "grid",
-    "music",
-    "cinema",
-    "vault",
-    "prose"
+    "verse"
   ]
 };
 
@@ -1741,7 +2023,7 @@ const settingsData = {
         "type": "footer-group",
         "sections": {
           "footer": {
-            "type": "footer",
+            "type": "footer-divine",
             "settings": {}
           }
         },
@@ -1772,7 +2054,7 @@ const footerGroup = {
   "type": "footer",
   "sections": {
     "footer": {
-      "type": "footer",
+      "type": "footer-divine",
       "settings": {}
     }
   },
@@ -1795,8 +2077,14 @@ try {
   console.log('// Packaging Shopify Theme into "divine-archive-shopify.zip"...');
   
   // Package files at the ZIP root by changing directory to themeDir during packaging.
-  // Using bestzip packages subdirectories recursively automatically.
-  execSync('npx bestzip ../divine-archive-shopify.zip *', { cwd: themeDir });
+  // Try running bestzip local script directly first helper, fallback to npx if needed.
+  try {
+    console.log('// Attempting local bestzip execution...');
+    execSync('node ../node_modules/bestzip/bin/cli.js ../divine-archive-shopify.zip *', { cwd: themeDir });
+  } catch (localErr) {
+    console.log('// Local bestzip failed or was missing, falling back to npx bestzip:', localErr.message);
+    execSync('npx bestzip ../divine-archive-shopify.zip *', { cwd: themeDir });
+  }
   console.log('// Packaging complete. divine-archive-shopify.zip is compiled successfully at the root directory!');
 } catch (err) {
   console.error('// Failed to package theme elements into zip:', err.message);

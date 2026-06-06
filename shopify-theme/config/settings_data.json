@@ -1,0 +1,32 @@
+{
+  "current": {
+    "sections": {
+      "header-group": {
+        "type": "header-group",
+        "sections": {
+          "header": {
+            "type": "header",
+            "settings": {
+              "branding": "KingShadP"
+            }
+          }
+        },
+        "order": [
+          "header"
+        ]
+      },
+      "footer-group": {
+        "type": "footer-group",
+        "sections": {
+          "footer": {
+            "type": "footer-divine",
+            "settings": {}
+          }
+        },
+        "order": [
+          "footer"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+<!-- Accessible Floating Action Button CTA -->
+<div class="fixed bottom-8 right-8 z-40 pointer-events-auto transition-opacity duration-300" id="divine-floating-cta">
+  <button
+    id="floating-action-trigger"
+    aria-label="{{ settings.floating_btn_text | default: 'Scegli la tua experience' }}"
+    class="group relative flex items-center justify-center p-4 rounded-full bg-ivory text-void hover:bg-gold transition-colors focus:outline-none focus:ring-2 focus:ring-gold cursor-crosshair border-0"
+  >
+    <a href="#cinema-vault" class="flex items-center justify-center decoration-none style-free text-inherit" style="color: inherit; text-decoration: none;">
+      <span class="font-mono text-[10px] tracking-widest uppercase font-bold max-w-0 overflow-hidden group-hover:max-w-[200px] transition-[max-width] duration-300 ease-in-out whitespace-nowrap inline-block align-middle mr-0 group-hover:mr-2">
+        {{ settings.floating_btn_text | default: 'Scegli la tua experience' }}
+      </span>
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="flex-shrink-0 align-middle inline-block"
+      >
+        <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" />
+      </svg>
+    </a>
+  </button>
+</div>
+
+<style>
+  #floating-action-trigger {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+  @media(prefers-reduced-motion: reduce) {
+    #floating-action-trigger span {
+      transition: none !important;
+    }
+  }
+</style>

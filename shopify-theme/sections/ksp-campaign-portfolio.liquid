@@ -1,0 +1,133 @@
+{% schema %}
+{
+  "name": "KSP Campaign Portfolio",
+  "tag": "section",
+  "class": "ksp-campaign-portfolio-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "vault_id",
+      "label": "Protocol System Name",
+      "default": "CAMPAIGN_COR_V.03"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Campaigns Heading",
+      "default": "System Campaign Rollouts"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "CHRONOLOGICAL STRATEGIC DEPLOYMENTS"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "campaign",
+      "name": "System Campaign Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "index",
+          "label": "Deployment Code (e.g. 01)",
+          "default": "01"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Campaign Code Title",
+          "default": "PROJECT_SHARD_FALL"
+        },
+        {
+          "type": "text",
+          "id": "duration",
+          "label": "Deployment Span (Dates)",
+          "default": "Q2-Q3 2026"
+        },
+        {
+          "type": "image_picker",
+          "id": "cover_image",
+          "label": "Campaign Visual Asset"
+        },
+        {
+          "type": "textarea",
+          "id": "details",
+          "label": "Strategic Details",
+          "default": "Release protocol focusing on sonic restoration vectors and premium garment telemetry specs. Visual assets compiled in high contrast film grain."
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "Campaign Details Coordinate (URL)"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<section class="relative w-full py-20 px-6 lg:px-24 z-10 bg-transparent overflow-hidden" id="campaign-portfolio-room">
+  <div class="max-w-7xl mx-auto flex flex-col gap-16">
+    
+    <!-- Campaign Heading & Codes -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-ivory/10 pb-8">
+      <div>
+        <div class="font-mono text-[9px] text-gold uppercase tracking-[0.3em] mb-4">{{ section.settings.subheading }}</div>
+        <h2 class="font-serif text-5xl lg:text-6xl text-ivory font-light scramble-text">{{ section.settings.heading }}</h2>
+      </div>
+      <div class="font-mono text-[10px] text-oxblood bg-oxblood/10 border border-oxblood/30 px-3 py-1 uppercase tracking-widest leading-none">
+        {{ section.settings.vault_id }}
+      </div>
+    </div>
+
+    <!-- Campaigns Columns Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12" id="grid-campaigns-list">
+      {% for block in section.blocks %}
+        {% if block.type == 'campaign' %}
+          <div class="ruby-glass border-grid-box flex flex-col justify-between group overflow-hidden transition-all duration-300">
+            
+            <div>
+              <!-- Campaign image container -->
+              <div class="relative aspect-[16/9] border-b border-ivory/10 overflow-hidden bg-void/50">
+                {% if block.settings.cover_image != blank %}
+                  <img src="{{ block.settings.cover_image | image_url: width: 800 }}" 
+                       alt="{{ block.settings.title }}"
+                       class="w-full h-full object-cover transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+                       loading="lazy">
+                {% else %}
+                  <img src="https://picsum.photos/seed/ksp_camp_{{ forloop.index }}/800/450"
+                       alt="System Campaign Placeholder"
+                       class="w-full h-full object-cover transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105">
+                {% endif %}
+                <span class="absolute top-4 left-4 font-mono text-[10px] text-gold bg-black/80 px-2 py-0.5 border border-gold/20 tracking-wider">
+                  {{ block.settings.duration }}
+                </span>
+                <span class="absolute top-4 right-4 font-mono text-[11px] text-oxblood">
+                  #{{ block.settings.index }}
+                </span>
+              </div>
+
+              <!-- Specs details -->
+              <div class="p-8">
+                <h3 class="font-serif text-2xl font-light text-ivory mb-4 group-hover:text-gold transition-colors duration-300 tracking-wide">{{ block.settings.title }}</h3>
+                <p class="font-mono text-[11px] text-ivory/60 leading-relaxed">{{ block.settings.details }}</p>
+              </div>
+            </div>
+
+            {% if block.settings.cta_link != blank %}
+              <div class="border-t border-ivory/10 px-8 py-4 bg-void/20 flex justify-between items-center">
+                <a href="{{ block.settings.cta_link }}" class="font-mono text-xs text-gold hover:text-white transition-colors uppercase tracking-widest flex items-center gap-2">
+                  EXPLORE DEPLOYMENT <span class="text-oxblood">⟶</span>
+                </a>
+              </div>
+            {% endif %}
+
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+  </div>
+</section>

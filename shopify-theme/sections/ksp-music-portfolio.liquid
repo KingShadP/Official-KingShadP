@@ -1,0 +1,240 @@
+{% schema %}
+{
+  "name": "KSP Music Portfolio Room",
+  "tag": "section",
+  "class": "ksp-music-room-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "vault_id",
+      "label": "Protocol Vault Code",
+      "default": "SONIC-PROT_V.82"
+    },
+    {
+      "type": "text",
+      "id": "page_heading",
+      "label": "Section Heading",
+      "default": "Sovereign Frequency Stream"
+    },
+    {
+      "type": "text",
+      "id": "page_subheading",
+      "label": "Tracking Telemetry Subheading",
+      "default": "CRITICAL RESONANCE ORBITAL EMISSIONS"
+    },
+    {
+      "type": "image_picker",
+      "id": "featured_album_cover",
+      "label": "Default Featured Cover"
+    },
+    {
+      "type": "url",
+      "id": "spotify_link",
+      "label": "Spotify Protocol Coordinate"
+    },
+    {
+      "type": "url",
+      "id": "apple_music_link",
+      "label": "Apple Music Protocol Coordinate"
+    },
+    {
+      "type": "url",
+      "id": "bandcamp_link",
+      "label": "Bandcamp Protocol Coordinate"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "track",
+      "name": "Audio Frequency Track",
+      "settings": [
+        {
+          "type": "text",
+          "id": "track_number",
+          "label": "Index Coordinate (e.g. 01)",
+          "default": "01"
+        },
+        {
+          "type": "text",
+          "id": "track_title",
+          "label": "Track Code (Title)",
+          "default": "TRANSMISSION_SHARD"
+        },
+        {
+          "type": "text",
+          "id": "track_duration",
+          "label": "Emission Length",
+          "default": "3:42"
+        },
+        {
+          "type": "text",
+          "id": "track_source",
+          "label": "Audio Source URL",
+          "default": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+        },
+        {
+          "type": "richtext",
+          "id": "track_lyrics",
+          "label": "Lyrics Spectrum",
+          "default": "<p>[ 00:15 ] I see the shards on the dashboard<br>[ 00:30 ] Orbital weight, gravity pulls hard<br>[ 00:45 ] No crowns in the laboratory, silence is the guard</p>"
+        },
+        {
+          "type": "richtext",
+          "id": "track_behind",
+          "label": "Behind the Shard (Story)",
+          "default": "<p>A sonic experiment in raw modular resonance, tracking the kinetic friction of the brand's orbital shift. Engineered in deep isolation under System Void conditions.</p>"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<section class="relative w-full py-20 px-6 lg:px-24 z-10 bg-transparent overflow-hidden" id="music-portfolio-room">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
+    
+    <!-- Left Column: Primary Telemetry Display -->
+    <div class="lg:col-span-5 flex flex-col justify-between border-grid-box ruby-glass p-8 relative">
+      <div class="absolute top-0 right-0 p-4 font-mono text-[9px] text-oxblood font-bold tracking-widest">
+        {{ section.settings.vault_id }}
+      </div>
+      
+      <div>
+        <div class="font-mono text-[9px] text-gold uppercase tracking-[0.3em] mb-4">
+          {{ section.settings.page_subheading }}
+        </div>
+        <h1 class="font-serif text-5xl lg:text-6xl text-ivory font-light mb-8 scramble-text">
+          {{ section.settings.page_heading }}
+        </h1>
+        
+        <!-- Media Gallery & Cover Frame -->
+        <div class="relative w-full aspect-square border border-ivory/10 overflow-hidden group bg-void/50 my-6">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
+          {% if section.settings.featured_album_cover != blank %}
+            <img src="{{ section.settings.featured_album_cover | image_url: width: 800 }}" 
+                 alt="Current Emission Artwork" 
+                 id="viewport-cover-art"
+                 class="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+                 loading="lazy">
+          {% else %}
+            <div class="absolute inset-0 flex items-center justify-center text-ivory/10">
+              <svg class="w-24 h-24 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="0.5">
+                <circle cx="12" cy="12" r="10"/>
+                <circle cx="12" cy="12" r="4"/>
+              </svg>
+            </div>
+            <img src="" id="viewport-cover-art" class="absolute inset-0 w-full h-full object-cover hidden">
+          {% endif %}
+          
+          <!-- Waveform Visualizer simulation -->
+          <div class="absolute bottom-6 left-6 right-6 z-20">
+            <div class="flex items-end gap-[3px] h-12 w-full justify-start overflow-hidden opacity-80" id="playlist-visualizer">
+              {% for i in (1..32) %}
+                <span class="audio-bar bg-gold w-[3px]" style="height: 3px; transform-origin: bottom; animation: barMove {{ 0.4 | plus: i | modulo: 0.9 | plus: 0.2 }}s ease-in-out infinite alternatePaused;"></span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Stream links -->
+      <div class="pt-8 border-t border-ivory/10">
+        <div class="font-mono text-[9px] text-ivory/40 uppercase tracking-[0.2em] mb-4">Emissions Portals</div>
+        <div class="flex flex-wrap gap-6 text-xs font-mono">
+          {% if section.settings.spotify_link != blank %}
+            <a href="{{ section.settings.spotify_link }}" target="_blank" class="text-ivory hover:text-gold transition-colors hover:translate-x-1 duration-300 flex items-center gap-2">
+              <span class="text-oxblood">//</span> SPOTIFY
+            </a>
+          {% endif %}
+          {% if section.settings.apple_music_link != blank %}
+            <a href="{{ section.settings.apple_music_link }}" target="_blank" class="text-ivory hover:text-gold transition-colors hover:translate-x-1 duration-300 flex items-center gap-2">
+              <span class="text-oxblood">//</span> APPLE MUSIC
+            </a>
+          {% endif %}
+          {% if section.settings.bandcamp_link != blank %}
+            <a href="{{ section.settings.bandcamp_link }}" target="_blank" class="text-ivory hover:text-gold transition-colors hover:translate-x-1 duration-300 flex items-center gap-2">
+              <span class="text-oxblood">//</span> BANDCAMP
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column: Track selector / interactive metadata panels -->
+    <div class="lg:col-span-7 flex flex-col gap-8">
+      
+      <!-- Tracks List Panel -->
+      <div class="ruby-glass p-8 border-grid-box">
+        <div class="font-mono text-[9px] text-gold uppercase tracking-[0.3em] mb-6">Emissions Sequence Ledger</div>
+        
+        <audio id="core-audio-element" src=""></audio>
+        
+        <div class="flex flex-col partition-list divide-y divide-ivory/10" id="playlist-ledgers">
+          {% for block in section.blocks %}
+            {% if block.type == 'track' %}
+              <div class="py-4 flex justify-between items-center group font-mono text-xs cursor-pointer select-none transition-colors duration-300 hover:bg-ivory/5 px-2 active-track-trigger"
+                   data-track-index="{{ forloop.index | minus: 1 }}"
+                   data-lyrics-content="{{ block.settings.track_lyrics | escape }}"
+                   data-behind-content="{{ block.settings.track_behind | escape }}"
+                   data-audio-src="{{ block.settings.track_source }}"
+                   data-title="{{ block.settings.track_title }}">
+                   
+                <div class="flex items-center gap-6">
+                  <span class="text-ivory/40 group-hover:text-gold transition-colors">{{ block.settings.track_number }}</span>
+                  <div class="flex flex-col">
+                    <span class="text-ivory text-sm group-hover:text-gold tracking-[0.1em] transition-colors font-medium">{{ block.settings.track_title }}</span>
+                  </div>
+                </div>
+                
+                <div class="flex items-center gap-6">
+                  <span class="text-ivory/50">{{ block.settings.track_duration }}</span>
+                  <button class="w-8 h-8 rounded-full border border-ivory/20 flex items-center justify-center group-hover:border-gold group-hover:bg-gold/10 transition-colors">
+                    <span class="text-[10px] transform group-hover:scale-110">▶</span>
+                  </button>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Live Secondary Telemetry Panels: Lyrics & Behind-The-Music -->
+      <div id="lyrics-parent-widget" class="ruby-glass border-grid-box p-8 transition-all duration-500 overflow-hidden hidden">
+        <div class="flex justify-between items-center mb-6">
+          <div class="font-mono text-[9px] text-gold uppercase tracking-[0.3em]" id="telemetry-panel-indicator">// LYRICS SPECTRUM ANALYZER</div>
+          <button id="close-telemetry-panel" class="font-mono text-[9px] text-oxblood uppercase tracking-widest hover:text-gold">[ CLOSE ]</button>
+        </div>
+        
+        <!-- Tab Navigation -->
+        <div class="flex gap-4 border-b border-ivory/10 pb-4 mb-6">
+          <button id="tab-lyrics-trigger" class="font-mono text-xs text-gold border-b border-gold pb-2 uppercase tracking-wider">Lyrics</button>
+          <button id="tab-behind-trigger" class="font-mono text-xs text-ivory/40 hover:text-ivory pb-2 uppercase tracking-wider">Behind The Shard</button>
+        </div>
+
+        <div id="telemetry-panel-lyrics" class="font-serif text-lg leading-relaxed text-ivory/80 space-y-4 max-h-[300px] overflow-y-auto">
+          <!-- Populated by JS -->
+        </div>
+        
+        <div id="telemetry-panel-behind" class="font-serif text-sm leading-relaxed text-ivory/70 space-y-4 max-h-[300px] overflow-y-auto hidden">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+  @keyframes barMove {
+    0% { transform: scaleY(1); }
+    100% { transform: scaleY(8); }
+  }
+  .audio-bar {
+    animation-play-state: paused !important;
+  }
+  .audio-bar.running {
+    animation-play-state: running !important;
+  }
+</style>

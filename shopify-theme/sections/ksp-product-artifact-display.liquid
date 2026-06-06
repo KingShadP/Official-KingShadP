@@ -1,0 +1,170 @@
+{% schema %}
+{
+  "name": "KSP Product Artifact Display",
+  "tag": "section",
+  "class": "product-artifact-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "vault_id",
+      "label": "Protocol System Registry ID",
+      "default": "GARMENT-SPEC_V.09"
+    },
+    {
+      "type": "text",
+      "id": "care_label",
+      "label": "Care Protocol Label",
+      "default": "MATTE SURFACE WASH ONLY -- COLD DEPOSIT CYCLE"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="relative w-full py-20 px-6 lg:px-24 z-10 bg-transparent overflow-hidden" id="product-artifact-room">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    
+    <!-- Left Column: Product Cinematic Media Gallery -->
+    <div class="lg:col-span-7 flex flex-col gap-6" id="product-media-gallery">
+      
+      <!-- Primary Large Media Frame -->
+      <div class="relative w-full aspect-[3/4] border border-ivory/10 overflow-hidden bg-void/50 group ruby-glass p-2">
+        <div class="absolute inset-x-0 bottom-4 left-4 z-10 font-mono text-[9px] text-gold uppercase tracking-[0.2em] bg-black/60 px-3 py-1 border border-gold/10 w-fit">
+          [ ARTIFACT IMAGE MAIN ]
+        </div>
+        
+        {% if product.featured_image != blank %}
+          <img src="{{ product.featured_image | image_url: width: 1000 }}" 
+               alt="{{ product.title | escape }}" 
+               class="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+               id="product-main-view"
+               loading="lazy">
+        {% else %}
+          <img src="https://picsum.photos/seed/ksp_product/1000/1333" 
+               alt="Artifact Display Specimen" 
+               class="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+               id="product-main-view">
+        {% endif %}
+      </div>
+
+      <!-- Multiple Image Thumbnails Grid -->
+      <div class="grid grid-cols-4 gap-4" id="gallery-thumbnails">
+        {% for image in product.images %}
+          <div class="aspect-square border border-ivory/10 cursor-pointer overflow-hidden bg-void/50 p-1 hover:border-gold transition-colors duration-300 thumbnails-trigger"
+               data-target-src="{{ image | image_url: width: 1000 }}">
+            <img src="{{ image | image_url: width: 250 }}" alt="Telemetry view" class="w-full h-full object-cover" loading="lazy">
+          </div>
+        {% endfor %}
+        
+        <!-- Standard placeholder thumbnails to ensure look is complete if no images present -->
+        {% if product.images.size == 0 %}
+          {% for i in (1..4) %}
+            <div class="aspect-square border border-ivory/10 cursor-pointer overflow-hidden bg-void/50 p-1 hover:border-gold transition-colors duration-300 thumbnails-trigger"
+                 data-target-src="https://picsum.photos/seed/product_thumb{{ i }}/1000/1333">
+              <img src="https://picsum.photos/seed/product_thumb{{ i }}/250/250" alt="Telemetry Placeholder View" class="w-full h-full object-cover">
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+
+    </div>
+
+    <!-- Right Column: Product Specs, Options & Add-To-Cart Form -->
+    <div class="lg:col-span-5 flex flex-col gap-8 md:mt-8">
+      
+      <!-- Primary Core Info Panel -->
+      <div class="ruby-glass p-8 border-grid-box relative">
+        <div class="absolute top-0 right-0 p-4 font-mono text-[9px] text-oxblood font-bold tracking-widest">
+          {{ section.settings.vault_id }}
+        </div>
+
+        <div class="font-mono text-[9px] text-gold uppercase tracking-[0.3em] mb-4">// Artifact Specimen Description</div>
+        <h1 class="font-serif text-4xl font-light text-ivory mb-2 tracking-wide">{{ product.title | default: "( SYSTEM ARCHIVE SPECIMEN )" }}</h1>
+        
+        <!-- Pricing Telemetry -->
+        <div class="font-mono text-lg text-gold font-light tracking-widest mb-6">
+          <span class="text-xs text-oxblood font-semibold mr-1">//</span> {{ product.price | money | default: "$120.00" }} <span class="text-xs text-ivory/40">USD</span>
+        </div>
+
+        <!-- Description -->
+        <div class="font-serif text-sm leading-relaxed text-ivory/70 space-y-4 mb-8 font-light border-t border-ivory/10 pt-6">
+          {% if product.description != blank %}
+            {{ product.description }}
+          {% else %}
+            <p>Premium systemic utility vest designed for deep cosmic orbit. Features high-tensile technical stitching, raw charcoal wool backing, matte steel closure d-rings, and tactical telemetry compartments across the side panel matrix.</p>
+          {% endif %}
+        </div>
+
+        <!-- System options/add to cart form -->
+        {% form 'product', product, class: 'flex flex-col gap-6 font-mono text-xs' %}
+          
+          <!-- Variant picker standard -->
+          <div class="flex flex-col gap-4">
+            <span class="text-ivory/50 tracking-wider text-[9px] uppercase">// CALIBRATION OPTIONS</span>
+            
+            <select name="id" id="variant-select" class="bg-void border border-ivory/10 px-4 py-3 text-ivory/80 outline-none focus:border-gold w-full tracking-widest text-[11px] uppercase cursor-pointer">
+              {% for variant in product.variants %}
+                <option value="{{ variant.id }}" {% if variant == product.selected_or_first_available_variant %}selected{% endif %}>
+                  {{ variant.title }} -- {{ variant.price | money }}
+                </option>
+              {% endfor %}
+              
+              {% if product.variants.size == 0 %}
+                <option value="123456">SIZE S -- MENS SPEC V.1</option>
+                <option value="123457">SIZE M -- MENS SPEC V.1</option>
+                <option value="123458">SIZE L -- MENS SPEC V.1</option>
+              {% endif %}
+            </select>
+          </div>
+
+          <!-- Add to cart button -->
+          <button type="submit" name="add" class="border border-gold text-gold py-4 hover:bg-gold/10 transition-colors uppercase tracking-[0.2em] text-[10px] w-full font-bold mt-4 cursor-pointer bg-transparent">
+            [ RUN_ACQUISITION_COMMITTAL_QUEUE ]
+          </button>
+        {% endform %}
+      </div>
+
+      <!-- Specs / Fit Telemetry Accordion Panel -->
+      <div class="ruby-glass p-8 border-grid-box relative">
+        <div class="absolute -top-3 left-6 font-mono text-[9px] text-oxblood tracking-widest px-2 bg-void uppercase">// Fabric Spec & Care Dossier</div>
+        
+        <div class="flex flex-col divide-y divide-ivory/10 mt-2">
+          
+          <details class="py-4 font-mono group cursor-pointer transition-all duration-300" open>
+            <summary class="flex justify-between items-center text-[10px] tracking-wider text-gold list-none">
+              <span>// SPECIFICATION CODES</span>
+              <span class="text-[9px] transition-transform duration-300 group-open:rotate-180">▼</span>
+            </summary>
+            <div class="mt-4 text-[10px] leading-relaxed text-ivory/60 space-y-2 uppercase pl-4">
+              <div class="flex justify-between"><span class="text-ivory/30">MATERIA:</span> 70% RAW WOOL, 30% SILICONE MATRIX</div>
+              <div class="flex justify-between"><span class="text-ivory/30">DENSITY:</span> 440GSM TACTICAL TWILL</div>
+              <div class="flex justify-between"><span class="text-ivory/30">MADE IN:</span> JAPANESE ISOLATION COORDINATES</div>
+            </div>
+          </details>
+
+          <details class="py-4 font-mono group cursor-pointer transition-all duration-300">
+            <summary class="flex justify-between items-center text-[10px] tracking-wider text-ivory list-none group-open:text-gold">
+              <span>// FIT TELEMETRY LOG</span>
+              <span class="text-[9px] transition-transform duration-300 group-open:rotate-180">▼</span>
+            </summary>
+            <p class="mt-4 text-[10px] leading-relaxed text-ivory/60 uppercase tracking-normal pl-4">
+              FIT REGULATION IS STRUCTURED AS SEMI-OVERSIZE LENGTHENING TO PERMIT LAYERING ACROSS THE COLD COSMIC CONTINUUMS. ORDER NORMAL SYSTEM SPEC RANGE.
+            </p>
+          </details>
+
+          <details class="py-4 font-mono group cursor-pointer transition-all duration-300">
+            <summary class="flex justify-between items-center text-[10px] tracking-wider text-ivory list-none group-open:text-gold">
+              <span>// CARE PROTOCOL DIRECTION</span>
+              <span class="text-[9px] transition-transform duration-300 group-open:rotate-180">▼</span>
+            </summary>
+            <p class="mt-4 text-[10px] leading-relaxed text-ivory/60 uppercase tracking-normal pl-4 text-oxblood">
+              {{ section.settings.care_label }}
+            </p>
+          </details>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>

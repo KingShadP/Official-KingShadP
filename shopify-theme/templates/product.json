@@ -1,0 +1,10 @@
+{
+  "sections": {
+    "main": {
+      "type": "ksp-product-artifact-display"
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

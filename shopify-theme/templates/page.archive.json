@@ -1,0 +1,10 @@
+{
+  "sections": {
+    "archive": {
+      "type": "ksp-archive-dossier"
+    }
+  },
+  "order": [
+    "archive"
+  ]
+}

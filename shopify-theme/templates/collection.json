@@ -1,0 +1,10 @@
+{
+  "sections": {
+    "main": {
+      "type": "ksp-collection-gallery"
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

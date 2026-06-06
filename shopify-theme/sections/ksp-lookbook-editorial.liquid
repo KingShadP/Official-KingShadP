@@ -1,0 +1,167 @@
+{% schema %}
+{
+  "name": "KSP Editorial Lookbook",
+  "tag": "section",
+  "class": "ksp-lookbook-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_tag",
+      "label": "Protocol System Name",
+      "default": "SYSTEM_FRAME_V.92"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Lookbook Title",
+      "default": "Aesthetic Specifications Log"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Log Subtext",
+      "default": "TACTILE GEOMETRIC INTERSECTS -- PHASE IV"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "look",
+      "name": "Look Asset Frame",
+      "settings": [
+        {
+          "type": "text",
+          "id": "look_index",
+          "label": "Sequence Code (e.g. Look 01)",
+          "default": "Look 01"
+        },
+        {
+          "type": "text",
+          "id": "look_title",
+          "label": "Artifact Code Name",
+          "default": "SHARD_GARMENT_SPEC"
+        },
+        {
+          "type": "image_picker",
+          "id": "look_image",
+          "label": "Look Image File"
+        },
+        {
+          "type": "text",
+          "id": "look_description",
+          "label": "Look Telemetry Specs",
+          "default": "Matte-dyed raw wool twill, deep-void black warp, signature magma-gold cross-stitch thread."
+        },
+        {
+          "type": "text",
+          "id": "cta_label",
+          "label": "Buy/Acquisition Label",
+          "default": "Initiate Acquisition Protocol"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "Acquisition Path (URL)"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<section class="relative w-full py-20 px-6 lg:px-24 z-10 bg-transparent overflow-hidden" id="lookbook-editorial-room">
+  <div class="max-w-7xl mx-auto flex flex-col gap-16">
+    
+    <!-- Editorial Heading & Codes -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-ivory/10 pb-8">
+      <div>
+        <div class="font-mono text-[9px] text-gold uppercase tracking-[0.3em] mb-4">{{ section.settings.subheading }}</div>
+        <h2 class="font-serif text-5xl lg:text-6xl text-ivory font-light scramble-text">{{ section.settings.heading }}</h2>
+      </div>
+      <div class="font-mono text-[10px] text-oxblood bg-oxblood/10 border border-oxblood/30 px-3 py-1 uppercase tracking-widest leading-none">
+        {{ section.settings.section_tag }}
+      </div>
+    </div>
+
+    <!-- Lookbook Grid structure: Bento grid and overlapping panels -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12" id="grid-lookbook-items">
+      {% for block in section.blocks %}
+        {% if block.type == 'look' %}
+          <div class="ruby-glass border-grid-box p-6 flex flex-col justify-between group transition-all duration-500 hover:translate-y-[-4px] reveal-on-scroll">
+            
+            <div>
+              <!-- Look index tracker -->
+              <div class="flex justify-between items-center font-mono text-[10px] text-ivory/40 uppercase mb-4">
+                <span>{{ block.settings.look_index }}</span>
+                <span class="text-oxblood">// LATENCY_PASS</span>
+              </div>
+
+              <!-- Cinematic look container -->
+              <div class="relative aspect-[3/4] border border-ivory/10 overflow-hidden bg-void/40 mb-6 asset-lightbox-trigger cursor-zoom-in"
+                   data-full-src="{% if block.settings.look_image != blank %}{{ block.settings.look_image | image_url: width: 1200 }}{% else %}https://picsum.photos/seed/look_{{ forloop.index }}/1200/1600{% endif %}"
+                   data-title="{{ block.settings.look_title }}"
+                   data-descr="{{ block.settings.look_description }}">
+                
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 flex items-end p-4">
+                  <span class="font-mono text-[9px] text-gold uppercase tracking-widest">[ ZOOM_SPECIFICATION ]</span>
+                </div>
+
+                {% if block.settings.look_image != blank %}
+                  <img src="{{ block.settings.look_image | image_url: width: 600 }}" 
+                       alt="{{ block.settings.look_title }}"
+                       class="w-full h-full object-cover transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+                       loading="lazy">
+                {% else %}
+                  <img src="https://picsum.photos/seed/ksp_look_{{ forloop.index }}/600/800"
+                       alt="System Placeholder Look"
+                       class="w-full h-full object-cover transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105">
+                {% endif %}
+              </div>
+
+              <!-- Meta specs -->
+              <h3 class="font-serif text-xl font-light text-ivory mb-2 group-hover:text-gold transition-colors duration-300">{{ block.settings.look_title }}</h3>
+              <p class="font-mono text-[11px] text-ivory/60 leading-relaxed mb-6">{{ block.settings.look_description }}</p>
+            </div>
+
+            <!-- Shop connection -->
+            {% if block.settings.cta_url != blank %}
+              <div class="border-t border-ivory/10 pt-4">
+                <a href="{{ block.settings.cta_url }}" class="font-mono text-xs text-gold flex items-center justify-between group-hover:text-gold transition-colors">
+                  <span class="tracking-wider text-[10px] uppercase">{{ block.settings.cta_label }}</span>
+                  <span class="text-oxblood group-hover:translate-x-2 transition-transform duration-300">⟶</span>
+                </a>
+              </div>
+            {% endif %}
+
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Overlay Lightbox Widget -->
+    <dialog id="gallery-lightbox" class="fixed inset-0 w-full h-full border-none m-0 p-0 text-ivory pointer-events-none z-[9990] flex items-center justify-center opacity-0 transition-opacity duration-300">
+      <div class="absolute inset-0 bg-black/95 z-0 pointer-events-auto cursor-zoom-out" id="lightbox-bg-dismiss"></div>
+      
+      <!-- Container for imagery and info -->
+      <div class="relative z-10 max-w-5xl w-full mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-8 items-center pointer-events-auto">
+        
+        <!-- Image Frame -->
+        <div class="md:col-span-8 border border-white/10 ruby-glass p-2 max-h-[85vh] flex justify-center bg-void">
+          <img src="" id="lightbox-main-img" class="max-w-full max-h-[80vh] object-contain">
+        </div>
+
+        <!-- Spec Data Info -->
+        <div class="md:col-span-4 flex flex-col justify-between h-full py-8 text-left ruby-glass p-8 border-grid-box">
+          <div>
+            <div class="font-mono text-[9px] text-oxblood uppercase tracking-[0.3em] mb-4">// TELEMETRY CORROBORATION</div>
+            <h3 id="lightbox-main-title" class="font-serif text-3xl font-light text-ivory mb-4">LOOK SPECIFICATION</h3>
+            <p id="lightbox-main-descr" class="font-mono text-[11px] text-ivory/70 leading-relaxed max-h-[200px] overflow-y-auto mb-8"></p>
+          </div>
+          
+          <button id="lightbox-close-btn" class="font-mono text-[10px] text-gold uppercase tracking-[0.2em] border border-gold/30 hover:bg-gold/10 px-4 py-2 text-center w-full mt-4">[ DISMISS_FRAME ]</button>
+        </div>
+
+      </div>
+    </dialog>
+
+  </div>
+</section>

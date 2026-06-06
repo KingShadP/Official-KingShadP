@@ -1,0 +1,138 @@
+{% schema %}
+{
+  "name": "Visual Vault",
+  "tag": "section",
+  "class": "section-visual-vault",
+  "settings": [
+    {
+      "type": "text",
+      "id": "meta_title",
+      "label": "Top Category Tag",
+      "default": "The Crafted Archive of World & Presence"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Heading",
+      "default": "Visual Vault"
+    },
+    {
+      "type": "text",
+      "id": "title_img1",
+      "label": "Image 1 Title",
+      "default": "The Crowned Standard"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image 1 Picker"
+    },
+    {
+      "type": "text",
+      "id": "title_img2",
+      "label": "Image 2 Title",
+      "default": "Crafted Silence"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "Image 2 Picker"
+    },
+    {
+      "type": "text",
+      "id": "title_img3",
+      "label": "Image 3 Title",
+      "default": "Private Command"
+    },
+    {
+      "type": "image_picker",
+      "id": "image3",
+      "label": "Image 3 Picker"
+    },
+    {
+      "type": "text",
+      "id": "title_img4",
+      "label": "Image 4 Title",
+      "default": "Archive Presence"
+    },
+    {
+      "type": "image_picker",
+      "id": "image4",
+      "label": "Image 4 Picker"
+    }
+  ]
+}
+{% endschema %}
+
+<section id="visual-vault" class="relative w-full py-20 px-6 lg:px-24 z-10 border-t border-ivory/10 bg-transparent overflow-hidden">
+  <div class="max-w-7xl mx-auto w-full relative z-10">
+    <p class="font-mono text-[10px] text-ivory/40 tracking-[0.3em] uppercase mb-4">{{ section.settings.meta_title }}</p>
+    <h2 class="font-serif text-5xl lg:text-7xl text-ivory font-light mb-12">
+      {{ section.settings.section_title }}
+    </h2>
+
+    <div class="relative w-full pb-24">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 relative items-start">
+        
+        <!-- Broken Editorials Layout Matrix -->
+        <div class="md:col-span-5 md:col-start-1 relative z-10">
+          <div class="aspect-[3/4] border border-ivory/10 relative overflow-hidden bg-ivory/5 group">
+            {%- if section.settings.image1 != blank -%}
+              <img src="{{ section.settings.image1 | image_url: width: 1024 }}" alt="{{ section.settings.title_img1 | escape }}" class="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 image-scale-effect">
+            {%- else -%}
+              <img src="{{ 'chatgpt_image_may_28_2026_02_10_07_am_5.png' | asset_url }}" alt="Crown Standard" class="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 image-scale-effect">
+            {%- endif -%}
+            <div class="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent opacity-60"></div>
+          </div>
+          <div class="mt-6 md:-mt-12 md:pl-8 relative z-20 mix-blend-difference">
+            <h4 class="font-serif text-3xl md:text-5xl text-ivory italic">{{ section.settings.title_img1 }}</h4>
+            <p class="font-mono text-[10px] text-ivory/60 tracking-[0.2em] uppercase mt-2">Legacy / Artifact 01</p>
+          </div>
+        </div>
+
+        <div class="md:col-span-5 md:col-start-8 mt-16 md:mt-48 relative z-0">
+          <div class="aspect-[4/3] border border-ivory/10 relative overflow-hidden bg-ivory/5 group">
+            {%- if section.settings.image2 != blank -%}
+              <img src="{{ section.settings.image2 | image_url: width: 1024 }}" alt="{{ section.settings.title_img2 | escape }}" class="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 image-scale-effect">
+            {%- else -%}
+              <img src="{{ 'chatgpt_image_may_28_2026_02_10_07_am_6_1.png' | asset_url }}" alt="Crafted Silence" class="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 image-scale-effect">
+            {%- endif -%}
+          </div>
+          <div class="mt-6">
+            <h4 class="font-serif text-2xl text-ivory">{{ section.settings.title_img2 }}</h4>
+            <p class="font-mono text-[10px] text-ivory/50 tracking-[0.2em] uppercase mt-1">Vision / Artifact 02</p>
+          </div>
+        </div>
+
+        <div class="md:col-span-6 md:col-start-4 mt-16 md:-mt-24 relative z-20">
+          <div class="aspect-[16/9] border border-ivory/10 relative overflow-hidden bg-ivory/5 group">
+            {%- if section.settings.image3 != blank -%}
+              <img src="{{ section.settings.image3 | image_url: width: 1024 }}" alt="{{ section.settings.title_img3 | escape }}" class="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 image-scale-effect">
+            {%- else -%}
+              <img src="{{ 'chatgpt_image_may_28_2026_02_10_36_am_1_1.png' | asset_url }}" alt="Private Command" class="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 image-scale-effect">
+            {%- endif -%}
+          </div>
+          <div class="mt-6 bg-void/80 backdrop-blur-sm p-6 border border-ivory/5 -ml-4 md:-ml-8 mr-4 md:mr-0 inline-block shadow-2xl">
+            <h4 class="font-serif text-2xl text-ivory font-light italic">{{ section.settings.title_img3 }}</h4>
+            <p class="font-mono text-[10px] text-ivory/50 tracking-[0.2em] uppercase mt-1">Motion / Artifact 03</p>
+          </div>
+        </div>
+
+        <div class="md:col-span-4 md:col-start-9 mt-16 md:mt-32 relative z-10">
+          <div class="aspect-square border border-ivory/10 relative overflow-hidden bg-ivory/5 group">
+            {%- if section.settings.image4 != blank -%}
+              <img src="{{ section.settings.image4 | image_url: width: 1024 }}" alt="{{ section.settings.title_img4 | escape }}" class="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 image-scale-effect">
+            {%- else -%}
+              <img src="{{ 'chatgpt_image_may_28_2026_02_11_23_am_1.png' | asset_url }}" alt="Archive Presence" class="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 image-scale-effect">
+            {%- endif -%}
+          </div>
+          <div class="mt-6 text-right md:pr-8 md:-mt-12 relative z-20 mix-blend-difference">
+            <h4 class="font-serif text-2xl text-ivory">{{ section.settings.title_img4 }}</h4>
+            <p class="font-mono text-[10px] text-ivory/50 tracking-[0.2em] uppercase mt-1">Myth / Artifact 04</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

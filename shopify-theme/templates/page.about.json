@@ -1,0 +1,10 @@
+{
+  "sections": {
+    "about": {
+      "type": "ksp-about-identity-room"
+    }
+  },
+  "order": [
+    "about"
+  ]
+}

@@ -1,0 +1,66 @@
+{% schema %}
+{
+  "name": "The Sonic Vault",
+  "tag": "section",
+  "class": "section-music-vault",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label_meta",
+      "label": "Top Category Tag",
+      "default": "Decrypted Directory"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Heading",
+      "default": "The Sonic Vault"
+    },
+    {
+      "type": "text",
+      "id": "vault_heading",
+      "label": "Vault Block Title",
+      "default": "Signature Details Vol. 1"
+    },
+    {
+      "type": "text",
+      "id": "vault_description",
+      "label": "Description Copy",
+      "default": "High-Fidelity Audio Fragments extracted from the central archive."
+    }
+  ]
+}
+{% endschema %}
+
+<section class="relative w-full py-20 px-6 lg:px-24 z-10 border-t border-ivory/10 bg-transparent overflow-hidden">
+  <div class="max-w-7xl mx-auto w-full relative z-10">
+    <p class="font-mono text-[10px] text-ivory/40 tracking-[0.3em] uppercase mb-4">{{ section.settings.label_meta }}</p>
+    <h2 class="font-serif text-5xl lg:text-7xl text-ivory font-light mb-12">
+      {{ section.settings.title }}
+    </h2>
+    <div class="bg-ivory/[0.03] border border-ivory/10 p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative overflow-hidden group hover:border-gold/30 transition-colors">
+      <div class="flex flex-col gap-2 relative z-10 max-w-xl">
+        <h4 class="font-serif text-2xl text-ivory font-light group-hover:text-gold transition-colors">{{ section.settings.vault_heading }}</h4>
+        <p class="font-mono text-xs text-ivory/60 tracking-[0.1em] uppercase">
+          // {{ section.settings.vault_description }}
+        </p>
+      </div>
+
+      <!-- Real Web Audio Interactive Interface block -->
+      <div class="flex items-center gap-6 relative z-10 pointer-events-auto">
+        <!-- Pulse oscillations animation fallback -->
+        <div class="audio-visualizer-wave">
+          <div class="audio-bar"></div>
+          <div class="audio-bar"></div>
+          <div class="audio-bar"></div>
+          <div class="audio-bar"></div>
+          <div class="audio-bar"></div>
+        </div>
+
+        <button id="sonic-audio-play" class="btn-control font-mono">
+          [ Listen_Protocol ]
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

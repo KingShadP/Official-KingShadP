@@ -1,0 +1,10 @@
+{
+  "sections": {
+    "campaigns": {
+      "type": "ksp-campaign-portfolio"
+    }
+  },
+  "order": [
+    "campaigns"
+  ]
+}

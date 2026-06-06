@@ -1,0 +1,10 @@
+{
+  "sections": {
+    "main": {
+      "type": "ksp-search-console"
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

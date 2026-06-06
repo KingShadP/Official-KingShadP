@@ -1,0 +1,10 @@
+{
+  "sections": {
+    "vision": {
+      "type": "ksp-vision-manifesto"
+    }
+  },
+  "order": [
+    "vision"
+  ]
+}

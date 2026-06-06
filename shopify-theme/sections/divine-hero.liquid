@@ -1,0 +1,100 @@
+{% schema %}
+{
+  "name": "Divine Archive Hero",
+  "tag": "section",
+  "class": "section-hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "telemetry_index",
+      "label": "Telemetry Code Label",
+      "default": "[ PROTOCOL V9 ]"
+    },
+    {
+      "type": "text",
+      "id": "telemetry_tag_1",
+      "label": "Telemetry Tag 1",
+      "default": "Archive_v9.0"
+    },
+    {
+      "type": "text",
+      "id": "telemetry_tag_2",
+      "label": "Telemetry Tag 2",
+      "default": "Sovereign_Active"
+    },
+    {
+      "type": "text",
+      "id": "telemetry_tag_3",
+      "label": "Telemetry Tag 3",
+      "default": "Class_Omega"
+    },
+    {
+      "type": "text",
+      "id": "sub_header",
+      "label": "Sub Header Text",
+      "default": "Intelligence Archive v.9.0"
+    },
+    {
+      "type": "text",
+      "id": "main_title_line1",
+      "label": "Main Title Line 1",
+      "default": "THE"
+    },
+    {
+      "type": "text",
+      "id": "main_title_line2",
+      "label": "Main Title Line 2",
+      "default": "VERSE."
+    },
+    {
+      "type": "text",
+      "id": "identity_footer",
+      "label": "Identity Footer Copy",
+      "default": "KingShadP | The Official Intelligence"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="relative w-full min-h-screen flex flex-col justify-center px-6 lg:px-24 overflow-hidden z-10 selection:bg-ivory selection:text-void">
+  <!-- Dynamic Watermark Scrambler background -->
+  <div class="absolute right-[-10vw] top-[10vh] text-[15vw] font-mono text-ivory/[0.02] mix-blend-overlay rotate-90 pointer-events-none uppercase whitespace-nowrap overflow-hidden select-none">
+    {{ section.settings.telemetry_index }}
+  </div>
+
+  <!-- Vertical Telemetry Labels Column -->
+  <div class="absolute left-6 lg:left-12 top-1/2 -translate-y-1/2 hidden md:flex flex-col gap-12 text-[10px] font-mono text-ivory/30 tracking-[0.3em] uppercase select-none">
+    <span class="origin-left -rotate-90">{{ section.settings.telemetry_tag_1 }}</span>
+    <span class="origin-left -rotate-90 text-oxblood">{{ section.settings.telemetry_tag_2 }}</span>
+    <span class="origin-left -rotate-90">{{ section.settings.telemetry_tag_3 }}</span>
+  </div>
+
+  <div class="max-w-7xl mx-auto w-full pt-28 pb-12 relative z-10">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="w-12 h-[1px] bg-gold" style="box-shadow: 0 0 10px rgba(220,197,123,0.8);"></div>
+      <span class="font-mono text-xs text-ivory/80 uppercase tracking-[0.4em] font-bold scramble-text">
+        {{ section.settings.sub_header }}
+      </span>
+    </div>
+
+    <!-- Monumental Typography -->
+    <div class="relative overflow-visible leading-[0.85] pb-4">
+      <h1 class="font-serif text-[5.5rem] sm:text-[8rem] md:text-[10rem] lg:text-[13rem] leading-[0.85] text-ivory font-light tracking-tighter">
+        <span class="glitch-text-hover inline-block select-none">{{ section.settings.main_title_line1 }}</span><br />
+        <span class="glitch-text-hover inline-block select-none text-transparent bg-clip-text bg-gradient-to-b from-ivory to-ivory/50 relative">
+          {{ section.settings.main_title_line2 }}
+        </span>
+      </h1>
+    </div>
+
+    <!-- Identity Sub-caption -->
+    <div class="mt-12 max-w-2xl">
+      <div class="font-serif text-2xl md:text-3xl text-ivory/90 leading-relaxed font-light scramble-text">
+        {{ section.settings.identity_footer }}
+      </div>
+    </div>
+    
+    <!-- Trajectory Laser Line -->
+    <div class="h-[1px] bg-gradient-to-r from-ivory/30 via-gold/40 to-transparent max-w-lg mt-16" style="box-shadow: 0 0 15px rgba(220,197,123,0.6);"></div>
+  </div>
+</section>

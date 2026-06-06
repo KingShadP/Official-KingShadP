@@ -1,0 +1,181 @@
+{% schema %}
+{
+  "name": "KSP About Identity Chamber",
+  "tag": "section",
+  "class": "ksp-about-identity-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_protocol",
+      "label": "Protocol Code",
+      "default": "IDENT_V_X.01"
+    },
+    {
+      "type": "text",
+      "id": "main_heading",
+      "label": "Identity Title",
+      "default": "The Sovereign Spectrum"
+    },
+    {
+      "type": "textarea",
+      "id": "manifesto_text",
+      "label": "Identity Brand Manifesto",
+      "default": "We operate not as a brand, but as an ongoing orbital mythology. KingShadP is the gravitational pull of fragments caught of a mysterious core. Incomplete lines, aerospace telemetry, high-contrast silence, and pure matte dark void."
+    },
+    {
+      "type": "text",
+      "id": "origin_heading",
+      "label": "Origin Room Subheading",
+      "default": "Coordinates of Genesis"
+    },
+    {
+      "type": "richtext",
+      "id": "origin_story",
+      "label": "Origin Lore Text",
+      "default": "<p>KingShadP resides in the creative tension between the architect and the medium, known in our archives as The Creator // The Create. Our work spans sonic weight, premium garment specifications, and orbital geometry. The grid is absolute, yet purposely broken to remind us of weightlessness.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pillar",
+      "name": "Creative Pillar",
+      "settings": [
+        {
+          "type": "text",
+          "id": "pillar_index",
+          "label": "Metric Index (e.g. 01)",
+          "default": "01"
+        },
+        {
+          "type": "text",
+          "id": "pillar_title",
+          "label": "Pillar Code",
+          "default": "THE LUXURY OF SILENCE"
+        },
+        {
+          "type": "text",
+          "id": "pillar_description",
+          "label": "Core Definition",
+          "default": "Taste is knowing what to withhold. We let negative space do the storytelling. Absolute matte voids allow the observer to project their own truth."
+        }
+      ]
+    },
+    {
+      "type": "timeline_event",
+      "name": "Dossier Epoch Event",
+      "settings": [
+        {
+          "type": "text",
+          "id": "year",
+          "label": "Epoch Coordinates",
+          "default": "2024.12"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Event Naming",
+          "default": "Fragmentation Pulse Release"
+        },
+        {
+          "type": "text",
+          "id": "details",
+          "label": "Event Record Details",
+          "default": "The system shatters previous structures to emerge in ultra-high resolution monospaced telemetry grids."
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<section class="relative w-full py-20 px-6 lg:px-24 z-10 bg-transparent overflow-hidden" id="about-identity-room">
+  <div class="max-w-7xl mx-auto flex flex-col gap-24">
+    
+    <!-- Header: Bold Scrambling Title + Code label -->
+    <div class="relative w-full border-b border-ivory/10 pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+      <div>
+        <div class="font-mono text-[9px] text-gold uppercase tracking-[0.3em] mb-4">Identity Ledger Profile</div>
+        <h1 class="font-serif text-5xl lg:text-7xl text-ivory font-light scramble-text">
+          {{ section.settings.main_heading }}<span class="text-oxblood">.</span>
+        </h1>
+      </div>
+      <div class="font-mono text-[10px] text-oxblood bg-oxblood/10 border border-oxblood/30 px-3 py-1 uppercase tracking-widest leading-none">
+        {{ section.settings.section_protocol }}
+      </div>
+    </div>
+
+    <!-- Layout: Manifesto bento split -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      
+      <!-- Box 1: Core Manifesto in italic display serif font -->
+      <div class="lg:col-span-7 ruby-glass p-12 border-grid-box relative">
+        <div class="absolute -top-3 left-6 font-mono text-[9px] text-gold tracking-widest px-2 bg-void uppercase">// The Manifesto System</div>
+        <blockquote class="font-serif italic text-2xl md:text-3xl lg:text-4xl text-ivory leading-relaxed font-light">
+          "{{ section.settings.manifesto_text }}"
+        </blockquote>
+      </div>
+
+      <!-- Box 2: Origins Coordinates -->
+      <div class="lg:col-span-5 ruby-glass p-8 border-grid-box relative md:mt-12">
+        <div class="absolute -top-3 left-6 font-mono text-[9px] text-oxblood tracking-widest px-2 bg-void uppercase">// Origin Coordinates</div>
+        <h3 class="font-mono text-xs uppercase tracking-[0.2em] text-gold mb-6 mt-2">{{ section.settings.origin_heading }}</h3>
+        <div class="font-serif text-base text-ivory/70 leading-relaxed font-light prose-story mb-4">
+          {{ section.settings.origin_story }}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Creative Pillars Grid -->
+    <div>
+      <div class="font-mono text-[9px] text-gold uppercase tracking-[0.3em] mb-8">// Strategic Pillars of Creative Discipline</div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {% for block in section.blocks %}
+          {% if block.type == 'pillar' %}
+            <div class="border border-ivory/10 hover:border-gold/30 ruby-glass p-8 transition-all duration-300 relative group">
+              <span class="absolute top-4 right-4 font-mono text-[10px] text-oxblood group-hover:text-gold transition-colors duration-300">{{ block.settings.pillar_index }}</span>
+              <h4 class="font-serif text-xl text-ivory font-light tracking-[0.05em] mb-4 group-hover:text-gold transition-colors duration-300">{{ block.settings.pillar_title }}</h4>
+              <p class="font-mono text-[11px] text-ivory/60 leading-relaxed">{{ block.settings.pillar_description }}</p>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Timeline ledger dossier -->
+    <div class="ruby-glass border-grid-box p-12 relative overflow-hidden">
+      <div class="absolute -top-3 left-6 font-mono text-[9px] text-gold tracking-widest px-2 bg-void uppercase">// Historical System Logs</div>
+      <div class="max-w-3xl mx-auto flex flex-col gap-8 timeline-ledgers mt-4 relative before:absolute before:left-3 before:top-4 before:bottom-4 before:w-[1px] before:bg-ivory/10">
+        {% for block in section.blocks %}
+          {% if block.type == 'timeline_event' %}
+            <div class="flex flex-col md:flex-row gap-6 relative pl-12">
+              <span class="absolute left-1.5 top-1.5 w-3 h-3 rounded-full bg-gold border border-void"></span>
+              <div class="md:w-32 flex-shrink-0 font-mono text-sm text-oxblood tracking-widest leading-none pt-1">{{ block.settings.year }}</div>
+              <div class="flex-grow">
+                <h5 class="font-serif text-lg text-ivory mb-2 font-light">{{ block.settings.title }}</h5>
+                <p class="font-mono text-[10px] text-ivory/50 uppercase leading-relaxed">{{ block.settings.details }}</p>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- CTA links to other systemic modules -->
+    <div class="border-t border-ivory/10 pt-12 flex flex-col md:flex-row justify-between items-center gap-6">
+      <div class="font-mono text-[10px] text-ivory/40">SYSTEM ALIGNED // RETRIEVE FURTHER SPECTRUM</div>
+      <div class="flex gap-8 font-mono text-xs">
+        <a href="/pages/music" class="text-ivory hover:text-gold transition-colors flex items-center gap-2">
+          <span class="text-oxblood">//</span> LISTEN
+        </a>
+        <a href="/pages/lookbook" class="text-ivory hover:text-gold transition-colors flex items-center gap-2">
+          <span class="text-oxblood">//</span> VISUAL
+        </a>
+        <a href="/collections/all" class="text-ivory hover:text-gold transition-colors flex items-center gap-2">
+          <span class="text-oxblood">//</span> ACQUIRE
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>

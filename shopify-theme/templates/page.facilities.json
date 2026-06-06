@@ -1,0 +1,10 @@
+{
+  "sections": {
+    "facilities": {
+      "type": "ksp-facilities-map"
+    }
+  },
+  "order": [
+    "facilities"
+  ]
+}

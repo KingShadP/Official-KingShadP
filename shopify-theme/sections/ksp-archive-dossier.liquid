@@ -1,0 +1,114 @@
+{% schema %}
+{
+  "name": "KSP Archive Dossier",
+  "tag": "section",
+  "class": "ksp-archive-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "vault_index",
+      "label": "Chronicle System Index",
+      "default": "SYSTEM_CHRON_IX.09"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "The Avarice Archives"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subtitle",
+      "default": "DEEP DEPOSIT RECORDS -- ORBITAL MYTHOLOGY dossier"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Librarian Preface",
+      "default": "All coordinates lead back to the center of weight. Under silent conditions, we maintain chronological dossiers, world fragments, and historic blueprints."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "lore_entry",
+      "name": "Archive Lore Artifact",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Registry Tag",
+          "default": "SHARD_LORE.22"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Artifact Naming",
+          "default": "Avarice Fragmentation Vector"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Historical Subtitle",
+          "default": "METADATA OF DESTABILIZED ASSETS"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Lore Documentation Text",
+          "default": "<p>A deep study into cumulative avarice. When elements are gathered without a sacred core, they create structural instability. KingShadP operates a restoration protocol through stark restraint and extreme sound manipulation.</p>"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<section class="relative w-full py-20 px-6 lg:px-24 z-10 bg-transparent overflow-hidden" id="archive-dossier-room">
+  <div class="max-w-7xl mx-auto flex flex-col gap-16">
+    
+    <!-- Header of the Vault -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-ivory/10 pb-8">
+      <div>
+        <div class="font-mono text-[9px] text-gold uppercase tracking-[0.3em] mb-4">{{ section.settings.subheading }}</div>
+        <h2 class="font-serif text-5xl lg:text-6xl text-ivory font-light scramble-text">{{ section.settings.heading }}</h2>
+      </div>
+      <div class="font-mono text-[10px] text-oxblood bg-oxblood/10 border border-oxblood/30 px-3 py-1 uppercase tracking-widest leading-none">
+        {{ section.settings.vault_index }}
+      </div>
+    </div>
+
+    <!-- Intro Preface in museum formatting -->
+    <div class="max-w-3xl border-l border-gold/40 pl-8 font-serif text-lg text-ivory/80 italic font-light">
+      <p class="leading-relaxed">"{{ section.settings.intro }}"</p>
+    </div>
+
+    <!-- Lore Artifact Dossier Entries -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12" id="grid-lore-artifacts">
+      {% for block in section.blocks %}
+        {% if block.type == 'lore_entry' %}
+          <div class="ruby-glass border-grid-box p-8 flex flex-col justify-between relative group/dossier hover:border-gold/30 transition-all duration-300">
+            <div class="absolute top-4 right-4 font-mono text-[9px] text-oxblood bg-oxblood/10 border border-oxblood/20 px-2 py-0.5 tracking-widest uppercase">
+              {{ block.settings.tag }}
+            </div>
+            
+            <div>
+              <div class="font-mono text-[9px] text-gold uppercase tracking-[0.2em] mb-2">{{ block.settings.subtitle }}</div>
+              <h3 class="font-serif text-2xl font-light text-ivory mb-6 tracking-wide group-hover/dossier:text-gold transition-colors duration-300">{{ block.settings.title }}</h3>
+              
+              <div class="font-serif text-sm leading-relaxed text-ivory/70 space-y-4 font-light">
+                {{ block.settings.content }}
+              </div>
+            </div>
+
+            <div class="border-t border-ivory/10 pt-4 mt-8 flex justify-between items-center font-mono text-[9px] text-ivory/40">
+              <span>RECORD_UNLOCKED</span>
+              <span>VER_9.0</span>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+  </div>
+</section>

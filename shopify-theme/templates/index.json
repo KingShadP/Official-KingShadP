@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "hero3d": {
+      "type": "hero3d-divine"
+    },
+    "hero": {
+      "type": "divine-hero"
+    },
+    "verse": {
+      "type": "the-verse"
+    }
+  },
+  "order": [
+    "hero3d",
+    "hero",
+    "verse"
+  ]
+}

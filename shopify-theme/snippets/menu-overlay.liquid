@@ -1,0 +1,108 @@
+<!-- Accessible Native Dialog Menu Overlay -->
+<dialog id="shopify-menu-overlay" class="fixed inset-0 z-50 w-full h-full max-w-none max-h-none p-0 m-0 bg-void text-ivory backdrop:bg-transparent overflow-hidden border-0">
+  
+  <!-- Header Area Inside Dialog -->
+  <div class="absolute top-0 left-0 right-0 p-6 lg:p-10 flex justify-between items-start z-20 pointer-events-none">
+    <div class="flex flex-col gap-1 pointer-events-auto">
+      <div 
+        id="menu-overlay-branding"
+        class="font-serif text-2xl text-ivory font-light italic tracking-tight opacity-90 cursor-pointer"
+        tabindex="0"
+        role="button"
+        aria-label="Return home and close menu"
+      >
+        KingShadP<span class="text-oxblood drop-shadow-[0_0_8px_rgba(147,0,10,0.8)]">.</span>
+      </div>
+    </div>
+    <button
+      id="shopify-menu-close"
+      class="text-ivory bg-transparent border-0 font-mono text-xs tracking-widest uppercase hover:text-gold transition-colors focus:outline-none focus:ring-2 focus:ring-gold pointer-events-auto cursor-crosshair"
+      aria-label="Close menu"
+    >
+      [ Close ]
+    </button>
+  </div>
+
+  <div class="w-full h-full flex flex-col md:flex-row">
+    <!-- Left side: Cinematic Looping Hooded mockup video -->
+    <div class="hidden md:block w-3/5 h-full relative overflow-hidden bg-void/50">
+      <video
+        src="{{ 'model_wearing_kingshadp_hoodie_202605270727.mp4' | asset_url }}"
+        autoplay
+        muted
+        loop
+        playsinline
+        class="w-full h-full object-cover filter contrast-[1.1] saturate-50 brightness-[0.85] opacity-50"
+      ></video>
+      <div class="absolute inset-0 bg-noise mix-blend-overlay opacity-30 pointer-events-none"></div>
+    </div>
+
+    <!-- Right side: Asymmetrical nav links -->
+    <div class="flex-1 h-full flex flex-col justify-center px-8 lg:px-24 pt-32 pb-24 border-l border-ivory/10 bg-void">
+      <nav class="flex flex-col gap-8 md:gap-12 relative z-10 w-full md:items-end md:text-right">
+        <a
+          href="#the-verse"
+          class="menu-link font-serif text-5xl lg:text-7xl font-light italic text-ivory hover:text-gold transition-colors focus:outline-none focus:ring-2 focus:ring-gold group decoration-none"
+          style="text-decoration: none;"
+        >
+          <span class="text-xs font-mono tracking-widest text-oxblood mr-4 opacity-50 group-hover:opacity-100 uppercase align-middle">01</span>
+          The Verse
+        </a>
+        <a
+          href="#visual-vault"
+          class="menu-link font-serif text-5xl lg:text-7xl font-light italic text-ivory hover:text-gold transition-colors focus:outline-none focus:ring-2 focus:ring-gold group decoration-none"
+          style="text-decoration: none;"
+        >
+          <span class="text-xs font-mono tracking-widest text-oxblood mr-4 opacity-50 group-hover:opacity-100 uppercase align-middle">02</span>
+          Visual Vault
+        </a>
+        <a
+          href="#cinema-vault"
+          class="menu-link font-serif text-5xl lg:text-7xl font-light italic text-ivory hover:text-gold transition-colors focus:outline-none focus:ring-2 focus:ring-gold group decoration-none"
+          style="text-decoration: none;"
+        >
+          <span class="text-xs font-mono tracking-widest text-oxblood mr-4 opacity-50 group-hover:opacity-100 uppercase align-middle">03</span>
+          Cinema Vault
+        </a>
+        <a
+          href="#archives"
+          class="menu-link font-serif text-5xl lg:text-7xl font-light italic text-ivory hover:text-gold transition-colors focus:outline-none focus:ring-2 focus:ring-gold group decoration-none"
+          style="text-decoration: none;"
+        >
+          <span class="text-xs font-mono tracking-widest text-oxblood mr-4 opacity-50 group-hover:opacity-100 uppercase align-middle">04</span>
+          Archives
+        </a>
+      </nav>
+
+      <!-- Language Toggle with large touch targets -->
+      <div class="mt-auto pt-16 flex justify-end gap-2 languages-selector">
+        <button
+          data-lang="EN"
+          aria-label="Switch language to EN"
+          aria-pressed="true"
+          class="min-w-[44px] min-h-[44px] flex items-center justify-center font-mono text-xs tracking-widest text-gold border-b border-gold bg-transparent border-0 focus:outline-none focus:ring-2 focus:ring-gold cursor-crosshair"
+        >
+          EN
+        </button>
+        <button
+          data-lang="IT"
+          aria-label="Switch language to IT"
+          aria-pressed="false"
+          class="min-w-[44px] min-h-[44px] flex items-center justify-center font-mono text-xs tracking-widest text-ivory/50 hover:text-ivory bg-transparent border-0 focus:outline-none focus:ring-2 focus:ring-gold cursor-crosshair"
+        >
+          IT
+        </button>
+        <button
+          data-lang="DE"
+          aria-label="Switch language to DE"
+          aria-pressed="false"
+          class="min-w-[44px] min-h-[44px] flex items-center justify-center font-mono text-xs tracking-widest text-ivory/50 hover:text-ivory bg-transparent border-0 focus:outline-none focus:ring-2 focus:ring-gold cursor-crosshair"
+        >
+          DE
+        </button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+{{ 'menu-overlay.js' | asset_url | script_tag }}

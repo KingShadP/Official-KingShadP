@@ -1,0 +1,10 @@
+{
+  "sections": {
+    "main": {
+      "type": "ksp-lost-vault-404"
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

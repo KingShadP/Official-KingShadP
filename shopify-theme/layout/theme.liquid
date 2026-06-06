@@ -1,0 +1,77 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {% render 'meta-tags' %}
+
+    {{ content_for_header }}
+
+    <!-- Fonts: Space Grotesk, Inter, and Cinzel (Editorial Serif) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:ital,wght@0,300..900;1,300..900&family=Inter:wght@100..900&family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+    <!-- CSS Tailored Stylesheet -->
+    {{ 'divine-archive.css' | asset_url | stylesheet_tag }}
+  </head>
+
+  <body class="bg-void text-ivory antialiased crt-scanlines selection:bg-oxblood selection:text-white">
+    <!-- Starfield Interactive Canvas Background -->
+    <canvas id="starfield-canvas" class="fixed inset-0 w-full h-full z-0 pointer-events-none opacity-80"></canvas>
+    
+    <a class="skip-to-content-link button sr-only" href="#MainContent">
+      Skip to content
+    </a>
+
+    <!-- Custom Micro-Interactive Trailing Cursor -->
+    {% render 'custom-cursor' %}
+
+    <!-- Atmosphere & Background Overlays -->
+    {% render 'background-effects' %}
+
+    <!-- Accessible Navigation Drawer Dialog overlay -->
+    {% render 'menu-overlay' %}
+
+    <!-- Interactive Floating Bookmark CTA -->
+    {% render 'floating-action-button' %}
+
+    <!-- Global Layout Container -->
+    <div class="relative z-10 w-full flex flex-col min-h-screen">
+      {% sections 'header-group' %}
+
+      <main id="MainContent" class="flex-grow w-full focus:none" role="main" tabindex="-1">
+        {{ content_for_layout }}
+      </main>
+
+      {% sections 'footer-group' %}
+    </div>
+
+    <!-- JS Core Framework & Motion Libraries -->
+    {{ 'starfield.js' | asset_url | script_tag }}
+    {{ 'smooth-scroller.js' | asset_url | script_tag }}
+    {{ 'scramble-text.js' | asset_url | script_tag }}
+    {{ 'scroll-progress.js' | asset_url | script_tag }}
+    {{ 'scroll-particle-burst.js' | asset_url | script_tag }}
+    {{ 'divine-archive.js' | asset_url | script_tag }}
+  </body>
+</html>

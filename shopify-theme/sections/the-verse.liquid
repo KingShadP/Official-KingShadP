@@ -1,0 +1,684 @@
+{% schema %}
+{
+  "name": "The Verse Experience",
+  "tag": "section",
+  "class": "section-the-verse",
+  "settings": [
+    {
+      "type": "header",
+      "content": "01. Primary Artifacts Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Artifacts Heading",
+      "default": "Primary Artifacts"
+    },
+    {
+      "type": "header",
+      "content": "02. The Sonic Vault Settings"
+    },
+    {
+      "type": "text",
+      "id": "sonic_sub",
+      "label": "Decrypted Directory Tag",
+      "default": "Decrypted Directory"
+    },
+    {
+      "type": "text",
+      "id": "sonic_title",
+      "label": "Sonic Vault Title",
+      "default": "The Sonic Vault"
+    },
+    {
+      "type": "text",
+      "id": "sonic_text_title",
+      "label": "Sonic Collection Title",
+      "default": "Signature Details Vol. 1"
+    },
+    {
+      "type": "text",
+      "id": "sonic_description",
+      "label": "Sonic Caption",
+      "default": "// High-Fidelity Audio Fragments extracted from the central archive."
+    },
+    {
+      "type": "header",
+      "content": "03. Cinema Vault Settings"
+    },
+    {
+      "type": "text",
+      "id": "cinema_sub",
+      "label": "Class Label",
+      "default": "Class: OMEGA"
+    },
+    {
+      "type": "text",
+      "id": "cinema_title",
+      "label": "Cinema Vault Title",
+      "default": "Cinema Vault"
+    },
+    {
+      "type": "image_picker",
+      "id": "cinema_img_1",
+      "label": "Cinema Card 1 Image"
+    },
+    {
+      "type": "text",
+      "id": "cinema_lbl_1",
+      "label": "Cinema Card 1 Title",
+      "default": "The Platinum Standard"
+    },
+    {
+      "type": "image_picker",
+      "id": "cinema_img_2",
+      "label": "Cinema Card 2 Image"
+    },
+    {
+      "type": "text",
+      "id": "cinema_lbl_2",
+      "label": "Cinema Card 2 Title",
+      "default": "Ruby Reflections"
+    },
+    {
+      "type": "image_picker",
+      "id": "cinema_img_3",
+      "label": "Cinema Card 3 Image"
+    },
+    {
+      "type": "text",
+      "id": "cinema_lbl_3",
+      "label": "Cinema Card 3 Title",
+      "default": "Crown Presence"
+    },
+    {
+      "type": "image_picker",
+      "id": "cinema_img_4",
+      "label": "Cinema Card 4 Image"
+    },
+    {
+      "type": "text",
+      "id": "cinema_lbl_4",
+      "label": "Cinema Card 4 Title",
+      "default": "Echoes of Gold"
+    },
+    {
+      "type": "header",
+      "content": "04. Visual Vault Settings"
+    },
+    {
+      "type": "text",
+      "id": "visual_sub",
+      "label": "Visual Sub-Heading",
+      "default": "The Crafted Archive of World & Presence"
+    },
+    {
+      "type": "text",
+      "id": "visual_title",
+      "label": "Visual Vault Title",
+      "default": "Visual Vault"
+    },
+    {
+      "type": "image_picker",
+      "id": "visual_img_1",
+      "label": "Asymmetric Image 1"
+    },
+    {
+      "type": "text",
+      "id": "visual_lbl_1",
+      "label": "Asymmetric Label 1",
+      "default": "The Crowned Standard"
+    },
+    {
+      "type": "image_picker",
+      "id": "visual_img_2",
+      "label": "Asymmetric Image 2"
+    },
+    {
+      "type": "text",
+      "id": "visual_lbl_2",
+      "label": "Asymmetric Label 2",
+      "default": "Crafted Silence"
+    },
+    {
+      "type": "image_picker",
+      "id": "visual_img_3",
+      "label": "Asymmetric Image 3"
+    },
+    {
+      "type": "text",
+      "id": "visual_lbl_3",
+      "label": "Asymmetric Label 3",
+      "default": "Private Command"
+    },
+    {
+      "type": "image_picker",
+      "id": "visual_img_4",
+      "label": "Asymmetric Image 4"
+    },
+    {
+      "type": "text",
+      "id": "visual_lbl_4",
+      "label": "Asymmetric Label 4",
+      "default": "Archive Presence"
+    },
+    {
+      "type": "header",
+      "content": "05. Narrative Prose Settings"
+    },
+    {
+      "type": "text",
+      "id": "narrative_title",
+      "label": "Official Intelligence Title",
+      "default": "TheOfficialIntelligence"
+    },
+    {
+      "type": "text",
+      "id": "narr_sub_1",
+      "label": "Prose Section 1 Title",
+      "default": "The Creator and The Create"
+    },
+    {
+      "type": "text",
+      "id": "narr_sub_2",
+      "label": "Prose Section 2 Title",
+      "default": "The Ruler Code"
+    },
+    {
+      "type": "text",
+      "id": "narr_sub_3",
+      "label": "Prose Section 3 Title",
+      "default": "The Luxury of Silence"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "artifact_link",
+      "name": "Artifact Index Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "index",
+          "label": "Index Display (e.g. 01)",
+          "default": "01"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Artifact Label Name",
+          "default": "The Silent Protocol"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link Location"
+        }
+      ]
+    },
+    {
+      "type": "protocol_link",
+      "name": "Protocol Catalogue Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "index",
+          "label": "Catalog Prefix (e.g. 01)",
+          "default": "01"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Protocol Listing Name",
+          "default": "Summit_Core"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Catalog Link Destination"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<section id="the-verse" class="relative w-full py-32 px-6 lg:px-24 z-10 border-t border-ivory/10 bg-transparent overflow-hidden">
+  <div class="max-w-7xl mx-auto w-full relative z-10 flex flex-col gap-32">
+    
+    <!-- 1. Primary Artifacts List -->
+    <div class="section-block relative" id="verse-artifacts-list">
+      <div class="flex flex-col lg:flex-row gap-12 lg:gap-24">
+        <div class="flex-1">
+          <h2 class="font-serif text-5xl lg:text-6xl text-ivory font-light mb-8 scramble-text">
+            {{ section.settings.section_title }}<span class="text-gold">.</span>
+          </h2>
+        </div>
+        <div class="flex-1 flex flex-col gap-8 font-mono text-sm tracking-[0.2em] uppercase text-ivory/80">
+          {%- assign links_found = false -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'artifact_link' -%}
+              {%- assign links_found = true -%}
+              <a href="{{ block.settings.link | default: '#' }}" class="flex items-center gap-4 hover:text-gold hover:translate-x-2 transition-all cursor-crosshair decoration-none" style="color: inherit; text-decoration: none;" {{ block.shopify_attributes }}>
+                <span class="text-oxblood">{{ block.settings.index }} //</span> {{ block.settings.title }}
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- if links_found == false -%}
+            <!-- Fallback Mock list matching Original layout -->
+            <div class="flex items-center gap-4 hover:text-gold hover:translate-x-2 transition-all cursor-crosshair">
+              <span class="text-oxblood">01 //</span> The Silent Protocol
+            </div>
+            <div class="flex items-center gap-4 hover:text-gold hover:translate-x-2 transition-all cursor-crosshair">
+              <span class="text-oxblood">02 //</span> Vision Architect
+            </div>
+            <div class="flex items-center gap-4 hover:text-gold hover:translate-x-2 transition-all cursor-crosshair">
+              <span class="text-oxblood">03 //</span> Echo Directive
+            </div>
+            <div class="flex items-center gap-4 hover:text-gold hover:translate-x-2 transition-all cursor-crosshair">
+              <span class="text-oxblood">04 //</span> Final Command
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. The Sonic Vault -->
+    <div class="section-block border-t border-ivory/10 pt-16" id="verse-sonic-vault">
+      <p class="font-mono text-[10px] text-ivory/40 tracking-[0.3em] uppercase mb-4">{{ section.settings.sonic_sub }}</p>
+      <h2 class="font-serif text-5xl lg:text-7xl text-ivory font-light mb-12 scramble-text">
+        {{ section.settings.sonic_title }}
+      </h2>
+      <div 
+        id="sonic-vault-trigger"
+        class="bg-ivory/5 border border-ivory/10 p-8 flex flex-col gap-4 relative overflow-hidden group hover:border-gold/30 transition-colors cursor-crosshair"
+      >
+        <div class="absolute inset-0 bg-noise mix-blend-overlay opacity-30 pointer-events-none"></div>
+        <h4 class="font-serif text-2xl text-ivory font-light group-hover:text-gold transition-colors z-10 relative flex justify-between items-center">
+          <span>{{ section.settings.sonic_text_title }}</span>
+          <span class="font-mono text-xs text-gold/60 uppercase tracking-widest animate-pulse">[ TOGGLE TRANSMISSION ]</span>
+        </h4>
+        <p class="font-mono text-xs text-ivory/60 tracking-[0.1em] uppercase z-10 relative">
+          {{ section.settings.sonic_description }}
+        </p>
+
+        <!-- CSS Audio Visualizer Lines Bars -->
+        <div id="sonic-visualizer-bars" class="h-6 gap-1 items-end opacity-20 group-hover:opacity-100 flex transition-opacity absolute right-8 top-16 z-0">
+          <div class="w-[2px] bg-gold divine-vis-bar" style="height: 30%; --d: 0.1s;"></div>
+          <div class="w-[2px] bg-gold divine-vis-bar" style="height: 70%; --d: 0.3s;"></div>
+          <div class="w-[2px] bg-gold divine-vis-bar" style="height: 45%; --d: 0.2s;"></div>
+          <div class="w-[2px] bg-gold divine-vis-bar" style="height: 90%; --d: 0.5s;"></div>
+          <div class="w-[2px] bg-gold divine-vis-bar" style="height: 20%; --d: 0.4s;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kinetic Shard Burst Zone 1 -->
+    <div class="scroll-particle-burst-container relative h-1 my-6"></div>
+
+    <!-- 3. Cinema Vault Showcase -->
+    <div class="section-block border-t border-ivory/10 pt-16" id="verse-cinema-vault">
+      <p class="font-mono text-[10px] text-ivory/40 tracking-[0.3em] uppercase mb-4">{{ section.settings.cinema_sub }}</p>
+      <h2 class="font-serif text-5xl lg:text-7xl text-ivory font-light mb-12 scramble-text">
+        {{ section.settings.cinema_title }}
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- 3.1 Product Item 1 -->
+        <div class="aspect-[16/9] border border-ivory/10 relative group cursor-crosshair overflow-hidden bg-void">
+          {%- if section.settings.cinema_img_1 != blank -%}
+            <img src="{{ section.settings.cinema_img_1 | image_url: width: 1024 }}" alt="{{ section.settings.cinema_lbl_1 }}" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply grayscale opacity-20 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700">
+          {%- else -%}
+            <img src="{{ 'front_black.jpg' | asset_url }}" alt="Platinum Hoodie" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply grayscale opacity-25 group-hover:opacity-65 group-hover:scale-105 transition-all duration-700">
+          {%- endif -%}
+          <div class="absolute inset-0 flex items-center justify-center p-8 text-center transition-all">
+            <h4 class="font-serif text-2.5xl text-ivory font-light italic group-hover:text-gold transition-colors">{{ section.settings.cinema_lbl_1 }}</h4>
+          </div>
+        </div>
+
+        <!-- 3.2 Product Item 2 -->
+        <div class="aspect-[16/9] border border-ivory/10 relative group cursor-crosshair overflow-hidden bg-void">
+          {%- if section.settings.cinema_img_2 != blank -%}
+            <img src="{{ section.settings.cinema_img_2 | image_url: width: 1024 }}" alt="{{ section.settings.cinema_lbl_2 }}" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply grayscale opacity-20 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700">
+          {%- else -%}
+            <img src="{{ 'unisex_organic_mid_light_crafter_t_shirt_desert_dust_front_6a16dd454c251.jpg' | asset_url }}" alt="Reflections Tee" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply grayscale opacity-25 group-hover:opacity-65 group-hover:scale-105 transition-all duration-700">
+          {%- endif -%}
+          <div class="absolute inset-0 flex items-center justify-center p-8 text-center transition-all">
+            <h4 class="font-serif text-2.5xl text-ivory font-light italic group-hover:text-gold transition-colors">{{ section.settings.cinema_lbl_2 }}</h4>
+          </div>
+        </div>
+
+        <!-- 3.3 Product Item 3 -->
+        <div class="aspect-[16/9] border border-ivory/10 relative group cursor-crosshair overflow-hidden bg-void">
+          {%- if section.settings.cinema_img_3 != blank -%}
+            <img src="{{ section.settings.cinema_img_3 | image_url: width: 1024 }}" alt="{{ section.settings.cinema_lbl_3 }}" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply grayscale opacity-20 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700">
+          {%- else -%}
+            <img src="{{ 'unisex_columbia_soft_shell_jacket_collegiate_navy_front_6a16eba5ad374.jpg' | asset_url }}" alt="Navy Jacket" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply grayscale opacity-25 group-hover:opacity-65 group-hover:scale-105 transition-all duration-700">
+          {%- endif -%}
+          <div class="absolute inset-0 flex items-center justify-center p-8 text-center transition-all">
+            <h4 class="font-serif text-2.5xl text-ivory font-light italic group-hover:text-gold transition-colors">{{ section.settings.cinema_lbl_3 }}</h4>
+          </div>
+        </div>
+
+        <!-- 3.4 Product Item 4 -->
+        <div class="aspect-[16/9] border border-ivory/10 relative group cursor-crosshair overflow-hidden bg-void">
+          {%- if section.settings.cinema_img_4 != blank -%}
+            <img src="{{ section.settings.cinema_img_4 | image_url: width: 1024 }}" alt="{{ section.settings.cinema_lbl_4 }}" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply grayscale opacity-20 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700">
+          {%- else -%}
+            <img src="{{ 'unisex_organic_mid_light_crafter_t_shirt_black_back_6a16dd454caca.jpg' | asset_url }}" alt="Gold Echo Screen back" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply grayscale opacity-25 group-hover:opacity-65 group-hover:scale-105 transition-all duration-700">
+          {%- endif -%}
+          <div class="absolute inset-0 flex items-center justify-center p-8 text-center transition-all">
+            <h4 class="font-serif text-2.5xl text-ivory font-light italic group-hover:text-gold transition-colors">{{ section.settings.cinema_lbl_4 }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Visual Vault Asymmetric Masterpiece -->
+    <div class="section-block border-t border-ivory/10 pt-16" id="verse-visual-vault">
+      <p class="font-mono text-[10px] text-ivory/40 tracking-[0.3em] uppercase mb-4">{{ section.settings.visual_sub }}</p>
+      <h2 class="font-serif text-5xl lg:text-7xl text-ivory font-light mb-12 scramble-text">
+        {{ section.settings.visual_title }}
+      </h2>
+      <div class="relative w-full pb-24">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 relative items-start">
+          
+          <!-- Asymmetric Item 1: Left 5 Span -->
+          <div class="md:col-span-5 md:col-start-1 relative z-10 transition-transform duration-700 ease-out hover:translate-y-[-10px]">
+            <div class="aspect-[3/4] border border-ivory/10 relative overflow-hidden bg-ivory/5 group">
+              {%- if section.settings.visual_img_1 != blank -%}
+                <img src="{{ section.settings.visual_img_1 | image_url: width: 800 }}" alt="{{ section.settings.visual_lbl_1 }}" class="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-700">
+              {%- else -%}
+                <img src="{{ 'chatgpt_image_may_28_2026_02_10_07_am_5_.png' | asset_url }}" alt="Standard Portrait" class="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-700">
+              {%- endif -%}
+              <div class="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent opacity-60"></div>
+            </div>
+            <div class="mt-6 md:-mt-12 md:pl-8 relative z-20 mix-blend-difference">
+              <h4 class="font-serif text-3xl md:text-5xl text-ivory italic">{{ section.settings.visual_lbl_1 }}</h4>
+              <p class="font-mono text-[10px] text-ivory/60 tracking-[0.2em] uppercase mt-2">Legacy / Artifact 01</p>
+            </div>
+          </div>
+
+          <!-- Asymmetric Item 2: Right Offset 5 Span -->
+          <div class="md:col-span-5 md:col-start-8 mt-16 md:mt-48 relative z-0 transition-transform duration-700 ease-out hover:translate-y-[10px]">
+            <div class="aspect-[4/3] border border-ivory/10 relative overflow-hidden bg-ivory/5 group">
+              {%- if section.settings.visual_img_2 != blank -%}
+                <img src="{{ section.settings.visual_img_2 | image_url: width: 800 }}" alt="{{ section.settings.visual_lbl_2 }}" class="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-700">
+              {%- else -%}
+                <img src="{{ 'chatgpt_image_may_28_2026_02_10_07_am_6_1_.png' | asset_url }}" alt="Crafted Silence" class="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-700">
+              {%- endif -%}
+            </div>
+            <div class="mt-6">
+              <h4 class="font-serif text-2xl text-ivory">{{ section.settings.visual_lbl_2 }}</h4>
+              <p class="font-mono text-[10px] text-ivory/50 tracking-[0.2em] uppercase mt-1">Vision / Artifact 02</p>
+            </div>
+          </div>
+
+          <!-- Asymmetric Item 3: Center Low 6 Span -->
+          <div class="md:col-span-6 md:col-start-4 mt-16 md:-mt-24 relative z-20 transition-transform duration-700 ease-out hover:scale-[1.01]">
+            <div class="aspect-[16/9] border border-ivory/10 relative overflow-hidden bg-ivory/5 group">
+              {%- if section.settings.visual_img_3 != blank -%}
+                <img src="{{ section.settings.visual_img_3 | image_url: width: 1024 }}" alt="{{ section.settings.visual_lbl_3 }}" class="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-700">
+              {%- else -%}
+                <img src="{{ 'chatgpt_image_may_28_2026_02_10_36_am_1_1_.png' | asset_url }}" alt="Private Command" class="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-700">
+              {%- endif -%}
+            </div>
+            <div class="mt-6 bg-void/80 backdrop-blur-sm p-6 border border-ivory/5 -ml-4 md:-ml-8 mr-4 md:mr-0 inline-block shadow-2xl">
+              <h4 class="font-serif text-2xl text-ivory font-light italic">{{ section.settings.visual_lbl_3 }}</h4>
+              <p class="font-mono text-[10px] text-ivory/50 tracking-[0.2em] uppercase mt-1">Motion / Artifact 03</p>
+            </div>
+          </div>
+          
+          <!-- Asymmetric Item 4: Bottom Right 4 Span -->
+          <div class="md:col-span-4 md:col-start-9 mt-16 md:mt-32 relative z-10 transition-transform duration-700 ease-out hover:translate-y-[-5px]">
+            <div class="aspect-square border border-ivory/10 relative overflow-hidden bg-ivory/5 group">
+              {%- if section.settings.visual_img_4 != blank -%}
+                <img src="{{ section.settings.visual_img_4 | image_url: width: 600 }}" alt="{{ section.settings.visual_lbl_4 }}" class="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-700">
+              {%- else -%}
+                <img src="{{ 'chatgpt_image_may_28_2026_02_11_23_am_1_.png' | asset_url }}" alt="Archive Presence detail" class="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-700">
+              {%- endif -%}
+            </div>
+            <div class="mt-6 text-right md:pr-8 md:-mt-12 relative z-20 mix-blend-difference">
+              <h4 class="font-serif text-2xl text-ivory">{{ section.settings.visual_lbl_4 }}</h4>
+              <p class="font-mono text-[10px] text-ivory/50 tracking-[0.2em] uppercase mt-1">Myth / Artifact 04</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Kinetic Shard Burst Zone 2 -->
+    <div class="scroll-particle-burst-container relative h-1 my-6"></div>
+
+    <!-- 5. Intellectual Narrative Prose -->
+    <div class="section-block border-t border-ivory/10 pt-16 mt-8 max-w-4xl mx-auto" id="verse-brand-mythology">
+      
+      <!-- Primary Title -->
+      <h2 class="font-serif text-5xl lg:text-7xl text-ivory font-light mb-8 scramble-text">
+        {{ section.settings.narrative_title }}<span class="text-gold">.</span>
+      </h2>
+      
+      <!-- Sub-section 1 -->
+      <div class="font-serif text-lg md:text-xl text-ivory/80 leading-relaxed font-light space-y-6">
+        <p>
+          The Verse begins as a name, but the name is only the surface. Beneath it is a system of identity, taste, self-invention, contradiction, confidence, pain, performance, discipline, symbolism, and transformation.
+        </p>
+        <p>
+          The world of KingShadP is luxurious, but luxury alone is too common. Luxury without meaning becomes costume. Power without restraint becomes noise. Confidence without emotional intelligence becomes arrogance. Mythology without truth becomes fantasy that collapses under its own decoration.
+        </p>
+        <p>
+          The Official Intelligence exists to prevent that collapse. It gives the crown a brain, the dragon a purpose, the sound a body, the visuals a hierarchy, and the human a way to survive inside the persona.
+        </p>
+        <p>
+          This is KingShadP not as a passing idea, but as architecture. This is the crown with a conscience.
+        </p>
+      </div>
+
+      <!-- Theme/Chapter Block 1 -->
+      <div class="mt-24">
+        <h3 class="font-serif text-3xl lg:text-4xl text-ivory font-light mb-6 flex items-center gap-4">
+          <span class="w-8 h-[1px] bg-gold"></span>
+          {{ section.settings.narr_sub_1 }}
+        </h3>
+        <div class="font-serif text-base md:text-lg text-ivory/70 leading-relaxed font-light space-y-6">
+          <p>
+            At the center of KingShadP lives a split: The Creator // The Create. This is not just a clever phrase. It is the psychological engine of the entire world.
+          </p>
+          <p>
+            The Creator is the architect. He is the part of the self that chooses the name, designs the symbols, imagines the room, writes the line, edits the image, builds the website, selects the palette, shapes the sound, and decides how the world should feel.
+          </p>
+          <p>
+            The Create is the result. He is what happens after the dream takes form. He is the human who must live inside the persona. He experiences the weight of being seen, the pressure of consistency...
+          </p>
+          <p>
+            The Creator made the myth. The Create survived it. KingShadP is what happens when both refuse to disappear.
+          </p>
+        </div>
+      </div>
+
+      <!-- Theme/Chapter Block 2 -->
+      <div class="mt-24">
+        <h3 class="font-serif text-3xl lg:text-4xl text-ivory font-light mb-6 flex items-center gap-4">
+          <span class="w-8 h-[1px] bg-oxblood"></span>
+          {{ section.settings.narr_sub_2 }}
+        </h3>
+        <div class="font-serif text-base md:text-lg text-ivory/70 leading-relaxed font-light space-y-6">
+          <p>
+            The Ruler is the dominant archetype of KingShadP, but the Ruler must be understood correctly. This is not a cartoon king. This is not costume royalty.
+          </p>
+          <p>
+            The Ruler code begins with hierarchy. Everything in the world of KingShadP needs rank. The crest carries recognition and house authority. The wordmark carries official naming.
+          </p>
+          <p>
+            A true Ruler does not beg. Begging energy weakens the brand faster than imperfection does. The Ruler code says: do the work, define the standard, and let recognition grow from consistency.
+          </p>
+          <p>
+            Own the room. Do not overcrowd it. Let every object know its rank. Let every silence have weight. Let the standard speak before the mouth does.
+          </p>
+        </div>
+      </div>
+
+      <!-- Theme/Chapter Block 3 -->
+      <div class="mt-24">
+        <h3 class="font-serif text-3xl lg:text-4xl text-ivory font-light mb-6 flex items-center gap-4">
+          <span class="w-8 h-[1px] bg-ivory/50"></span>
+          {{ section.settings.narr_sub_3 }}
+        </h3>
+        <div class="font-serif text-base md:text-lg text-ivory/70 leading-relaxed font-light space-y-6">
+          <p>
+            Taste is not the ability to add expensive-looking things. Taste is the ability to know what not to add. The risk is not emptiness. The risk is excess without hierarchy.
+          </p>
+          <p>
+            Restraint is what turns luxury from decoration into atmosphere. A room with every symbol displayed at once feels insecure. A room with one correct symbol in the right place feels controlled.
+          </p>
+          <p>
+            The luxury of silence is that it lets the audience lean in. When everything is obvious, the audience consumes and leaves. When something is withheld, they interpret. They search. They remember.
+          </p>
+          <p>
+            Taste is the discipline of choosing. Restraint is the confidence to stop.
+          </p>
+        </div>
+      </div>
+      
+      <!-- 6. Protocols Catalogue links -->
+      <div class="mt-24 pt-16 border-t border-ivory/10 pb-16">
+        <h3 class="font-serif text-3xl lg:text-4xl text-ivory font-light mb-8">
+          Protocols
+        </h3>
+        <div class="flex flex-col gap-4 font-mono text-sm tracking-[0.2em] uppercase text-ivory/80">
+          {%- assign protocols_found = false -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'protocol_link' -%}
+              {%- assign protocols_found = true -%}
+              <a href="{{ block.settings.link | default: '#' }}" class="flex items-center gap-4 hover:text-gold hover:translate-x-2 transition-all cursor-crosshair decoration-none" style="color: inherit; text-decoration: none;" {{ block.shopify_attributes }}>
+                <span class="text-oxblood">{{ block.settings.index }} /</span> {{ block.settings.title }}
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- if protocols_found == false -%}
+            <a href="#" class="flex items-center gap-4 hover:text-gold hover:translate-x-2 transition-all decoration-none" style="color: inherit; text-decoration: none;">
+              <span class="text-oxblood">01 /</span> Summit_Core
+            </a>
+            <a href="#" class="flex items-center gap-4 hover:text-gold hover:translate-x-2 transition-all decoration-none" style="color: inherit; text-decoration: none;">
+              <span class="text-oxblood">02 /</span> Mirror_Feeds
+            </a>
+            <a href="#" class="flex items-center gap-4 hover:text-gold hover:translate-x-2 transition-all decoration-none" style="color: inherit; text-decoration: none;">
+              <span class="text-oxblood">03 /</span> Neural_Archive
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Simple Native HTML Decrypted Transmission Sound effect generator -->
+<script>
+  (function() {
+    document.addEventListener('DOMContentLoaded', () => {
+      const trigger = document.getElementById('sonic-vault-trigger');
+      if (!trigger) return;
+
+      let audioCtx = null;
+      let isPlaying = false;
+      let gainNode = null;
+      let oscNode1 = null;
+      let oscNode2 = null;
+
+      // Audio Synthesis Loop
+      function startTransmission() {
+        if (!audioCtx) {
+          // Cross-browser context
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
+        // Beautiful deep continuous cyber synth and mechanical clicking hums
+        gainNode = audioCtx.createGain();
+        gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
+
+        // Low frequency hum tone
+        oscNode1 = audioCtx.createOscillator();
+        oscNode1.type = 'sawtooth';
+        oscNode1.frequency.setValueAtTime(55, audioCtx.currentTime); // A1 hum
+        
+        // Secondary filtering modulation
+        oscNode2 = audioCtx.createOscillator();
+        oscNode2.type = 'sine';
+        oscNode2.frequency.setValueAtTime(110, audioCtx.currentTime); // A2 filter overtone
+
+        // Low Pass Filter for ultra-warm velvet atmosphere
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(180, audioCtx.currentTime);
+
+        // Connect modules
+        oscNode1.connect(filter);
+        oscNode2.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        oscNode1.start();
+        oscNode2.start();
+
+        // Animate visual synthesizer lines dynamically
+        const bars = document.querySelectorAll('.divine-vis-bar');
+        bars.forEach(bar => {
+          bar.style.animation = 'divine-bar-bounce 0.8s ease-in-out infinite alternate';
+          bar.style.animationDelay = bar.style.getPropertyValue('--d');
+        });
+
+        isPlaying = true;
+      }
+
+      function stopTransmission() {
+        if (oscNode1) {
+          try { oscNode1.stop(); } catch(e){}
+        }
+        if (oscNode2) {
+          try { oscNode2.stop(); } catch(e){}
+        }
+        
+        const bars = document.querySelectorAll('.divine-vis-bar');
+        bars.forEach(bar => {
+          bar.style.animation = 'none';
+        });
+
+        isPlaying = false;
+      }
+
+      trigger.addEventListener('click', () => {
+        if (!isPlaying) {
+          startTransmission();
+          trigger.classList.add('border-gold/60');
+          trigger.querySelector('span:last-child').innerText = '[ TRANSMISSION ONLINE ]';
+          trigger.querySelector('span:last-child').classList.remove('animate-pulse');
+          trigger.querySelector('span:last-child').classList.add('text-gold');
+        } else {
+          stopTransmission();
+          trigger.classList.remove('border-gold/60');
+          trigger.querySelector('span:last-child').innerText = '[ TOGGLE TRANSMISSION ]';
+          trigger.querySelector('span:last-child').classList.add('animate-pulse');
+          trigger.querySelector('span:last-child').classList.remove('text-gold');
+        }
+      });
+    });
+  })();
+</script>
+
+<style>
+  /* Audio visualizer bar animations */
+  @keyframes divine-bar-bounce {
+    0% { height: 15%; }
+    100% { height: 100%; }
+  }
+  .divine-vis-bar {
+    transform-origin: bottom;
+    transition: height 0.1s ease;
+  }
+</style>

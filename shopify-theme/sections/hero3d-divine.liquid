@@ -1,0 +1,161 @@
+{% schema %}
+{
+  "name": "Divine 3D WebGL Hero",
+  "tag": "section",
+  "class": "section-hero3d-divine",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_webgl",
+      "label": "Enable WebGL Cosmic Engine",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "fallback_image",
+      "label": "Cosmic Fallback Static Photo",
+      "info": "Displayed if browsers lack WebGL or user prefers reduced motion."
+    },
+    {
+      "type": "text",
+      "id": "meta_title",
+      "label": "Top Classification Stamp",
+      "default": "[ ORBITAL_TRAJECTORY_V9 ]"
+    },
+    {
+      "type": "text",
+      "id": "chapter_1_title",
+      "label": "Chapter 1 Scroll Caption",
+      "default": "SCROLL TO INITIALIZE"
+    },
+    {
+      "type": "text",
+      "id": "chapter_2_title",
+      "label": "Chapter 2 Scroll Caption",
+      "default": "FRAGMENTATION"
+    },
+    {
+      "type": "text",
+      "id": "chapter_3_title",
+      "label": "Chapter 3 Scroll Caption",
+      "default": "THE WHITE LINE"
+    },
+    {
+      "type": "text",
+      "id": "chapter_4_title",
+      "label": "Chapter 4 Scroll Caption",
+      "default": "DIGITAL GALAXY"
+    }
+  ]
+}
+{% endschema %}
+
+<!-- 3D Canvas Mounting Wrapper -->
+<div id="hero3d-container" class="relative w-full min-h-screen bg-void select-none overflow-visible">
+  
+  {%- if section.settings.enable_webgl -%}
+    <!-- WebGL Canvas target -->
+    <canvas id="hero3d-canvas" class="absolute inset-0 w-full h-full pointer-events-none" style="z-index: 1; mix-blend-mode: difference;"></canvas>
+  {%- endif -%}
+
+  <!-- Static/Reduced Motion Fallback Representation layer -->
+  <div class="hero3d-fallback-bg absolute inset-0 w-full h-full bg-cover bg-center opacity-0 pointer-events-none transition-opacity duration-700" style="z-index: 0; background-color: #0a0a0a;">
+    {%- if section.settings.fallback_image != blank -%}
+      <img src="{{ section.settings.fallback_image | image_url: width: 2048 }}" alt="Cosmic fallback backdrop" class="w-full h-full object-cover opacity-30 grayscale saturate-50">
+    {%- else -%}
+      <!-- Default starry sky asset reference backdrop fallback -->
+      <div class="w-full h-full bg-void opacity-20 relative">
+        <div class="absolute left-[30vw] top-[40vh] w-[1px] h-[30vh] bg-ivory/40"></div>
+        <div class="absolute left-[30vw] top-[45vh] w-2 h-2 rounded-full bg-gold animate-ping"></div>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <!-- Content Layer Overlay following user down page scroll stream -->
+  <div class="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-24 py-32 flex flex-col items-center justify-start pointer-events-none">
+    
+    <!-- Top Classification Badge -->
+    <div class="text-center mb-[20vh] flex flex-col items-center gap-2">
+      <span class="font-mono text-xs text-gold/80 uppercase tracking-[0.4em] scramble-text">{{ section.settings.meta_title }}</span>
+      <div class="h-[120px] w-[1px] bg-gradient-to-b from-gold/50 to-transparent mt-4 opacity-70"></div>
+    </div>
+
+    <!-- Scroll Caption 1 -->
+    <div class="scroll-chapter-block min-h-[80vh] flex items-center justify-center text-center">
+      <h2 class="font-serif text-5xl md:text-8xl italic text-ivory opacity-20 transition-opacity duration-1000 tracking-tight select-none">
+        {{ section.settings.chapter_1_title }}
+      </h2>
+    </div>
+
+    <!-- Scroll Caption 2 -->
+    <div class="scroll-chapter-block min-h-[80vh] flex items-center justify-center text-center">
+      <h2 class="font-serif text-4xl md:text-7xl text-ivory opacity-20 transition-opacity duration-1000 tracking-tight select-none">
+        {{ section.settings.chapter_2_title }}
+      </h2>
+    </div>
+
+    <!-- Scroll Caption 3 -->
+    <div class="scroll-chapter-block min-h-[80vh] flex items-center justify-center text-center">
+      <h2 class="font-serif text-4xl md:text-7xl text-ivory opacity-20 transition-opacity duration-1000 tracking-tight select-none">
+        {{ section.settings.chapter_3_title }}
+      </h2>
+    </div>
+
+    <!-- Scroll Caption 4 -->
+    <div class="scroll-chapter-block min-h-[80vh] flex items-center justify-center text-center">
+      <h2 class="font-serif text-4xl md:text-7xl text-ivory opacity-20 transition-opacity duration-1000 tracking-tight select-none">
+        {{ section.settings.chapter_4_title }}
+      </h2>
+    </div>
+
+  </div>
+</div>
+
+{{ 'hero3d-divine.js' | asset_url | script_tag }}
+
+<style>
+  /* Scroll reveal animation classes handled via native IntersectionObserver or simple smooth-opacities */
+  .scroll-chapter-block {
+    perspective: 1000px;
+  }
+  .scroll-chapter-block h2 {
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(20px) translateZ(-40px);
+  }
+  .scroll-chapter-block.is-visible h2 {
+    opacity: 0.9;
+    transform: translateY(0) translateZ(0);
+  }
+
+  /* Fallback modes */
+  .reduced-motion-fallback .hero3d-fallback-bg,
+  .no-webgl-fallback .hero3d-fallback-bg {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+  .reduced-motion-fallback #hero3d-canvas,
+  .no-webgl-fallback #hero3d-canvas {
+    display: none !important;
+  }
+</style>
+
+<script>
+  // Simple scroll chapter IntersectionObserver triggers for elegant typewriter fade-in effect on scroll
+  document.addEventListener('DOMContentLoaded', () => {
+    const chapters = document.querySelectorAll('.scroll-chapter-block');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        } else {
+          entry.target.classList.remove('is-visible');
+        }
+      });
+    }, {
+      threshold: 0.25,
+      rootMargin: '-50px 0px -50px 0px'
+    });
+
+    chapters.forEach(chap => observer.observe(chap));
+  });
+</script>

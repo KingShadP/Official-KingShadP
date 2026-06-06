@@ -1,0 +1,75 @@
+{% schema %}
+{
+  "name": "Editorial Grid Directory",
+  "tag": "section",
+  "class": "section-editorial-grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Heading",
+      "default": "Primary Artifacts"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "artifact",
+      "name": "Artifact specifications",
+      "settings": [
+        {
+          "type": "text",
+          "id": "index",
+          "label": "Index Display (e.g. 01)",
+          "default": "01"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Artifact Label Name",
+          "default": "The Silent Protocol"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link Location"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<section id="the-verse" class="relative w-full py-20 px-6 lg:px-24 z-10 border-t border-ivory/10 bg-transparent overflow-hidden">
+  <div class="max-w-7xl mx-auto w-full relative z-10">
+    <div class="flex flex-col lg:flex-row gap-12 lg:gap-24">
+      <div class="flex-grow">
+        <h2 class="font-serif text-5xl lg:text-6xl text-ivory font-light mb-8">
+          {{ section.settings.section_title }}<span class="text-gold">.</span>
+        </h2>
+      </div>
+      <div class="flex-none w-full lg:w-3/5 flex flex-col gap-8 font-mono text-sm tracking-[0.2em] uppercase text-ivory/80">
+        {%- if section.blocks.size > 0 -%}
+          {%- for block in section.blocks -%}
+            <a href="{{ block.settings.link | default: '#' }}" class="flex items-center gap-4 hover:text-gold hover:translate-x-2 transition-all cursor-crosshair decoration-none" style="color: inherit; text-decoration: none;" {{ block.shopify_attributes }}>
+              <span class="text-oxblood">{{ block.settings.index }} //</span> {{ block.settings.title }}
+            </a>
+          {%- endfor -%}
+        {%- else -%}
+          <!-- Default Mock list fitting Original Page -->
+          <div class="flex items-center gap-4 hover:text-gold hover:translate-x-2 transition-all cursor-crosshair">
+            <span class="text-oxblood">01 //</span> The Silent Protocol
+          </div>
+          <div class="flex items-center gap-4 hover:text-gold hover:translate-x-2 transition-all cursor-crosshair">
+            <span class="text-oxblood">02 //</span> Vision Architect
+          </div>
+          <div class="flex items-center gap-4 hover:text-gold hover:translate-x-2 transition-all cursor-crosshair">
+            <span class="text-oxblood">03 //</span> Echo Directive
+          </div>
+          <div class="flex items-center gap-4 hover:text-gold hover:translate-x-2 transition-all cursor-crosshair">
+            <span class="text-oxblood">04 //</span> Final Command
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>

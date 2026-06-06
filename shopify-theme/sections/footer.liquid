@@ -1,0 +1,27 @@
+{% schema %}
+{
+  "name": "Telemetry Footer",
+  "tag": "footer",
+  "class": "shopify-section-footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "KingShadP"
+    }
+  ]
+}
+{% endschema %}
+
+<footer class="relative w-full py-12 px-6 lg:px-24 z-10 border-t border-ivory/10 bg-transparent text-center">
+  <div class="max-w-7xl mx-auto w-full flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-mono text-ivory/40 uppercase tracking-[0.2em]">
+    <div>
+      &copy; {{ 'now' | date: '%Y' }} {{ section.settings.copyright_text }} SYSTEM. ALL RIGHTS RESERVED.
+    </div>
+    
+    <div class="flex gap-8 hover:text-gold transition-colors">
+      <span class="text-oxblood">//</span> ARCHIVE PROTOCOL V9.0 ACTIVE
+    </div>
+  </div>
+</footer>

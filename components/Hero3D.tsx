@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Environment, Float, useGLTF, Text, Center, useScroll, ScrollControls, Scroll, Stars } from "@react-three/drei";
+import { Environment, Float, useGLTF, Text, Center, Stars, Scroll, ScrollControls, useScroll } from "@react-three/drei";
 import { Suspense, useRef, useLayoutEffect, useState, useEffect } from "react";
 import * as THREE from "three";
 import { motion } from "framer-motion";
@@ -187,26 +187,51 @@ export function Hero3D() {
                   PROTOCOL V9
                 </Text>
               </Center>
-            </Scroll>
 
-            <Scroll html>
-              <div className="w-screen flex flex-col pt-[50vh]">
-                <h1 className="text-ivory font-serif text-5xl md:text-8xl opacity-20 pointer-events-none text-center mix-blend-difference pb-[100vh]">
-                  SCROLL TO INITIALIZE
-                </h1>
-                
-                <h2 className="text-ivory font-serif text-4xl md:text-6xl text-center pb-[100vh]">
-                  FRAGMENTATION
-                </h2>
-
-                <h2 className="text-ivory font-serif text-4xl md:text-6xl text-center pb-[100vh]">
-                  THE WHITE LINE
-                </h2>
-
-                <h2 className="text-ivory font-serif text-4xl md:text-6xl text-center pb-[100vh]">
-                  DIGITAL GALAXY
-                </h2>
-              </div>
+              <Text
+                font="https://fonts.gstatic.com/s/spacegrotesk/v15/V8mQoQDjQSkGpu8pnHXFAA_4Nro.woff"
+                fontSize={0.8}
+                color="#f4f1eb"
+                position={[0, -6, -4]}
+                fillOpacity={0.15}
+                outlineWidth={0.01}
+                outlineColor="#dcc57b"
+              >
+                SCROLL TO INITIALIZE
+              </Text>
+              <Text
+                font="https://fonts.gstatic.com/s/spacegrotesk/v15/V8mQoQDjQSkGpu8pnHXFAA_4Nro.woff"
+                fontSize={0.6}
+                color="#f4f1eb"
+                position={[0, -12, -4]}
+                fillOpacity={0.1}
+                outlineWidth={0.01}
+                outlineColor="#dcc57b"
+              >
+                FRAGMENTATION
+              </Text>
+              <Text
+                font="https://fonts.gstatic.com/s/spacegrotesk/v15/V8mQoQDjQSkGpu8pnHXFAA_4Nro.woff"
+                fontSize={0.6}
+                color="#f4f1eb"
+                position={[0, -18, -4]}
+                fillOpacity={0.1}
+                outlineWidth={0.01}
+                outlineColor="#dcc57b"
+              >
+                THE WHITE LINE
+              </Text>
+              <Text
+                font="https://fonts.gstatic.com/s/spacegrotesk/v15/V8mQoQDjQSkGpu8pnHXFAA_4Nro.woff"
+                fontSize={0.6}
+                color="#f4f1eb"
+                position={[0, -24, -4]}
+                fillOpacity={0.1}
+                outlineWidth={0.01}
+                outlineColor="#dcc57b"
+              >
+                DIGITAL GALAXY
+              </Text>
             </Scroll>
           </ScrollControls>
         </Suspense>

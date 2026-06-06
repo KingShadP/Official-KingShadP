@@ -1,0 +1,53 @@
+{% schema %}
+{
+  "name": "KSP Lost Vault 404",
+  "tag": "section",
+  "class": "lost-vault-404-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "diagnostic_label",
+      "label": "Protocol Diagnostic Label",
+      "default": "SYSTEM_LOST_DIR.00"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="relative w-full py-32 px-6 lg:px-24 z-10 bg-transparent overflow-hidden" id="lost-vault-room">
+  <div class="max-w-2xl mx-auto flex flex-col items-center justify-center text-center gap-8">
+    
+    <!-- Warning indicator -->
+    <div class="w-16 h-16 rounded-full border border-oxblood bg-oxblood/15 flex items-center justify-center animate-pulse mb-4 z-10">
+      <span class="font-mono text-oxblood text-xl font-bold">!</span>
+    </div>
+
+    <!-- Error message details -->
+    <div class="z-10">
+      <div class="font-mono text-[9px] text-oxblood bg-oxblood/10 border border-oxblood/30 px-3 py-1 uppercase tracking-widest inline-block mb-4 leading-none select-none">
+        {{ section.settings.diagnostic_label }} -- DISCONNECTION_DETECTED
+      </div>
+      <h1 class="font-serif italic text-6xl text-gold font-light mb-4 scramble-text">Coordinates Void.</h1>
+      <p class="font-mono text-[11px] text-ivory/50 uppercase tracking-widest max-w-md mx-auto leading-relaxed">
+        The system has identified structural drift. The requested file, dossier, or registry asset is no longer aligned inside the KingShadP telemetry grid.
+      </p>
+    </div>
+
+    <!-- Paths back home or into key chambers -->
+    <div class="flex flex-col gap-4 w-full max-w-sm mt-4 z-10 font-mono text-xs">
+      <a href="/" class="border border-gold text-gold hover:bg-gold/10 py-3 tracking-widest uppercase transition-colors text-[10px] text-center w-full">[ RETURN_TO_GRAVITATIONAL_CORE ]</a>
+      
+      <div class="grid grid-cols-2 gap-4">
+        <a href="/pages/music" class="border border-ivory/10 hover:border-gold/30 text-ivory/70 hover:text-white py-2 px-3 tracking-widest uppercase transition-colors text-[9px] text-center">[ MUSIC_VAULT ]</a>
+        <a href="/pages/lookbook" class="border border-ivory/10 hover:border-gold/30 text-ivory/70 hover:text-white py-2 px-3 tracking-widest uppercase transition-colors text-[9px] text-center">[ LOOKBOOK ]</a>
+      </div>
+    </div>
+
+    <!-- Dynamic details footer -->
+    <div class="border-t border-ivory/10 pt-4 w-full flex justify-between items-center text-[8px] font-mono text-ivory/30 uppercase mt-8">
+      <span>REF_ROUTE: DEVIANT</span>
+      <span>LATENCY_STRETCH_RATIO: 1.0</span>
+    </div>
+
+  </div>
+</section>

@@ -4,8 +4,15 @@ import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
 import { TheVerse } from "@/components/TheVerse";
 import { Footer } from "@/components/Footer";
-import { Hero3D } from "@/components/Hero3D";
-import { RiveOverlay } from "@/components/RiveOverlay";
+import dynamic from "next/dynamic";
+
+const Hero3D = dynamic(() => import("@/components/Hero3D").then((mod) => mod.Hero3D), {
+  ssr: false,
+});
+
+const RiveOverlay = dynamic(() => import("@/components/RiveOverlay").then((mod) => mod.RiveOverlay), {
+  ssr: false,
+});
 
 export default function Home() {
   return (

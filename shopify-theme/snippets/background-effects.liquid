@@ -1,0 +1,104 @@
+<!-- Atmosphere & Cinematic Background Effects Overlay -->
+<div id="divine-background-effects" class="pointer-events-none">
+  <!-- Solid backing layer -->
+  <div class="fixed inset-0 z-[-2] bg-void"></div>
+
+  <!-- Rotating Cosmic Geometries -->
+  <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180vw] h-[180vw] max-w-[2800px] max-h-[2800px] border border-ivory/5 rounded-full pointer-events-none opacity-20 mix-blend-multiply animate-cosmic-spin-slow" style="z-index:-1;"></div>
+  <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] h-[150vw] max-w-[2200px] max-h-[2200px] border border-oxblood/10 rounded-full border-dashed pointer-events-none opacity-20 mix-blend-multiply animate-cosmic-spin-reverse" style="z-index:-1;"></div>
+  <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] max-w-[1200px] max-h-[1200px] border-4 border-t-gold/5 border-r-transparent border-b-oxblood/10 border-l-transparent rounded-full pointer-events-none opacity-30 mix-blend-multiply animate-cosmic-spin-fast" style="z-index:-1;"></div>
+
+  <!-- Mouse Tracking Grid -->
+  <div 
+    id="chasing-coordinate-grid"
+    class="fixed inset-[-100px] z-[0] pointer-events-none opacity-[0.06] flex items-center justify-center will-change-transform"
+  >
+    <div class="w-full h-full grid grid-cols-6 grid-rows-6 border border-ivory/20">
+      {%- for i in (1..36) -%}
+        <div class="border border-ivory/10"></div>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <!-- Noise, Scanlines and Laser Sweep components -->
+  <div class="fixed inset-0 z-[90] pointer-events-none mix-blend-overlay bg-noise"></div>
+  <div class="fixed inset-0 z-[99] pointer-events-none crt-scanlines opacity-70 mix-blend-overlay"></div>
+  <div class="fixed left-0 w-[2px] h-[150px] bg-gradient-to-b from-transparent via-oxblood to-transparent shadow-[0_0_15px_rgba(147,0,10,0.8)] opacity-60 z-[98] pointer-events-none animate-laser-sweep"></div>
+  <div class="fixed right-0 w-[2px] h-[150px] bg-gradient-to-b from-transparent via-oxblood to-transparent shadow-[0_0_15px_rgba(147,0,10,0.8)] opacity-60 z-[98] pointer-events-none animate-laser-sweep-delay"></div>
+</div>
+
+<style>
+  /* Cosmic Spin keyframes */
+  @keyframes cosmic-spin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+  @keyframes cosmic-spin-rev {
+    from { transform: translate(-50%, -50%) rotate(360deg); }
+    to { transform: translate(-50%, -50%) rotate(0deg); }
+  }
+  .animate-cosmic-spin-slow {
+    animation: cosmic-spin 240s linear infinite;
+  }
+  .animate-cosmic-spin-reverse {
+    animation: cosmic-spin-rev 180s linear infinite;
+  }
+  .animate-cosmic-spin-fast {
+    animation: cosmic-spin 60s linear infinite;
+  }
+
+  /* Sweep Laser Keyframes */
+  @keyframes laser-sweep {
+    0% { top: -150px; }
+    100% { top: 100vh; }
+  }
+  .animate-laser-sweep {
+    animation: laser-sweep 12s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+  .animate-laser-sweep-delay {
+    animation: laser-sweep 12s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    animation-delay: 6s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-cosmic-spin-slow,
+    .animate-cosmic-spin-reverse,
+    .animate-cosmic-spin-fast,
+    .animate-laser-sweep,
+    .animate-laser-sweep-delay {
+      animation: none !important;
+    }
+    #chasing-coordinate-grid {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  // Simple throttle scroll tracking mouse movement for coordinate grid shift
+  document.addEventListener('DOMContentLoaded', () => {
+    const grid = document.getElementById('chasing-coordinate-grid');
+    if (!grid) return;
+
+    let mouseX = 0, mouseY = 0;
+    let targetX = 0, targetY = 0;
+
+    window.addEventListener('pointermove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    }, { passive: true });
+
+    function easeGrid() {
+      // Smooth lerp following mouse
+      targetX += (mouseX - targetX) * 0.05;
+      targetY += (mouseY - targetY) * 0.05;
+
+      grid.style.transform = `translate3d(${targetX * 0.1}px, ${targetY * 0.1}px, 0)`;
+      requestAnimationFrame(easeGrid);
+    }
+    
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && !window.matchMedia('(pointer: coarse)').matches) {
+      easeGrid();
+    }
+  });
+</script>

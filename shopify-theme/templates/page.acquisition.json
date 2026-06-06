@@ -1,0 +1,10 @@
+{
+  "sections": {
+    "acquisition": {
+      "type": "ksp-acquisition-vault"
+    }
+  },
+  "order": [
+    "acquisition"
+  ]
+}

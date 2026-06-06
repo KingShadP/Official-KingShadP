@@ -1,0 +1,132 @@
+{% schema %}
+{
+  "name": "Header System",
+  "tag": "section",
+  "class": "shopify-section-header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "branding",
+      "label": "Brand Title",
+      "default": "KingShadP"
+    },
+    {
+      "type": "text",
+      "id": "latency_text",
+      "label": "Latency Ticker Text",
+      "default": "SYS.LATENCY_NORM"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Branding Menu Directory",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}
+
+<nav class="fixed top-0 left-0 right-0 z-40 p-6 lg:p-10 flex justify-between items-start pointer-events-none" id="theme-header">
+  <div class="flex flex-col gap-1 pointer-events-auto">
+    <a href="{{ routes.root_url }}" class="font-serif text-2xl text-ivory font-light italic tracking-tight opacity-90 cursor-pointer origin-left hover:scale-105 transition-transform style-free decoration-none" style="text-decoration: none; color: inherit;">
+      {{ section.settings.branding }}<span class="text-oxblood">.</span>
+    </a>
+    <div class="font-mono text-[9px] text-ivory/50 uppercase tracking-[0.4em] flex items-center gap-2">
+      <div class="w-1.5 h-1.5 bg-gold rounded-full animate-pulse" style="animation: pulse 1.5s infinite;"></div>
+      <span>{{ section.settings.latency_text }}</span>
+    </div>
+  </div>
+
+  <div class="flex flex-col items-end gap-2 pointer-events-auto">
+    <button
+      id="shopify-menu-trigger"
+      class="font-mono text-xs text-ivory uppercase tracking-widest opacity-80 hover:text-gold transition-colors focus:outline-none focus:ring-2 focus:ring-gold bg-transparent border-0 cursor-crosshair"
+      aria-label="Open menu"
+    >
+      [ Menu ]
+    </button>
+    <div class="font-mono text-[10px] text-ivory/40 tracking-[0.2em] mt-2 nav-system-clock">
+      00:00:00.000 <span class="text-oxblood">UTC</span>
+    </div>
+  </div>
+</nav>
+
+<!-- Asymmetrical Navigation Drawer -->
+<dialog id="shopify-menu-overlay" class="fixed inset-0 z-50 w-full h-full max-w-none max-h-none p-0 m-0 bg-void text-ivory backdrop:bg-transparent overflow-hidden border-0">
+  <div class="absolute top-0 left-0 right-0 p-6 lg:p-10 flex justify-between items-start z-20 pointer-events-none">
+    <div class="flex flex-col gap-1 pointer-events-auto">
+      <div class="font-serif text-2xl text-ivory font-light italic tracking-tight opacity-90">
+        {{ section.settings.branding }}<span class="text-oxblood">.</span>
+      </div>
+    </div>
+    <button
+      id="shopify-menu-close"
+      class="text-ivory bg-transparent border-0 font-mono text-xs tracking-widest uppercase hover:text-gold transition-colors focus:outline-none focus:ring-2 focus:ring-gold pointer-events-auto cursor-crosshair"
+      aria-label="Close menu"
+    >
+      [ Close ]
+    </button>
+  </div>
+
+  <div class="w-full h-full flex flex-col md:flex-row">
+    <!-- Collapsible Visual Frame -->
+    <div class="hidden md:block w-3/5 h-full relative overflow-hidden bg-void">
+      <!-- Embedded background looping video representing KingShadP styling -->
+      <video
+        src="{{ 'model_wearing_kingshadp_hoodie_202605270727.mp4' | asset_url }}"
+        autoplay
+        muted
+        loop
+        playsinline
+        class="w-full h-full object-cover filter contrast-[1.1] saturate-50 brightness-[0.85] opacity-35"
+      ></video>
+    </div>
+
+    <!-- Asymmetrical Navigation Items -->
+    <div class="flex-1 h-full flex flex-col justify-center px-8 lg:px-24 pt-32 pb-24 border-l border-ivory/10">
+      <nav class="flex flex-col gap-8 md:gap-12 relative z-10 w-full md:items-end md:text-right">
+        {%- if section.settings.menu != blank -%}
+          {%- for link in linklists[section.settings.menu].links -%}
+            <a
+              href="{{ link.url }}"
+              class="font-serif text-5xl lg:text-7xl font-light italic text-ivory hover:text-gold transition-colors focus:outline-none focus:ring-2 focus:ring-gold group decoration-none"
+              style="text-decoration: none;"
+            >
+              <span class="text-xs font-mono tracking-widest text-oxblood mr-4 opacity-50 group-hover:opacity-100 uppercase align-middle">
+                0{{ forloop.index }}
+              </span>
+              {{ link.title }}
+            </a>
+          {%- endfor -%}
+        {%- else -%}
+          <!-- Fallback Links matching Original Design Directory -->
+          <a href="#the-verse" class="font-serif text-5xl lg:text-7xl font-light italic text-ivory hover:text-gold transition-colors focus:ring-gold decoration-none" style="text-decoration: none;">
+            <span class="text-xs font-mono tracking-widest text-oxblood mr-4">01</span>The Verse
+          </a>
+          <a href="#visual-vault" class="font-serif text-5xl lg:text-7xl font-light italic text-ivory hover:text-gold transition-colors focus:ring-gold decoration-none" style="text-decoration: none;">
+            <span class="text-xs font-mono tracking-widest text-oxblood mr-4">02</span>Visual Vault
+          </a>
+          <a href="#cinema-vault" class="font-serif text-5xl lg:text-7xl font-light italic text-ivory hover:text-gold transition-colors focus:ring-gold decoration-none" style="text-decoration: none;">
+            <span class="text-xs font-mono tracking-widest text-oxblood mr-4">03</span>Cinema Vault
+          </a>
+          <a href="#archives" class="font-serif text-5xl lg:text-7xl font-light italic text-ivory hover:text-gold transition-colors focus:ring-gold decoration-none" style="text-decoration: none;">
+            <span class="text-xs font-mono tracking-widest text-oxblood mr-4">04</span>Archives
+          </a>
+        {%- endif -%}
+      </nav>
+
+      <!-- Interactive Locale / Language Selectors -->
+      <div class="mt-auto pt-16 flex justify-end gap-4 font-mono text-xs tracking-widest opacity-60">
+        <span class="text-gold border-b border-gold cursor-pointer">EN</span>
+        <span class="hover:text-ivory cursor-pointer">IT</span>
+        <span class="hover:text-ivory cursor-pointer">DE</span>
+      </div>
+    </div>
+  </div>
+</dialog>
+<style>
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+</style>

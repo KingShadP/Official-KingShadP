@@ -1,0 +1,103 @@
+{% schema %}
+{
+  "name": "KSP Search Console",
+  "tag": "section",
+  "class": "search-console-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "registry_id",
+      "label": "Protocol System Registry ID",
+      "default": "SYSTEM_SEARCH_V.01"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="relative w-full py-20 px-6 lg:px-24 z-10 bg-transparent overflow-hidden" id="search-console-room">
+  <div class="max-w-7xl mx-auto flex flex-col gap-12">
+    
+    <!-- Title Section -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-ivory/10 pb-8">
+      <div>
+        <div class="font-mono text-[9px] text-gold uppercase tracking-[0.3em] mb-4">// System Orbit Database Index</div>
+        <h1 class="font-serif text-5xl lg:text-6xl text-ivory font-light mb-2 tracking-wide">Telemetry Search Console</h1>
+      </div>
+      <div class="font-mono text-[10px] text-oxblood bg-oxblood/10 border border-oxblood/30 px-3 py-1 uppercase tracking-widest leading-none">
+        {{ section.settings.registry_id }}
+      </div>
+    </div>
+
+    <!-- Search input console -->
+    <div class="ruby-glass p-8 border-grid-box text-center max-w-3xl mx-auto w-full relative">
+      <div class="absolute -top-3 left-6 font-mono text-[9px] text-gold tracking-widest px-2 bg-void uppercase">// Inquiry Vector Input</div>
+      
+      <form action="/search" method="get" role="search" class="flex flex-col md:flex-row gap-4 items-center w-full mt-2 font-mono">
+        <div class="relative w-full flex items-center">
+          <input type="text" id="search-console-input" name="q" value="{{ search.terms | escape }}" placeholder="ENTER FREQUENCY TARGET/KEYWORD..." class="bg-void border border-ivory/15 text-ivory/80 pl-4 pr-12 py-3 outline-none focus:border-gold w-full text-xs tracking-widest uppercase">
+          
+          <!-- Voice Activation Button -->
+          <button type="button" id="voice-trigger-btn" class="absolute right-3 hover:text-gold text-ivory/40 p-2 transition-all cursor-pointer flex items-center justify-center bg-transparent border-none outline-none group" title="INITIATE VOICE PATTERN DETECTION">
+            <svg class="w-4 h-4 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+            </svg>
+          </button>
+        </div>
+        <button type="submit" class="border border-gold text-gold py-3 px-8 hover:bg-gold/10 tracking-widest uppercase transition-colors text-[10px] h-full flex-shrink-0 cursor-pointer bg-transparent w-full md:w-auto">
+          [ DEPLOY_QUERY ]
+        </button>
+      </form>
+
+      <!-- Status HUD ticker -->
+      <div id="voice-hud-ticker" class="font-mono text-[9px] text-ivory/30 uppercase mt-4 tracking-wider text-left pl-1 flex items-center gap-2 hidden">
+        <span class="inline-block w-1.5 h-1.5 rounded-full bg-gold animate-ping" id="voice-hud-indicator"></span>
+        <span id="voice-hud-status">STANDBY: VOICE_PATTERN_RECOGNITION_READY</span>
+      </div>
+    </div>
+
+    <!-- Results display matrix -->
+    {% if search.performed %}
+      <div class="font-mono text-[9px] text-gold uppercase tracking-[0.3em]">// QUERY RETRIEVAL ledgers for: "{{ search.terms }}"</div>
+      
+      {% if search.results.size > 0 %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12" id="search-results-matrix">
+          {% for item in search.results %}
+            <div class="ruby-glass border-grid-box p-6 flex flex-col justify-between group transition-all duration-500 hover:translate-y-[-4px]">
+              
+              <div>
+                <!-- Registry index -->
+                <div class="flex justify-between items-center font-mono text-[9px] text-ivory/40 uppercase mb-4">
+                  <span>RESULT_IDX_0{{ forloop.index }}</span>
+                  <span class="text-oxblood font-semibold">MATCH: {{ item.object_type | uppercase }}</span>
+                </div>
+
+                <!-- Title and snippet -->
+                <h3 class="font-serif text-xl font-light text-ivory mb-2 group-hover:text-gold transition-colors duration-300">
+                  <a href="{{ item.url }}">{{ item.title }}</a>
+                </h3>
+                
+                <p class="font-mono text-[10px] text-ivory/60 leading-relaxed uppercase mb-6">
+                  {{ item.content | strip_html | truncate: 120 }}
+                </p>
+              </div>
+
+              <!-- Action coordinate linkage -->
+              <div class="border-t border-ivory/10 pt-4 flex justify-between items-center bg-void/10 px-1 mt-4">
+                <span class="font-mono text-[10px] text-gold uppercase tracking-wider">SECURE LINK</span>
+                <a href="{{ item.url }}" class="font-mono text-[9px] text-ivory/40 hover:text-gold uppercase tracking-widest">[ DEVIATE_ROUTE ]</a>
+              </div>
+
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <!-- Perform zero search state -->
+        <div class="ruby-glass p-12 text-center border-grid-box max-w-xl mx-auto w-full mt-4" id="empty-state-parent">
+          <h2 class="font-serif text-3xl font-light text-ivory mb-2">Zero Registry Matches</h2>
+          <p class="font-mono text-[9px] text-ivory/40 uppercase tracking-widest">Database registers zero records matching target frequency coordinate. Redefine queries.</p>
+        </div>
+      {% endif %}
+    {% endif %}
+
+  </div>
+</section>

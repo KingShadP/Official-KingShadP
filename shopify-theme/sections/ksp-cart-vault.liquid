@@ -1,0 +1,132 @@
+{% schema %}
+{
+  "name": "KSP Cart Checkout Vault",
+  "tag": "section",
+  "class": "cart-vault-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "protocol_sign",
+      "label": "Protocol System Registry ID",
+      "default": "SYSTEM_VAULT_DEPOSIT.03"
+    },
+    {
+      "type": "text",
+      "id": "vip_note",
+      "label": "VIP Note Caption",
+      "default": "SOVEREIGN SYSTEM ORBIT VIP LEVEL ACCORD IN PROGRESS"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="relative w-full py-20 px-6 lg:px-24 z-10 bg-transparent overflow-hidden" id="cart-vault-room">
+  <div class="max-w-7xl mx-auto flex flex-col gap-12">
+    
+    <!-- Title Section -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-ivory/10 pb-8">
+      <div>
+        <div class="font-mono text-[9px] text-gold uppercase tracking-[0.3em] mb-4">// Cart Storage Matrix</div>
+        <h1 class="font-serif text-5xl lg:text-6xl text-ivory font-light mb-2 tracking-wide">Acquisition Deposit Ledger</h1>
+      </div>
+      <div class="font-mono text-[10px] text-oxblood bg-oxblood/10 border border-oxblood/30 px-3 py-1 uppercase tracking-widest leading-none">
+        {{ section.settings.protocol_sign }}
+      </div>
+    </div>
+
+    <!-- Main Cart Division -->
+    {% if cart.item_count > 0 %}
+      <form action="/cart" method="post" class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start" id="cart-parent-vault-form">
+        
+        <!-- Cart Items list -->
+        <div class="lg:col-span-8 flex flex-col gap-6" id="cart-ledger-column">
+          <div class="flex flex-col partition-list divide-y divide-ivory/10">
+            {% for item in cart.items %}
+              <div class="py-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6" data-item-id="{{ item.id }}">
+                
+                <!-- Product overview -->
+                <div class="flex gap-6 items-center">
+                  <div class="w-20 aspect-[3/4] border border-ivory/10 overflow-hidden bg-void flex-shrink-0 p-1">
+                    <img src="{{ item.image | image_url: width: 150 }}" alt="{{ item.title | escape }}" class="w-full h-full object-cover" loading="lazy">
+                  </div>
+                  <div>
+                    <h3 class="font-serif text-lg font-light text-ivory mb-1 tracking-wide">{{ item.product.title }}</h3>
+                    <p class="font-mono text-[10px] text-gold uppercase tracking-wider mb-1">{{ item.variant.title }}</p>
+                    <span class="font-mono text-xs text-ivory/40">{{ item.price | money }} each</span>
+                  </div>
+                </div>
+
+                <!-- Quantity controls & details -->
+                <div class="flex items-center justify-between md:justify-end gap-12 w-full md:w-auto border-t border-ivory/10 md:border-none pt-4 md:pt-0">
+                  <div class="flex items-center gap-3 font-mono text-xs border border-ivory/20 px-3 py-1">
+                    <button type="submit" name="updates[]" value="{{ item.quantity | minus: 1 }}" class="hover:text-gold px-1 font-bold">-</button>
+                    <span class="text-ivory px-2 font-semibold">{{ item.quantity }}</span>
+                    <button type="submit" name="updates[]" value="{{ item.quantity | plus: 1 }}" class="hover:text-gold px-1 font-bold">+</button>
+                  </div>
+
+                  <div class="flex flex-col items-end">
+                    <span class="font-mono text-sm text-gold tracking-widest">{{ item.final_line_price | money }}</span>
+                    <a href="/cart/change?line={{ forloop.index }}&quantity=0" class="font-mono text-[9px] text-oxblood uppercase tracking-widest mt-1 hover:text-gold">[ ERASE ]</a>
+                  </div>
+                </div>
+
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Checkout summary box details -->
+        <div class="lg:col-span-4 ruby-glass p-8 border-grid-box relative">
+          <div class="absolute -top-3 left-6 font-mono text-[9px] text-oxblood tracking-widest px-2 bg-void uppercase">// Vault Summary</div>
+          
+          <h3 class="font-serif text-2xl font-light text-ivory mb-6 mt-2">Order Summary</h3>
+          
+          <div class="flex flex-col gap-4 font-mono text-xs border-b border-ivory/10 pb-6 mb-6">
+            <div class="flex justify-between">
+              <span class="text-ivory/50">SUBTOTAL COORDINATE:</span>
+              <span class="text-ivory font-semibold">{{ cart.total_price | money }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-ivory/50">FISCAL VAT TAXES:</span>
+              <span class="text-ivory/40 uppercase">CALCULATED AT DISMISS_ROUTE</span>
+            </div>
+            <div class="flex justify-between pb-2">
+              <span class="text-ivory/50">ROUTE SECURITY METERS:</span>
+              <span class="text-gold">SECURE (SSL Active)</span>
+            </div>
+            <div class="border-t border-ivory/10 pt-4 flex justify-between text-base font-bold text-gold tracking-widest">
+              <span>LEDGER SUM:</span>
+              <span>{{ cart.total_price | money }}</span>
+            </div>
+          </div>
+
+          <!-- VIP system alignment note -->
+          <p class="font-mono text-[8px] text-oxblood tracking-wider uppercase mb-6 text-center border border-oxblood/20 bg-oxblood/5 p-3 leading-relaxed">
+            [ {{ section.settings.vip_note }} ]
+          </p>
+
+          <button type="submit" name="checkout" class="border border-gold text-gold py-4 hover:bg-gold/10 transition-colors uppercase tracking-[0.2em] text-[10px] w-full font-bold cursor-pointer bg-transparent">
+            [ INITIALIZE SECURE DISMISS ROUTE ]
+          </button>
+        </div>
+
+      </form>
+    {% else %}
+      <!-- Empty cart design -->
+      <div class="ruby-glass p-16 text-center border-grid-box max-w-2xl mx-auto w-full flex flex-col items-center gap-6" id="empty-state-parent">
+        <svg class="w-16 h-16 stroke-current text-gold opacity-40 animate-pulse" viewBox="0 0 24 24" fill="none" stroke-width="0.75">
+          <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+        </svg>
+        <div>
+          <h2 class="font-serif text-3xl font-light text-ivory mb-2">Vault Balance Empty</h2>
+          <p class="font-mono text-[10px] text-ivory/50 uppercase tracking-widest">No physical specifications or modules booked in current session matrix.</p>
+        </div>
+        <a href="/collections/all" class="border border-gold text-gold py-3 px-8 hover:bg-gold/10 tracking-widest uppercase transition-colors text-[10px] font-bold mt-4">
+          [ LOAD CATACLYSM VAULT ]
+        </a>
+      </div>
+    {% endif %}
+
+  </div>
+</section>

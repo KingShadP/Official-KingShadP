@@ -1,0 +1,114 @@
+{% schema %}
+{
+  "name": "KSP Museum Gallery Collection",
+  "tag": "section",
+  "class": "collection-gallery-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "protocol_label",
+      "label": "Protocol System Registry Name",
+      "default": "SYSTEM_CURATOR_V.01"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Enable Telemetry Sorting Controls",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
+
+<section class="relative w-full py-20 px-6 lg:px-24 z-10 bg-transparent overflow-hidden" id="collection-gallery-room">
+  <div class="max-w-7xl mx-auto flex flex-col gap-12">
+    
+    <!-- Title Area & Filters -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-ivory/10 pb-8">
+      <div>
+        <div class="font-mono text-[9px] text-gold uppercase tracking-[0.3em] mb-4">// System Vault Catalogue</div>
+        <h1 class="font-serif text-5xl lg:text-6xl text-ivory font-light mb-2 tracking-wide">{{ collection.title | default: "( SYSTEM CATACLYSM VAULT )" }}</h1>
+        <div class="font-mono text-xs text-ivory/60 mt-2 uppercase">Artifact Balance Ledger Count: {{ collection.products_count | default: 8 }} units in registry</div>
+      </div>
+      <div class="font-mono text-[10px] text-oxblood bg-oxblood/10 border border-oxblood/30 px-3 py-1 uppercase tracking-widest leading-none">
+        {{ section.settings.protocol_label }}
+      </div>
+    </div>
+
+    <!-- Layout grids -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12" id="grid-collection-artifacts">
+      {% for product in collection.products %}
+        <div class="ruby-glass border-grid-box p-6 flex flex-col justify-between group transition-all duration-500 hover:translate-y-[-4px] reveal-on-scroll">
+          
+          <div>
+            <!-- Status coordinates -->
+            <div class="flex justify-between items-center font-mono text-[9px] text-ivory/40 uppercase mb-4">
+              <span>LOC_INDEX_{{ forloop.index | prepend: '0' }}</span>
+              <span class="text-oxblood font-semibold">STATE: SECURED</span>
+            </div>
+
+            <!-- Image Frame -->
+            <a href="{{ product.url }}" class="relative aspect-[3/4] border border-ivory/10 overflow-hidden bg-void/50 mb-6 block">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 flex items-end p-4">
+                <span class="font-mono text-[9px] text-gold uppercase tracking-widest">[ ACQUIRE_DRAFT ]</span>
+              </div>
+              <img src="{{ product.featured_image | image_url: width: 600 }}" 
+                   alt="{{ product.title | escape }}" 
+                   class="w-full h-full object-cover transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+                   loading="lazy">
+            </a>
+
+            <!-- Info -->
+            <h3 class="font-serif text-xl font-light text-ivory mb-2 group-hover:text-gold transition-colors duration-300">
+              <a href="{{ product.url }}">{{ product.title }}</a>
+            </h3>
+            
+            <p class="font-mono text-[11px] text-ivory/60 leading-relaxed mb-4 max-h-[44px] overflow-hidden">
+              {{ product.description | strip_html | truncate: 80 | default: "Premium textile specification, woven with telemetry tags, matte carbon dyes." }}
+            </p>
+          </div>
+
+          <!-- Base details buy panel -->
+          <div class="border-t border-ivory/10 pt-4 flex justify-between items-center mt-4">
+            <span class="font-mono text-sm text-gold tracking-widest">{{ product.price | money }}</span>
+            <a href="{{ product.url }}" class="font-mono text-[10px] text-ivory/40 hover:text-gold uppercase tracking-widest">[ SPEC_SHEET ]</a>
+          </div>
+
+        </div>
+      {% endfor %}
+
+      <!-- Standard fallback placeholder loop to ensure look is premium if collection is empty -->
+      {% if collection.products.size == 0 %}
+        {% for idx in (1..6) %}
+          <div class="ruby-glass border-grid-box p-6 flex flex-col justify-between group transition-all duration-500 hover:translate-y-[-4px]">
+            <div>
+              <div class="flex justify-between items-center font-mono text-[9px] text-ivory/40 uppercase mb-4">
+                <span>LOC_INDEX_0{{ idx }}</span>
+                <span class="text-oxblood font-semibold">RECOGNITION: SECURED</span>
+              </div>
+              
+              <div class="relative aspect-[3/4] border border-ivory/10 overflow-hidden bg-void/50 mb-6">
+                <img src="https://picsum.photos/seed/ksp_catalog_{{ idx }}/600/800" 
+                     alt="System Display Sample" 
+                     class="w-full h-full object-cover transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105">
+              </div>
+
+              <h3 class="font-serif text-xl font-light text-ivory mb-2 group-hover:text-gold transition-colors duration-300">
+                SHARD_UTILITY_VES_X{{ idx }}
+              </h3>
+              <p class="font-mono text-[11px] text-ivory/60 leading-relaxed mb-4">
+                Premium textile specifications woven with telemetry tags and matte carbon dyes.
+              </p>
+            </div>
+
+            <div class="border-t border-ivory/10 pt-4 flex justify-between items-center mt-4">
+              <span class="font-mono text-sm text-gold tracking-widest">$140.00</span>
+              <a href="/pages/acquisition" class="font-mono text-[10px] text-ivory/40 hover:text-gold uppercase tracking-widest">[ SPEC_SHEET ]</a>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+  </div>
+</section>

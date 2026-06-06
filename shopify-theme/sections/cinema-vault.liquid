@@ -1,0 +1,120 @@
+{% schema %}
+{
+  "name": "Cinema Vault Garments",
+  "tag": "section",
+  "class": "section-cinema-vault",
+  "settings": [
+    {
+      "type": "text",
+      "id": "meta_tag",
+      "label": "Category Label",
+      "default": "Class: OMEGA"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Heading",
+      "default": "Cinema Vault"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_card",
+      "name": "Garment / Product",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Product Title Name",
+          "default": "The Platinum Standard"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Product Image"
+        },
+        {
+          "type": "text",
+          "id": "asset_name",
+          "label": "Fallback Asset Name",
+          "info": "Used if no picker image is assigned"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Coordinates/Price Label",
+          "default": "SPEC: // 120.00"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Product Purchase Link"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<section id="cinema-vault" class="relative w-full py-20 px-6 lg:px-24 z-10 border-t border-ivory/10 bg-transparent overflow-hidden">
+  <div class="max-w-7xl mx-auto w-full relative z-10">
+    <p class="font-mono text-[10px] text-ivory/40 tracking-[0.3em] uppercase mb-4">{{ section.settings.meta_tag }}</p>
+    <h2 class="font-serif text-5xl lg:text-7xl text-ivory font-light mb-12">
+      {{ section.settings.section_title }}
+    </h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          <div class="aspect-[16/9] border border-ivory/10 relative group cursor-crosshair overflow-hidden border-grid-box" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              <img src="{{ block.settings.image | image_url: width: 1024 }}" alt="{{ block.settings.title | escape }}" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply grayscale opacity-25 image-scale-effect">
+            {%- elsif block.settings.asset_name != blank -%}
+              <img src="{{ block.settings.asset_name | asset_url }}" alt="{{ block.settings.title | escape }}" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply grayscale opacity-25 image-scale-effect">
+            {%- else -%}
+              <div class="absolute inset-0 w-full h-full bg-ivory/[0.02]"></div>
+            {%- endif -%}
+            
+            <a href="{{ block.settings.link | default: '#' }}" class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center decoration-none" style="text-decoration: none; color: inherit;">
+              <h4 class="font-serif text-2xl text-ivory font-light italic group-hover:text-gold transition-colors">{{ block.settings.title }}</h4>
+              <p class="font-mono text-[10px] text-ivory/40 tracking-[0.2em] uppercase mt-2 group-hover:text-gold/80 transition-colors">{{ block.settings.price }}</p>
+            </a>
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        <!-- Static Default Blocks replicating original 4 garment cards -->
+        <div class="aspect-[16/9] border border-ivory/10 relative group cursor-crosshair overflow-hidden border-grid-box">
+          <img src="{{ 'front_black_1_1.png' | asset_url }}" alt="Platinum Standard" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply grayscale opacity-25 image-scale-effect">
+          <div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
+            <h4 class="font-serif text-2xl text-ivory font-light italic">The Platinum Standard</h4>
+            <p class="font-mono text-[10px] text-ivory/40 tracking-[0.2em] mt-2">SPEC // PROTOCOL_01</p>
+          </div>
+        </div>
+
+        <div class="aspect-[16/9] border border-ivory/10 relative group cursor-crosshair overflow-hidden border-grid-box">
+          <img src="{{ 'unisex_organic_mid_light_crafter_t_shirt_desert_dust_front_6a16dd454c251.jpg' | asset_url }}" alt="Ruby Reflections" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply grayscale opacity-25 image-scale-effect">
+          <div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
+            <h4 class="font-serif text-2xl text-ivory font-light italic">Ruby Reflections</h4>
+            <p class="font-mono text-[10px] text-ivory/40 tracking-[0.2em] mt-2">SPEC // PROTOCOL_02</p>
+          </div>
+        </div>
+
+        <div class="aspect-[16/9] border border-ivory/10 relative group cursor-crosshair overflow-hidden border-grid-box">
+          <img src="{{ 'unisex_columbia_soft_shell_jacket_collegiate_navy_front_6a16eba5ad374.jpg' | asset_url }}" alt="Crown Presence" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply grayscale opacity-25 image-scale-effect">
+          <div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
+            <h4 class="font-serif text-2xl text-ivory font-light italic">Crown Presence</h4>
+            <p class="font-mono text-[10px] text-ivory/40 tracking-[0.2em] mt-2">SPEC // PROTOCOL_03</p>
+          </div>
+        </div>
+
+        <div class="aspect-[16/9] border border-ivory/10 relative group cursor-crosshair overflow-hidden border-grid-box">
+          <img src="{{ 'unisex_organic_mid_light_crafter_t_shirt_black_back_6a16dd454caca.jpg' | asset_url }}" alt="Echoes of Gold" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply grayscale opacity-25 image-scale-effect">
+          <div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
+            <h4 class="font-serif text-2xl text-ivory font-light italic">Echoes of Gold</h4>
+            <p class="font-mono text-[10px] text-ivory/40 tracking-[0.2em] mt-2">SPEC // PROTOCOL_04</p>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>

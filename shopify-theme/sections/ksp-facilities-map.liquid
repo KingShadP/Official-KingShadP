@@ -1,0 +1,146 @@
+{% schema %}
+{
+  "name": "KSP Facilities Map Room",
+  "tag": "section",
+  "class": "ksp-facilities-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "protocol_code",
+      "label": "Protocol System Name",
+      "default": "SYSTEM_FACIL_V.10"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Facilities Heading",
+      "default": "Map of the Sovereign Orbit"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subtext",
+      "default": "INTELLIGENCE BLUEPRINTS -- GEOMETRIC DOMAIN"
+    },
+    {
+      "type": "text",
+      "id": "concierge_email",
+      "label": "Concierge Email Coordinates",
+      "default": "vault@kingshadp.system"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "room",
+      "name": "Vault Wing Location",
+      "settings": [
+        {
+          "type": "text",
+          "id": "coordinate",
+          "label": "Telemetry Coordinates (e.g. WING_01)",
+          "default": "WING_01"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Wing Title",
+          "default": "THE SONIC DEPOSIT VAULT"
+        },
+        {
+          "type": "text",
+          "id": "purpose",
+          "label": "Operations Purpose",
+          "default": "Maintenance of acoustic signals, modular soundscapes, wave calibrations."
+        },
+        {
+          "type": "text",
+          "id": "status",
+          "label": "Wing Status",
+          "default": "[ SECURE_PROTOCOL_ACTIVE ]"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<section class="relative w-full py-20 px-6 lg:px-24 z-10 bg-transparent overflow-hidden" id="facilities-map-room">
+  <div class="max-w-7xl mx-auto flex flex-col gap-16">
+    
+    <!-- Title Section -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-ivory/10 pb-8">
+      <div>
+        <div class="font-mono text-[9px] text-gold uppercase tracking-[0.3em] mb-4">{{ section.settings.subheading }}</div>
+        <h2 class="font-serif text-5xl lg:text-6xl text-ivory font-light scramble-text">{{ section.settings.heading }}</h2>
+      </div>
+      <div class="font-mono text-[10px] text-oxblood bg-oxblood/10 border border-oxblood/30 px-3 py-1 uppercase tracking-widest leading-none">
+        {{ section.settings.protocol_code }}
+      </div>
+    </div>
+
+    <!-- Map Layout Panel split -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start" id="facilities-blueprint-panels">
+      
+      <!-- Room Locations Accordion list -->
+      <div class="lg:col-span-8 flex flex-col gap-6" id="locations-ledger-parent">
+        <div class="font-mono text-[9px] text-gold uppercase tracking-[0.3em]">// DEPLOYED WING DIRECTORY</div>
+        
+        <div class="flex flex-col partition-list divide-y divide-ivory/10">
+          {% for block in section.blocks %}
+            {% if block.type == 'room' %}
+              <div class="py-6 flex flex-col md:flex-row justify-between items-start gap-4 group hover:bg-ivory/5 px-4 transition-all duration-300">
+                <div class="flex gap-6 items-start">
+                  <span class="font-mono text-[11px] text-oxblood leading-none pt-1">{{ block.settings.coordinate }}</span>
+                  <div>
+                    <h3 class="font-serif text-xl font-light text-ivory mb-2 group-hover:text-gold transition-colors duration-300">{{ block.settings.title }}</h3>
+                    <p class="font-mono text-[11px] text-ivory/60 leading-relaxed max-w-xl">{{ block.settings.purpose }}</p>
+                  </div>
+                </div>
+                <div class="font-mono text-[9px] text-gold uppercase tracking-wider md:text-right">
+                  {{ block.settings.status }}
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Private Concierge secure message transmission -->
+      <div class="lg:col-span-4 ruby-glass p-8 border-grid-box relative md:mt-8">
+        <div class="absolute -top-3 left-6 font-mono text-[9px] text-oxblood tracking-widest px-2 bg-void uppercase">// Concierge Channel</div>
+        
+        <h3 class="font-serif text-2xl font-light text-ivory mb-4 mt-2">Transmit Protocol</h3>
+        <p class="font-mono text-[10px] text-ivory/50 leading-relaxed mb-6 uppercase">ESTABLISH SECURED CONCURRENT SIGNAL PATHWAY</p>
+        
+        {% form 'contact', class: 'flex flex-col gap-4 font-mono text-xs' %}
+          {% if form.posted_successfully? %}
+            <div class="font-mono text-xs text-gold border border-gold/30 bg-gold/5 p-4 uppercase mb-4">
+              [ MESSAGE_TRANSMITTED_SUCCESSFULLY ]
+            </div>
+          {% endif %}
+          
+          <div class="flex flex-col gap-2">
+            <label for="concierge-email" class="text-ivory/50 tracking-wider text-[9px] uppercase">Coordinate Identifier (Email)</label>
+            <input type="email" id="concierge-email" name="contact[email]" required placeholder="NAME@DOMAIN.SYSTEM" class="bg-void/80 border border-ivory/10 px-4 py-2 text-ivory focus:border-gold outline-none w-full">
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="concierge-message" class="text-ivory/50 tracking-wider text-[9px] uppercase">Transmission (Payload)</label>
+            <textarea id="concierge-message" name="contact[body]" rows="4" required placeholder="TRANSMIT REQUEST PARTICULARS..." class="bg-void/80 border border-ivory/10 px-4 py-2 text-ivory focus:border-gold outline-none w-full resize-none"></textarea>
+          </div>
+
+          <button type="submit" class="border border-gold/30 hover:bg-gold/10 text-gold py-3 px-6 tracking-widest uppercase transition-colors text-[10px] w-full mt-4 bg-transparent cursor-pointer">
+            [ RUN_TRANSMISSION ]
+          </button>
+        {% endform %}
+
+        <div class="border-t border-ivory/10 pt-4 mt-8 flex justify-between items-center text-[9px] text-ivory/40 font-mono">
+          <span>SECURE_SHA_256</span>
+          <span>{{ section.settings.concierge_email }}</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,10 @@
+{
+  "sections": {
+    "lookbook": {
+      "type": "ksp-lookbook-editorial"
+    }
+  },
+  "order": [
+    "lookbook"
+  ]
+}

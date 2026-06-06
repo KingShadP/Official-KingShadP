@@ -1,0 +1,98 @@
+{% schema %}
+{
+  "name": "KSP Vision Manifesto",
+  "tag": "section",
+  "class": "ksp-vision-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "code",
+      "label": "Protocol System Code",
+      "default": "SYSTEM_VIS_V.01"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Manifesto Heading",
+      "default": "Creative Standards Docket"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Manifesto Subtitle",
+      "default": "THEORETICAL ARCHITECTURAL CODES"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "standard",
+      "name": "Aesthetic Code Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "index",
+          "label": "Metric Code (e.g. VIS_01)",
+          "default": "VIS_01"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Code Specification Name",
+          "default": "ASYNCHRONIC TRANSITIONS"
+        },
+        {
+          "type": "text",
+          "id": "definition",
+          "label": "Engineering Specification Directive",
+          "default": "Elements do not pop or load as basic assets. They drift into range from deep void slowly like satellites passing a planetary lens."
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<section class="relative w-full py-20 px-6 lg:px-24 z-10 bg-transparent overflow-hidden" id="vision-manifesto-room">
+  <div class="max-w-7xl mx-auto flex flex-col gap-16">
+    
+    <!-- Title Section -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-ivory/10 pb-8">
+      <div>
+        <div class="font-mono text-[9px] text-gold uppercase tracking-[0.3em] mb-4">{{ section.settings.subheading }}</div>
+        <h2 class="font-serif text-5xl lg:text-6xl text-ivory font-light scramble-text">{{ section.settings.heading }}</h2>
+      </div>
+      <div class="font-mono text-[10px] text-oxblood bg-oxblood/10 border border-oxblood/30 px-3 py-1 uppercase tracking-widest leading-none">
+        {{ section.settings.code }}
+      </div>
+    </div>
+
+    <!-- Layout: Manifesto Bento Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="manifesto-bento-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'standard' %}
+          <div class="ruby-glass border-grid-box p-8 flex flex-col justify-between group hover:border-gold/30 transition-all duration-300">
+            <div>
+              <span class="font-mono text-xs text-oxblood uppercase tracking-widest mb-6 block">// {{ block.settings.index }}</span>
+              <h3 class="font-serif text-2xl font-light text-ivory mb-4 group-hover:text-gold transition-colors duration-300">{{ block.settings.title }}</h3>
+              <p class="font-mono text-[11px] text-ivory/60 leading-relaxed">{{ block.settings.definition }}</p>
+            </div>
+            
+            <div class="border-t border-ivory/10 pt-4 mt-8 flex justify-between items-center text-[8px] font-mono text-ivory/30 uppercase">
+              <span>CRITICAL_MASS_COMPLIANCE</span>
+              <span>KSP.V9</span>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Bold Quote Block -->
+    <div class="ruby-glass p-12 border-grid-box text-center relative max-w-4xl mx-auto w-full mt-12">
+      <div class="absolute -top-3 left-1/2 -translate-x-1/2 font-mono text-[9px] text-gold tracking-widest px-2 bg-void uppercase">// Dynamic Formula</div>
+      <blockquote class="font-serif italic text-xl md:text-2xl text-ivory/80 leading-relaxed font-light">
+        "Power without restraint becomes noise. Confidence without emotional intelligence becomes arrogance. Mythology without truth collapses under its own decoration."
+      </blockquote>
+    </div>
+
+  </div>
+</section>
