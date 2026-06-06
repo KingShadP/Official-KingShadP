@@ -18,7 +18,9 @@ export function SmoothScroller() {
       infinite: false,
     });
 
+    let active = true;
     function raf(time: number) {
+      if (!active) return;
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
@@ -26,6 +28,7 @@ export function SmoothScroller() {
     requestAnimationFrame(raf);
 
     return () => {
+      active = false;
       lenis.destroy();
     };
   }, []);

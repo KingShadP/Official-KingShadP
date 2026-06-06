@@ -86,9 +86,9 @@ export function VirtualKingdomBackground({ children }: VirtualKingdomBackgroundP
         ))}
 
         {/* Dynamic Atmospheric Depth Overlays */}
-        <DepthFog />
-        <GoldLightSweep />
-        <PortalTransition />
+        <DepthFog progress={globalProgress} />
+        <GoldLightSweep progress={globalProgress} />
+        <PortalTransition progress={globalProgress} />
 
         {/* Subtle Luxury Film Grain Frame Overlay */}
         <div className="absolute inset-0 z-[-1] pointer-events-none mix-blend-overlay bg-noise opacity-[0.25]" />

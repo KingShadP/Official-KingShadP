@@ -1,8 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+type DepthFogProps = {
+  progress?: number;
+};
 
-export function DepthFog() {
+export function DepthFog({ progress = 0 }: DepthFogProps) {
   return (
     <div className="absolute inset-0 z-[-5] pointer-events-none overflow-hidden select-none">
       {/* Volumetric smoky fog layers */}
@@ -14,7 +16,7 @@ export function DepthFog() {
             radial-gradient(ellipse at 75% 48%, rgba(214, 160, 110, 0.12), transparent 50%),
             radial-gradient(ellipse at 50% 80%, rgba(5, 5, 5, 0.45), transparent 65%)
           `,
-          transform: `translate3d(calc(var(--scroll-progress, 0) * 4vw), calc(var(--scroll-progress, 0) * -3vh), 0) scale(calc(1 + (var(--scroll-progress, 0) * 0.15)))`,
+          transform: `translate3d(${progress * 4}vw, ${progress * -3}vh, 0) scale(${1 + progress * 0.15})`,
           animation: "kingdomFogDrift 16s ease-in-out infinite alternate"
         }}
       />
@@ -25,7 +27,7 @@ export function DepthFog() {
             radial-gradient(ellipse at 35% 80%, rgba(214, 160, 110, 0.07), transparent 35%),
             radial-gradient(ellipse at 65% 70%, rgba(255, 255, 255, 0.05), transparent 40%)
           `,
-          transform: `translate3d(calc(var(--scroll-progress, 0) * -2vw), calc(var(--scroll-progress, 0) * -2vh), 0) scale(calc(1 + (var(--scroll-progress, 0) * 0.1)))`,
+          transform: `translate3d(${progress * -2}vw, ${progress * -2}vh, 0) scale(${1 + progress * 0.1})`,
           animation: "kingdomFogDrift 22s ease-in-out infinite alternate-reverse"
         }}
       />

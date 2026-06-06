@@ -2,7 +2,11 @@
 
 import { useReducedMotion } from "framer-motion";
 
-export function PortalTransition() {
+type PortalTransitionProps = {
+  progress?: number;
+};
+
+export function PortalTransition({ progress = 0 }: PortalTransitionProps) {
   const shouldReduceMotion = useReducedMotion();
 
   if (shouldReduceMotion) return null;
@@ -16,8 +20,8 @@ export function PortalTransition() {
       <div 
         className="absolute inset-[15%] border-[1px] border-[#d6a06e]/15 shadow-[0_0_100px_rgba(214,160,110,0.03)] flex items-center justify-center transition-all duration-300"
         style={{
-          transform: `translate3d(0, 0, calc(var(--scroll-progress, 0) * 120px)) scale(calc(1 + (var(--scroll-progress, 0) * 0.45)))`,
-          opacity: `calc(0.4 - (var(--scroll-progress, 0) * 0.35))`,
+          transform: `translate3d(0, 0, ${progress * 120}px) scale(${1 + progress * 0.45})`,
+          opacity: Math.max(0, 0.4 - progress * 0.35),
           willChange: "transform, opacity"
         }}
       >

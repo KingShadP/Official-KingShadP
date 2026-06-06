@@ -19,6 +19,10 @@ export const CelestialEventToast = memo(function CelestialEventToast() {
   const [activeMsg, setActiveMsg] = useState<MessageState | null>(null);
 
   useEffect(() => {
+    let timer1: NodeJS.Timeout | null = null;
+    let timer2: NodeJS.Timeout | null = null;
+    let timer3: NodeJS.Timeout | null = null;
+
     const trigger = () => {
       const text = MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
       setActiveMsg({
@@ -26,14 +30,20 @@ export const CelestialEventToast = memo(function CelestialEventToast() {
         text
       });
 
-      setTimeout(() => setActiveMsg(null), 8000);
+      if (timer2) clearTimeout(timer2);
+      timer2 = setTimeout(() => setActiveMsg(null), 8000);
       
       const nextDelay = Math.floor(Math.random() * 25000) + 15000;
-      setTimeout(trigger, nextDelay);
+      if (timer3) clearTimeout(timer3);
+      timer3 = setTimeout(trigger, nextDelay);
     };
 
-    const firstTimer = setTimeout(trigger, 12000);
-    return () => clearTimeout(firstTimer);
+    timer1 = setTimeout(trigger, 12000);
+    return () => {
+      if (timer1) clearTimeout(timer1);
+      if (timer2) clearTimeout(timer2);
+      if (timer3) clearTimeout(timer3);
+    };
   }, []);
 
   return (
