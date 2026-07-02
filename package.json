@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node build-theme.js && next build && node finalize-build.js",
-    "build:site": "next build",
+    "build": "next build && node finalize-build.js",
+    "build:theme": "node build-theme.js",
     "lint": "next lint"
   },
   "dependencies": {
