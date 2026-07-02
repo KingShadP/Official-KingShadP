@@ -4,29 +4,26 @@ const config: Config = {
   content: [
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./lib/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       fontFamily: {
-        serif: ["var(--font-serif)"],
-        sans: ["var(--font-sans)"],
-        mono: ["var(--font-mono)"],
+        serif: ["var(--font-serif)", "Georgia", "serif"],
+        mono: ["var(--font-mono)", "monospace"],
       },
       colors: {
-        void: "#fdfbf7",
-        ivory: "#0a0a0a",
-        oxblood: "#93000a",
-        gold: "#dcc57b",
+        void: "#070605",
+        panel: "#100d0b",
+        ivory: "#f2ede4",
+        bronze: "#c08d5d",
+        oxblood: "#7d0009",
+        // legacy alias
+        gold: "#c08d5d",
       },
-      animation: {
-        'laser-sweep': 'border-laser-sweep 12s cubic-bezier(0.4,0,0.2,1) infinite',
+      transitionTimingFunction: {
+        out: "cubic-bezier(0.16, 1, 0.3, 1)",
       },
-      keyframes: {
-        'border-laser-sweep': {
-          '0%': { top: '-120px' },
-          '100%': { top: 'calc(100vh + 120px)' },
-        }
-      }
     },
   },
   plugins: [],

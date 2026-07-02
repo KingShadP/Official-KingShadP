@@ -8,13 +8,6 @@ const nextConfig: NextConfig = {
   },
   eslint: {
     ignoreDuringBuilds: true
-  },
-  transpilePackages: ["three"],
-  webpack: (config: any, { dev }: { dev: boolean }) => {
-    if (!dev) {
-      config.cache = false;
-    }
-    return config;
   }
 };
 
