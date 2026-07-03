@@ -115,6 +115,7 @@ export function SonicVault() {
     if (!e.audioEl) {
       e.audioEl = new Audio();
       e.audioEl.crossOrigin = "anonymous";
+      e.audioEl.onended = () => stopAll();
       e.mediaSrc = e.ctx.createMediaElementSource(e.audioEl);
       e.mediaSrc.connect(e.master);
     }

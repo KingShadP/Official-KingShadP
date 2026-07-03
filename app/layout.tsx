@@ -13,9 +13,17 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif"
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://divine-archive.vercel.app"),
   title: "KingShadP — Official Archive",
   description:
     "The official creative house of KingShadP — sound, image, story, and archive.",
+  openGraph: {
+    title: "KingShadP — Official Archive",
+    description:
+      "The official creative house of KingShadP — sound, image, story, and archive.",
+    type: "website",
+    images: ["/media/crest.webp"],
+  },
 };
 
 export const viewport: Viewport = {

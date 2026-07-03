@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { TransitionLink } from "@/components/system/TransitionProvider";
@@ -61,6 +61,18 @@ export function Nav() {
 
 function MenuOverlay({ onClose }: { onClose: () => void }) {
   const links = [{ href: "/", label: "Home", index: "00" }, ...NAV_LINKS];
+
+  // Lock scroll and close on Escape while open.
+  useEffect(() => {
+    const prev = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.documentElement.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [onClose]);
 
   return (
     <motion.div
