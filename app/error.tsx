@@ -22,6 +22,9 @@ export default function ErrorBoundary({
       <h1 className="font-serif italic font-light text-5xl md:text-7xl text-ivory mb-10">
         Something broke<span className="text-bronze">.</span>
       </h1>
+      <p className="max-w-md mb-10 font-serif font-light text-lg text-ivory/65 leading-relaxed">
+        The experience hit an unexpected interruption. Retry this view or return home to continue exploring.
+      </p>
       <div className="rule w-32 mb-10" />
       <div className="flex gap-4">
         <button

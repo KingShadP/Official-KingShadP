@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node finalize-build.js",
+    "build": "next build",
+    "build:static": "next build && node finalize-build.js",
     "build:theme": "node build-theme.js",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "node --test"
   },
   "dependencies": {
     "bestzip": "^3.0.1",

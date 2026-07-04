@@ -9,6 +9,9 @@ export default function NotFound() {
       <h1 className="font-serif italic font-light text-5xl md:text-7xl text-ivory mb-10">
         Not Found<span className="text-bronze">.</span>
       </h1>
+      <p className="max-w-md mb-10 font-serif font-light text-lg text-ivory/65 leading-relaxed">
+        The page you asked for is not in this room. Start from Visuals and move through the collection from there.
+      </p>
       <div className="rule w-32 mb-10" />
       <Link
         href="/"

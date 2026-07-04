@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { EASE } from "@/lib/motion";
+import { SITE_MEDIA } from "@/lib/site-media";
 
 /**
  * Signature bootloader — plays once per session.
@@ -56,7 +57,7 @@ export function Preloader() {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/media/sp-signature.webp"
+               src={SITE_MEDIA.signature}
                 alt="KingShadP"
                 className="w-full h-auto select-none pointer-events-none"
                 draggable={false}
@@ -77,7 +78,7 @@ export function Preloader() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.9, duration: 0.8 }}
           >
-            Official Archive
+            Official Website
           </motion.p>
         </motion.div>
       )}

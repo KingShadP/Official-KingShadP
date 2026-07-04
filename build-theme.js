@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const { ensureDirSync, writeFileSyncWithDirs } = require('./scripts/shared/fs-helpers');
+const { normalizeAssetFileName } = require('./scripts/shared/asset-name');
 
 // 1. Create directory structure for Shopify Theme
 const themeDir = path.join(__dirname, 'shopify-theme');
@@ -9,15 +11,13 @@ const subDirs = ['layout', 'templates', 'sections', 'snippets', 'config', 'local
 console.log('// Initializing Shopify Theme Directory Structure...');
 subDirs.forEach(dir => {
   const p = path.join(themeDir, dir);
-  if (!fs.existsSync(p)) {
-    fs.mkdirSync(p, { recursive: true });
-  }
+  ensureDirSync(p);
 });
 
 // Helper to copy binary file
 function copyFile(src, dest) {
   try {
-    fs.copyFileSync(src, dest);
+    writeFileSyncWithDirs(dest, fs.readFileSync(src));
     console.log(`Copied asset: ${path.basename(src)} -> ${path.basename(dest)}`);
   } catch (err) {
     console.error(`Error copying ${src}:`, err.message);
@@ -31,18 +31,15 @@ const assetsMap = {};
 if (fs.existsSync(publicAssetsDir)) {
   const files = fs.readdirSync(publicAssetsDir);
   files.forEach(file => {
-    // Clean filename for Shopify asset URL compatibility
-    const cleanName = file
-      .toLowerCase()
-      .replace(/[\s,()_-]+/g, '_')
-      .replace(/^[_\s]+|[_\s]+$/g, '')
-      .replace(/_png$/i, '.png')
-      .replace(/_jpg$/i, '.jpg')
-      .replace(/_mp4$/i, '.mp4');
-    
+    const cleanName = normalizeAssetFileName(file);
+
     assetsMap[file] = cleanName;
     copyFile(path.join(publicAssetsDir, file), path.join(themeDir, 'assets', cleanName));
   });
+}
+
+function writeThemeFile(parts, content) {
+  writeFileSyncWithDirs(path.join(themeDir, ...parts), content);
 }
 
 // 2. Generate shopify-theme/layout/theme.liquid
@@ -125,7 +122,7 @@ const themeLiquidContent = `<!doctype html>
 </html>
 `;
 
-fs.writeFileSync(path.join(themeDir, 'layout', 'theme.liquid'), themeLiquidContent);
+writeThemeFile(['layout', 'theme.liquid'], themeLiquidContent);
 
 // 3. Generate shopify-theme/snippets/meta-tags.liquid
 const metaTagsContent = `{%- liquid
@@ -153,14 +150,14 @@ const metaTagsContent = `{%- liquid
 <meta name="twitter:description" content="{{ og_description | escape }}">
 `;
 
-fs.writeFileSync(path.join(themeDir, 'snippets', 'meta-tags.liquid'), metaTagsContent);
+writeThemeFile(['snippets', 'meta-tags.liquid'], metaTagsContent);
 
 // 4. Generate shopify-theme/snippets/custom-cursor.liquid
 const customCursorContent = `<div id="interactive-cursor-ring" class="fixed top-0 left-0 w-8 h-8 rounded-full border border-ivory/50 pointer-events-none mix-blend-difference -translate-x-1/2 -translate-y-1/2 transition-all duration-[240ms] ease-[cubic-bezier(0.16,1,0.3,1)] z-[9998] opacity-0 hidden md:block"></div>
 <div id="interactive-cursor-dot" class="fixed top-0 left-0 w-1.5 h-1.5 rounded-full bg-ivory pointer-events-none mix-blend-difference -translate-x-1/2 -translate-y-1/2 z-[9999] opacity-0 hidden md:block"></div>
 `;
 
-fs.writeFileSync(path.join(themeDir, 'snippets', 'custom-cursor.liquid'), customCursorContent);
+writeThemeFile(['snippets', 'custom-cursor.liquid'], customCursorContent);
 
 // 5. Generate shopify-theme/assets/divine-archive.css
 const divinecssContent = `:root {
@@ -667,7 +664,7 @@ dialog[open] {
 }
 `;
 
-fs.writeFileSync(path.join(themeDir, 'assets', 'divine-archive.css'), divinecssContent);
+writeThemeFile(['assets', 'divine-archive.css'], divinecssContent);
 
 // 6. Generate shopify-theme/assets/starfield.js
 const starfieldjsContent = `(function() {
@@ -753,7 +750,7 @@ const starfieldjsContent = `(function() {
 })();
 `;
 
-fs.writeFileSync(path.join(themeDir, 'assets', 'starfield.js'), starfieldjsContent);
+writeThemeFile(['assets', 'starfield.js'], starfieldjsContent);
 
 // 7. Generate shopify-theme/assets/divine-archive.js
 const divinejsContent = `(function() {
@@ -1153,7 +1150,7 @@ const divinejsContent = `(function() {
 })();
 `;
 
-fs.writeFileSync(path.join(themeDir, 'assets', 'divine-archive.js'), divinejsContent);
+writeThemeFile(['assets', 'divine-archive.js'], divinejsContent);
 
 // 8. Generate shopify-theme/sections/header.liquid
 const headerContent = `{% schema %}
@@ -1290,7 +1287,7 @@ const headerContent = `{% schema %}
 </style>
 `;
 
-fs.writeFileSync(path.join(themeDir, 'sections', 'header.liquid'), headerContent);
+writeThemeFile(['sections', 'header.liquid'], headerContent);
 
 // 9. Generate shopify-theme/sections/hero-divine-archive.liquid
 const heroContent = `{% schema %}
@@ -1395,7 +1392,7 @@ const heroContent = `{% schema %}
 </section>
 `;
 
-fs.writeFileSync(path.join(themeDir, 'sections', 'hero-divine-archive.liquid'), heroContent);
+writeThemeFile(['sections', 'hero-divine-archive.liquid'], heroContent);
 
 // 10. Generate shopify-theme/sections/archive-editorial-grid.liquid
 const gridContent = `{% schema %}
@@ -1475,7 +1472,7 @@ const gridContent = `{% schema %}
 </section>
 `;
 
-fs.writeFileSync(path.join(themeDir, 'sections', 'archive-editorial-grid.liquid'), gridContent);
+writeThemeFile(['sections', 'archive-editorial-grid.liquid'], gridContent);
 
 // 11. Generate shopify-theme/sections/music-vault.liquid
 const musicContent = `{% schema %}
@@ -1546,7 +1543,7 @@ const musicContent = `{% schema %}
 </section>
 `;
 
-fs.writeFileSync(path.join(themeDir, 'sections', 'music-vault.liquid'), musicContent);
+writeThemeFile(['sections', 'music-vault.liquid'], musicContent);
 
 // 12. Generate shopify-theme/sections/cinema-vault.liquid
 const cinemaContent = `{% schema %}
@@ -1671,7 +1668,7 @@ const cinemaContent = `{% schema %}
 </section>
 `;
 
-fs.writeFileSync(path.join(themeDir, 'sections', 'cinema-vault.liquid'), cinemaContent);
+writeThemeFile(['sections', 'cinema-vault.liquid'], cinemaContent);
 
 // 13. Generate shopify-theme/sections/visual-vault.liquid
 const vaultContent = `{% schema %}
@@ -1814,7 +1811,7 @@ const vaultContent = `{% schema %}
 </section>
 `;
 
-fs.writeFileSync(path.join(themeDir, 'sections', 'visual-vault.liquid'), vaultContent);
+writeThemeFile(['sections', 'visual-vault.liquid'], vaultContent);
 
 // 14. Generate shopify-theme/sections/editorial-prose.liquid
 const proseContent = `{% schema %}
@@ -1933,7 +1930,7 @@ const proseContent = `{% schema %}
 </section>
 `;
 
-fs.writeFileSync(path.join(themeDir, 'sections', 'editorial-prose.liquid'), proseContent);
+writeThemeFile(['sections', 'editorial-prose.liquid'], proseContent);
 
 // 15. Generate shopify-theme/sections/footer.liquid
 const footerContent = `{% schema %}
@@ -1965,7 +1962,7 @@ const footerContent = `{% schema %}
 </footer>
 `;
 
-fs.writeFileSync(path.join(themeDir, 'sections', 'footer.liquid'), footerContent);
+writeThemeFile(['sections', 'footer.liquid'], footerContent);
 
 // 16. Generate templates
 const indexJson = {
@@ -1987,7 +1984,7 @@ const indexJson = {
   ]
 };
 
-fs.writeFileSync(path.join(themeDir, 'templates', 'index.json'), JSON.stringify(indexJson, null, 2));
+writeThemeFile(['templates', 'index.json'], JSON.stringify(indexJson, null, 2));
 
 // Generate settings files
 const settingsSchema = [
@@ -2003,7 +2000,7 @@ const settingsSchema = [
   }
 ];
 
-fs.writeFileSync(path.join(themeDir, 'config', 'settings_schema.json'), JSON.stringify(settingsSchema, null, 2));
+writeThemeFile(['config', 'settings_schema.json'], JSON.stringify(settingsSchema, null, 2));
 
 const settingsData = {
   "current": {
@@ -2034,7 +2031,7 @@ const settingsData = {
   }
 };
 
-fs.writeFileSync(path.join(themeDir, 'config', 'settings_data.json'), JSON.stringify(settingsData, null, 2));
+writeThemeFile(['config', 'settings_data.json'], JSON.stringify(settingsData, null, 2));
 
 // Generate groups layout definition
 const headerGroup = {
@@ -2048,7 +2045,7 @@ const headerGroup = {
   },
   "order": ["header"]
 };
-fs.writeFileSync(path.join(themeDir, 'sections', 'header-group.json'), JSON.stringify(headerGroup, null, 2));
+writeThemeFile(['sections', 'header-group.json'], JSON.stringify(headerGroup, null, 2));
 
 const footerGroup = {
   "name": "Footer Group",
@@ -2061,7 +2058,7 @@ const footerGroup = {
   },
   "order": ["footer"]
 };
-fs.writeFileSync(path.join(themeDir, 'sections', 'footer-group.json'), JSON.stringify(footerGroup, null, 2));
+writeThemeFile(['sections', 'footer-group.json'], JSON.stringify(footerGroup, null, 2));
 
 // Generate English Locale default file
 const localeEn = {
@@ -2071,7 +2068,7 @@ const localeEn = {
     }
   }
 };
-fs.writeFileSync(path.join(themeDir, 'locales', 'en.default.json'), JSON.stringify(localeEn, null, 2));
+writeThemeFile(['locales', 'en.default.json'], JSON.stringify(localeEn, null, 2));
 
 const { execSync } = require('child_process');
 try {

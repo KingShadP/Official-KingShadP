@@ -2,6 +2,7 @@
 
 import { Reveal } from "@/components/system/Reveal";
 import { WORLD_SECTIONS } from "@/lib/content";
+import { SITE_MEDIA } from "@/lib/site-media";
 
 export function WorldSections() {
   return (
@@ -15,6 +16,9 @@ export function WorldSections() {
           <h1 className="font-serif font-light text-5xl md:text-7xl text-ivory">
             The World
           </h1>
+          <p className="mt-6 max-w-2xl font-serif font-light text-lg md:text-xl text-ivory/65 leading-relaxed">
+            A guided entry point into the symbols, standards, and inner logic behind the archive.
+          </p>
         </Reveal>
       </section>
 
@@ -58,8 +62,8 @@ export function WorldSections() {
         <Reveal className="max-w-3xl mx-auto px-6 py-24 text-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/media/crest.webp"
-            alt="KingShadP crest"
+            src={SITE_MEDIA.worldMark}
+            alt="KingShadP world mark"
             loading="lazy"
             draggable={false}
             className="w-28 mx-auto opacity-80"

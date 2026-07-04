@@ -5,28 +5,36 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Reveal } from "@/components/system/Reveal";
 import { TransitionLink } from "@/components/system/TransitionProvider";
 import { EASE } from "@/lib/motion";
+import { SITE_MEDIA } from "@/lib/site-media";
 
 const ROWS = [
   {
-    href: "/archive",
+    href: "/visuals",
     index: "01",
-    title: "The Archive",
-    note: "Artifacts / Specifications",
-    img: "/unisex-columbia-soft-shell-jacket-black-front-6a16eba5ad2c4.jpg",
+    title: "Visuals",
+    note: "A full-screen museum of symbols, prophecy, and lookbook imagery.",
+    img: SITE_MEDIA.heroBackdrop,
   },
   {
     href: "/music",
     index: "02",
     title: "The Sound",
-    note: "Sonic Vault / Vol. 1",
-    img: "/media/giragon-champagne.webp",
+    note: "Fragments, frequencies, and atmosphere from the sonic vault.",
+    img: SITE_MEDIA.soundMark,
   },
   {
     href: "/world",
     index: "03",
     title: "The World",
-    note: "Doctrine / House Codes",
-    img: "/media/crest.webp",
+    note: "The doctrine, rules, and values holding the whole identity together.",
+    img: SITE_MEDIA.worldMark,
+  },
+  {
+    href: "/shop",
+    index: "04",
+    title: "The Shop",
+    note: "Garments and objects prepared for acquisition and try-on.",
+    img: SITE_MEDIA.collectionMark,
   },
 ];
 
@@ -38,10 +46,10 @@ export function SystemIndex() {
     <section className="relative max-w-7xl mx-auto px-6 lg:px-12 py-28 md:py-40">
       <Reveal>
         <p className="font-mono text-[10px] tracking-[0.4em] uppercase text-bronze mb-3">
-          Index
+          Preview
         </p>
         <h2 className="font-serif font-light text-4xl md:text-5xl text-ivory mb-16">
-          One system. Three rooms.
+          What this site lets you enter.
         </h2>
       </Reveal>
 
@@ -84,7 +92,7 @@ export function SystemIndex() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={ROWS[active].img}
-                alt=""
+                alt={`${ROWS[active].title} preview`}
                 className="w-full h-full object-contain p-6 opacity-90"
                 draggable={false}
               />

@@ -237,8 +237,7 @@ export function SonicVault() {
           The Sound
         </h1>
         <p className="font-serif italic font-light text-ivory/55 max-w-md text-base md:text-lg">
-          Four fragments from the central archive. Masters are being prepared —
-          each entry currently carries an ambient preview signal.
+          Four fragments from the central archive. Each entry opens with an ambient preview signal while full masters are being prepared.
         </p>
         <div className="rule mt-14" />
       </Reveal>
@@ -251,11 +250,11 @@ export function SonicVault() {
             return (
               <Reveal key={track.id} delay={i * 0.07}>
                 <button
+                  type="button"
                   onClick={() => toggle(track.id)}
-                  aria-pressed={isOn}
-                  className={`group w-full flex items-center justify-between gap-6 py-7 border-b border-ivory/10 text-left transition-colors duration-300 ${
-                    isOn ? "text-ivory" : "text-ivory/70 hover:text-ivory"
-                  }`}
+                  aria-pressed={isOn ? "true" : "false"}
+                  className={`group w-full flex items-center justify-between gap-6 py-7 border-b border-ivory/10 text-left transition-colors duration-300 ${isOn ? "text-ivory" : "text-ivory/70 hover:text-ivory"
+                    }`}
                 >
                   <div className="flex items-baseline gap-5">
                     <span className={`font-mono text-[10px] tracking-[0.3em] ${isOn ? "text-bronze" : "text-bronze/60"}`}>
@@ -268,14 +267,16 @@ export function SonicVault() {
                       <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-ivory/30">
                         {track.note}
                       </span>
+                      <span className="mt-2 inline-block font-mono text-[8px] tracking-[0.3em] uppercase text-ivory/35">
+                        {track.src ? "Master audio" : "Preview signal"}
+                      </span>
                     </div>
                   </div>
                   <span
-                    className={`font-mono text-[9px] tracking-[0.3em] uppercase shrink-0 transition-colors duration-300 ${
-                      isOn ? "text-bronze" : "text-ivory/35 group-hover:text-ivory/70"
-                    }`}
+                    className={`font-mono text-[9px] tracking-[0.3em] uppercase shrink-0 transition-colors duration-300 ${isOn ? "text-bronze" : "text-ivory/35 group-hover:text-ivory/70"
+                      }`}
                   >
-                    {isOn ? "■ Stop" : "▶ Signal"}
+                    {isOn ? "■ Stop" : track.src ? "▶ Listen" : "▶ Preview"}
                   </span>
                 </button>
               </Reveal>
@@ -302,7 +303,7 @@ export function SonicVault() {
             <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-ivory/30 leading-relaxed">
               {playing
                 ? `Amplitude locked // Fragment ${playing}`
-                : "Awaiting input — select a fragment."}
+                : "Select a fragment to hear its preview signal."}
             </p>
           </div>
         </Reveal>

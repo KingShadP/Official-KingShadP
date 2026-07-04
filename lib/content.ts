@@ -1,7 +1,10 @@
+import { ARTIFACT_IMAGE_MAP } from "@/lib/site-media";
+
 export const NAV_LINKS = [
-  { href: "/archive", label: "Archive", index: "01" },
+  { href: "/visuals", label: "Visuals", index: "01" },
   { href: "/music", label: "Music", index: "02" },
   { href: "/world", label: "World", index: "03" },
+  { href: "/shop", label: "Shop", index: "04" },
 ];
 
 export type Artifact = {
@@ -18,49 +21,49 @@ export const ARTIFACTS: Artifact[] = [
     ref: "SS-01",
     name: "Soft Shell Jacket — Onyx",
     spec: "Outerwear / Giragon Insignia",
-    img: "/unisex-columbia-soft-shell-jacket-black-front-6a16eba5ad2c4.jpg",
+    img: ARTIFACT_IMAGE_MAP["SS-01"],
     span: "md:col-span-7",
   },
   {
     ref: "SS-02",
     name: "Soft Shell Jacket — Graphite",
     spec: "Outerwear / Giragon Insignia",
-    img: "/unisex-columbia-soft-shell-jacket-graphite-front-6a16eba5ad405.jpg",
+    img: ARTIFACT_IMAGE_MAP["SS-02"],
     span: "md:col-span-5",
   },
   {
     ref: "SS-03",
     name: "Soft Shell Jacket — Navy",
     spec: "Outerwear / Giragon Insignia",
-    img: "/unisex-columbia-soft-shell-jacket-collegiate-navy-front-6a16eba5ad374.jpg",
+    img: ARTIFACT_IMAGE_MAP["SS-03"],
     span: "md:col-span-5",
   },
   {
     ref: "CT-01",
     name: "Crafter Tee — Desert Dust",
     spec: "Organic Cotton / Front Print",
-    img: "/unisex-organic-mid-light-crafter-t-shirt-desert-dust-front-6a16dd454c251.jpg",
+    img: ARTIFACT_IMAGE_MAP["CT-01"],
     span: "md:col-span-7",
   },
   {
     ref: "CT-02",
     name: "Crafter Tee — French Navy",
     spec: "Organic Cotton / Front Print",
-    img: "/unisex-organic-mid-light-crafter-t-shirt-french-navy-front-6a16dd454c318.jpg",
+    img: ARTIFACT_IMAGE_MAP["CT-02"],
     span: "md:col-span-4",
   },
   {
     ref: "CT-03",
     name: "Crafter Tee — Onyx, Signature Back",
     spec: "Organic Cotton / Back Print",
-    img: "/unisex-organic-mid-light-crafter-t-shirt-black-back-6a16dd454caca.jpg",
+    img: ARTIFACT_IMAGE_MAP["CT-03"],
     span: "md:col-span-4",
   },
   {
     ref: "IN-01",
     name: "The Crest",
     spec: "House Insignia / Source Mark",
-    img: "/media/crest.webp",
+    img: ARTIFACT_IMAGE_MAP["IN-01"],
     span: "md:col-span-4",
     contain: true,
   },

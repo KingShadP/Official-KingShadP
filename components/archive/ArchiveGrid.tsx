@@ -37,7 +37,7 @@ export function ArchiveGrid() {
 
       <Reveal className="mt-24 text-center">
         <p className="font-mono text-[9px] tracking-[0.4em] uppercase text-ivory/30">
-          Further artifacts sealed — awaiting release.
+          More artifacts are being prepared for future release.
         </p>
       </Reveal>
     </section>
