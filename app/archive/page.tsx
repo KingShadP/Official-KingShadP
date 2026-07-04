@@ -1,11 +1,5 @@
-import type { Metadata } from "next";
-import { ArchiveGrid } from "@/components/archive/ArchiveGrid";
-
-export const metadata: Metadata = {
-  title: "The Archive — KingShadP",
-  description: "Artifacts and specifications from the KingShadP archive.",
-};
+import { redirect } from "next/navigation";
 
 export default function ArchivePage() {
-  return <ArchiveGrid />;
+  redirect("/visuals");
 }

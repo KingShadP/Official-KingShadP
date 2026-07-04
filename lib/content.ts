@@ -1,9 +1,10 @@
 import { ARTIFACT_IMAGE_MAP } from "@/lib/site-media";
 
 export const NAV_LINKS = [
-  { href: "/archive", label: "Archive", index: "01" },
+  { href: "/visuals", label: "Visuals", index: "01" },
   { href: "/music", label: "Music", index: "02" },
   { href: "/world", label: "World", index: "03" },
+  { href: "/shop", label: "Shop", index: "04" },
 ];
 
 export type Artifact = {

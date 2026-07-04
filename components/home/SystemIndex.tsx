@@ -9,25 +9,32 @@ import { SITE_MEDIA } from "@/lib/site-media";
 
 const ROWS = [
   {
-    href: "/archive",
+    href: "/visuals",
     index: "01",
-    title: "The Archive",
-    note: "Artifacts / Specifications",
-    img: SITE_MEDIA.collectionMark,
+    title: "Visuals",
+    note: "A full-screen museum of symbols, prophecy, and lookbook imagery.",
+    img: SITE_MEDIA.heroBackdrop,
   },
   {
     href: "/music",
     index: "02",
     title: "The Sound",
-    note: "Sonic Vault / Vol. 1",
+    note: "Fragments, frequencies, and atmosphere from the sonic vault.",
     img: SITE_MEDIA.soundMark,
   },
   {
     href: "/world",
     index: "03",
     title: "The World",
-    note: "Doctrine / House Codes",
+    note: "The doctrine, rules, and values holding the whole identity together.",
     img: SITE_MEDIA.worldMark,
+  },
+  {
+    href: "/shop",
+    index: "04",
+    title: "The Shop",
+    note: "Garments and objects prepared for acquisition and try-on.",
+    img: SITE_MEDIA.collectionMark,
   },
 ];
 
@@ -39,10 +46,10 @@ export function SystemIndex() {
     <section className="relative max-w-7xl mx-auto px-6 lg:px-12 py-28 md:py-40">
       <Reveal>
         <p className="font-mono text-[10px] tracking-[0.4em] uppercase text-bronze mb-3">
-          Index
+          Preview
         </p>
         <h2 className="font-serif font-light text-4xl md:text-5xl text-ivory mb-16">
-          One system. Three rooms.
+          What this site lets you enter.
         </h2>
       </Reveal>
 

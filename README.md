@@ -25,6 +25,10 @@ View your app in AI Studio: https://ai.studio/apps/8b97a5a5-0ef4-42a7-b554-e00f3
 
 For production build (server runtime): `npm run build`
 
+For Shopify product integration, add:
+- `SHOPIFY_STORE_DOMAIN=<your-store.myshopify.com>`
+- `SHOPIFY_STOREFRONT_ACCESS_TOKEN=<storefront access token>`
+
 ## Admin auth module
 
 - Login page: `/admin/login`

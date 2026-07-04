@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import {
   motion,
   useReducedMotion,
@@ -18,7 +18,6 @@ import { SITE_MEDIA } from "@/lib/site-media";
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
-  const [ambient, setAmbient] = useState(true);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -54,18 +53,15 @@ export function Hero() {
         }}
       />
 
-      {/* Optional ambient backdrop layer */}
-      {ambient && (
-        <motion.img
-          key="ambient"
-          src={SITE_MEDIA.heroBackdrop}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover saturate-[0.4]"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.16 }}
-          transition={{ duration: 1.4, ease: EASE }}
-        />
-      )}
+      <motion.img
+        key="ambient"
+        src={SITE_MEDIA.heroBackdrop}
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover saturate-[0.4]"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.16 }}
+        transition={{ duration: 1.4, ease: EASE }}
+      />
 
       {/* Layer 1 — the Giragon plate, drifting slower than scroll */}
       <motion.div
@@ -99,7 +95,7 @@ export function Hero() {
           {...enter(0.25)}
           className="font-mono text-[10px] md:text-xs text-bronze tracking-[0.45em] uppercase mb-6"
         >
-          Music / Image / Story / World
+          Identity / Luxury / Worldbuilding / Sound
         </motion.p>
 
         <motion.h1
@@ -111,35 +107,24 @@ export function Hero() {
 
         <motion.div {...enter(0.6)} className="mt-8 flex flex-wrap items-center gap-8">
           <p className="font-serif italic font-light text-ivory/65 text-base md:text-lg max-w-md">
-            The official creative house — an artist-built archive of sound,
-            visuals, symbols, and story.
+            KingShadP is a luxury world in progress: a creative house where image, sound, symbols, fashion, and prophecy are treated as one unified system.
           </p>
           <div className="flex gap-4">
             <TransitionLink
-              href="/archive"
+              href="/visuals"
               className="px-6 py-3 border border-bronze/40 hover:border-bronze hover:bg-bronze/10 transition-all duration-500 font-mono text-[10px] uppercase tracking-[0.3em] text-bronze"
             >
-              Enter the Archive
+              Enter Visuals
             </TransitionLink>
             <TransitionLink
-              href="/music"
+              href="/world"
               className="px-6 py-3 border border-ivory/15 hover:border-ivory/50 transition-all duration-500 font-mono text-[10px] uppercase tracking-[0.3em] text-ivory/70"
             >
-              Listen
+              Read the World
             </TransitionLink>
           </div>
         </motion.div>
       </motion.div>
-
-      {/* Ambient toggle */}
-      <motion.button
-        {...enter(1)}
-        onClick={() => setAmbient((v) => !v)}
-        className="absolute bottom-6 right-6 lg:right-12 z-20 font-mono text-[9px] tracking-[0.35em] uppercase text-ivory/40 hover:text-bronze transition-colors duration-300"
-        aria-pressed={ambient}
-      >
-        Atmosphere — {ambient ? "On" : "Off"}
-      </motion.button>
 
       {/* Scroll cue */}
       <motion.div

@@ -74,7 +74,7 @@ export function Preloader() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.9, duration: 0.8 }}
           >
-            Official Archive
+            Official Website
           </motion.p>
         </motion.div>
       )}

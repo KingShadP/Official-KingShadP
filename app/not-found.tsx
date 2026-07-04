@@ -10,7 +10,7 @@ export default function NotFound() {
         Not Found<span className="text-bronze">.</span>
       </h1>
       <p className="max-w-md mb-10 font-serif font-light text-lg text-ivory/65 leading-relaxed">
-        The page you asked for is not in this room. Start from the archive and move through the collection from there.
+        The page you asked for is not in this room. Start from Visuals and move through the collection from there.
       </p>
       <div className="rule w-32 mb-10" />
       <Link
