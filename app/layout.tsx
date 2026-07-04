@@ -13,9 +13,9 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif"
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-  title: "KingShadP — Official Archive",
+  title: "KingShadP — Official",
   description:
-    "The official creative house of KingShadP — sound, image, story, and archive.",
+    "The official KingShadP Website",
 };
 
 export const viewport: Viewport = {
