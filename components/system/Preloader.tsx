@@ -16,20 +16,24 @@ export function Preloader() {
   const reduced = useReducedMotion();
 
   useEffect(() => {
-    if (sessionStorage.getItem("ksp-boot")) return;
-    sessionStorage.setItem("ksp-boot", "1");
+    if (sessionStorage.getItem("ksp-boot")) {
+      // Already booted this session — let listeners proceed immediately.
+      window.dispatchEvent(new Event("ksp:reveal"));
+      return;
+    }
     setShow(true);
     document.documentElement.style.overflow = "hidden";
-    const t = setTimeout(() => setDone(true), reduced ? 600 : 2500);
+    const t = setTimeout(() => setDone(true), reduced ? 600 : 2400);
     return () => clearTimeout(t);
   }, [reduced]);
 
   useEffect(() => {
     if (done) {
-      const t = setTimeout(() => {
-        document.documentElement.style.overflow = "";
-        setShow(false);
-      }, 900);
+      // Mark the session booted and release the page as the panel lifts.
+      sessionStorage.setItem("ksp-boot", "1");
+      document.documentElement.style.overflow = "";
+      window.dispatchEvent(new Event("ksp:reveal"));
+      const t = setTimeout(() => setShow(false), 900);
       return () => clearTimeout(t);
     }
   }, [done]);

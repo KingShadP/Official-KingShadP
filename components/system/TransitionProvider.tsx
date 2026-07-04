@@ -42,10 +42,10 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
   );
 
   // Once the route actually changes, sweep the panel away.
+  // (SmoothScroller owns the scroll reset.)
   useEffect(() => {
     if (prevPath.current !== pathname) {
       prevPath.current = pathname;
-      window.scrollTo(0, 0);
       setPhase("reveal");
     }
   }, [pathname]);

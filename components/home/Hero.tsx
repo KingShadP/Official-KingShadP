@@ -10,6 +10,7 @@ import {
 import { TransitionLink } from "@/components/system/TransitionProvider";
 import { EASE } from "@/lib/motion";
 import { SITE_MEDIA } from "@/lib/site-media";
+import { useBootReveal } from "@/lib/useBootReveal";
 
 /**
  * Hero — three parallax layers (architecture lines, Giragon plate, type),
@@ -18,6 +19,8 @@ import { SITE_MEDIA } from "@/lib/site-media";
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
+  const ready = useBootReveal();
+  const [ambient, setAmbient] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -29,7 +32,7 @@ export function Hero() {
 
   const enter = (delay: number) => ({
     initial: { opacity: 0, y: reduced ? 0 : 30 },
-    animate: { opacity: 1, y: 0 },
+    animate: ready ? { opacity: 1, y: 0 } : { opacity: 0, y: reduced ? 0 : 30 },
     transition: { duration: 1, delay, ease: EASE },
   });
 
@@ -73,9 +76,9 @@ export function Hero() {
           src={SITE_MEDIA.heroPlate}
           alt=""
           draggable={false}
-          className="w-[62vmin] max-w-[560px] opacity-[0.33] select-none"
+          className="w-[62vmin] max-w-[560px] select-none"
           initial={{ opacity: 0, scale: reduced ? 1 : 1.06 }}
-          animate={{ opacity: 0.33, scale: 1 }}
+          animate={ready ? { opacity: 0.33, scale: 1 } : { opacity: 0, scale: reduced ? 1 : 1.06 }}
           transition={{ duration: 2, delay: 0.3, ease: EASE }}
         />
       </motion.div>
@@ -130,9 +133,6 @@ export function Hero() {
       <motion.div
         aria-hidden
         className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-3"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.6, duration: 1 }}
         style={{ opacity: oFade }}
       >
         <motion.div

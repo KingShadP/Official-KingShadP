@@ -13,6 +13,17 @@ export const metadata: Metadata = {
   title: "KingShadP — Official",
   description:
     "The official KingShadP Website",
+  metadataBase: new URL("https://divine-archive.vercel.app"),
+  title: "KingShadP — Official Archive",
+  description:
+    "The official creative house of KingShadP — sound, image, story, and archive.",
+  openGraph: {
+    title: "KingShadP — Official Archive",
+    description:
+      "The official creative house of KingShadP — sound, image, story, and archive.",
+    type: "website",
+    images: ["/media/crest.webp"],
+  },
 };
 
 export const viewport: Viewport = {
