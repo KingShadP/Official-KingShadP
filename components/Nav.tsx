@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { TransitionLink } from "@/components/system/TransitionProvider";
 import { NAV_LINKS } from "@/lib/content";
 import { EASE } from "@/lib/motion";
+import { SITE_MEDIA } from "@/lib/site-media";
 
 export function Nav() {
   const [open, setOpen] = useState(false);
@@ -72,13 +73,11 @@ function MenuOverlay({ onClose }: { onClose: () => void }) {
     >
       {/* Ambient panel — only mounted while the menu is open */}
       <div className="hidden lg:block w-[42%] relative overflow-hidden border-r border-ivory/10">
-        <video
-          src="/Model_wearing_KingShadP_hoodie_202605270727.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-35 saturate-50"
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={SITE_MEDIA.menuBackdrop}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover opacity-30 saturate-[0.7]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-void/60" />
         <p className="absolute bottom-8 left-8 font-mono text-[9px] tracking-[0.4em] uppercase text-ivory/40">

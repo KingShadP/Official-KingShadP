@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Reveal } from "@/components/system/Reveal";
 import { TransitionLink } from "@/components/system/TransitionProvider";
 import { EASE } from "@/lib/motion";
+import { SITE_MEDIA } from "@/lib/site-media";
 
 const ROWS = [
   {
@@ -12,21 +13,21 @@ const ROWS = [
     index: "01",
     title: "The Archive",
     note: "Artifacts / Specifications",
-    img: "/unisex-columbia-soft-shell-jacket-black-front-6a16eba5ad2c4.jpg",
+    img: SITE_MEDIA.collectionMark,
   },
   {
     href: "/music",
     index: "02",
     title: "The Sound",
     note: "Sonic Vault / Vol. 1",
-    img: "/media/giragon-champagne.webp",
+    img: SITE_MEDIA.soundMark,
   },
   {
     href: "/world",
     index: "03",
     title: "The World",
     note: "Doctrine / House Codes",
-    img: "/media/crest.webp",
+    img: SITE_MEDIA.worldMark,
   },
 ];
 
@@ -84,7 +85,7 @@ export function SystemIndex() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={ROWS[active].img}
-                alt=""
+                alt={`${ROWS[active].title} preview`}
                 className="w-full h-full object-contain p-6 opacity-90"
                 draggable={false}
               />

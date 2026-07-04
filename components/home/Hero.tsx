@@ -9,6 +9,7 @@ import {
 } from "framer-motion";
 import { TransitionLink } from "@/components/system/TransitionProvider";
 import { EASE } from "@/lib/motion";
+import { SITE_MEDIA } from "@/lib/site-media";
 
 /**
  * Hero — three parallax layers (architecture lines, Giragon plate, type),
@@ -17,7 +18,7 @@ import { EASE } from "@/lib/motion";
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
-  const [ambient, setAmbient] = useState(false);
+  const [ambient, setAmbient] = useState(true);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -53,18 +54,15 @@ export function Hero() {
         }}
       />
 
-      {/* Optional ambient video layer */}
+      {/* Optional ambient backdrop layer */}
       {ambient && (
-        <motion.video
+        <motion.img
           key="ambient"
-          src="/Model_wearing_KingShadP_hoodie_202605270727.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
+          src={SITE_MEDIA.heroBackdrop}
+          alt=""
           className="absolute inset-0 w-full h-full object-cover saturate-[0.4]"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.22 }}
+          animate={{ opacity: 0.16 }}
           transition={{ duration: 1.4, ease: EASE }}
         />
       )}
@@ -76,7 +74,7 @@ export function Hero() {
         style={{ y: yArt, opacity: oFade }}
       >
         <motion.img
-          src="/media/giragon-copper.webp"
+          src={SITE_MEDIA.heroPlate}
           alt=""
           draggable={false}
           className="w-[62vmin] max-w-[560px] opacity-[0.33] select-none"
@@ -140,7 +138,7 @@ export function Hero() {
         className="absolute bottom-6 right-6 lg:right-12 z-20 font-mono text-[9px] tracking-[0.35em] uppercase text-ivory/40 hover:text-bronze transition-colors duration-300"
         aria-pressed={ambient}
       >
-        Ambient — {ambient ? "On" : "Off"}
+        Atmosphere — {ambient ? "On" : "Off"}
       </motion.button>
 
       {/* Scroll cue */}
