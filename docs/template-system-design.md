@@ -156,7 +156,7 @@ Core data objects:
 
 ### 6.1 Brand-Level Customization
 
-One `brand.config` per instance defines: company name (used in metadata, header, footer, legal), logo set, semantic color tokens, font pair, imagery treatment preset (e.g., photographic/illustrative/duotone — implemented as CSS filter + layout presets), and tone-of-voice note (a content-writing guideline stored with the config; it guides copy, it is not runtime logic). Changing every item in this file fully rebrands the site with zero component edits — that is the acceptance test for brand decoupling.
+One `brand.config.ts` per instance defines: company name (used in metadata, header, footer, legal), logo set, semantic color tokens, font pair, imagery treatment preset (e.g., photographic/illustrative/duotone — implemented as CSS filter + layout presets), and tone-of-voice note (a content-writing guideline stored with the config; it guides copy, it is not runtime logic). Changing every item in this file fully rebrands the site with zero component edits — that is the acceptance test for brand decoupling.
 
 ### 6.2 Page-Level Customization
 
@@ -175,7 +175,7 @@ Disabled modules must not ship code to the client bundle (route-level code split
 ### 6.4 Configuration Method Recommendations
 
 - **Config files (TS/JSON in repo):** structural decisions — module flags, page compositions, token sets. Right place because these changes should be code-reviewed and versioned with the instance.
-- **JSON/YAML:** fine as the file format above; avoid YAML for anything deeply nested that needs schema validation — TS/JSON with zod validation gives errors at build time.
+- **Format preference:** use TS/JSON as the default config formats; only use YAML for shallow configs, and avoid it for deeply nested structures that need schema validation.
 - **CMS:** all copy, media, collections — anything a non-developer edits weekly. Wrong place for structure (letting editors reorder page architecture in the CMS invites breakage).
 - **Database:** form submissions, admin users, module runtime state — anything written by the running system.
 - **Admin panel:** the human interface over CMS + selected safe config (e.g., toggling a banner, editing nav labels). Token/structure edits stay in files; a "theme editor" UI is a Phase-3 luxury, not MVP.
