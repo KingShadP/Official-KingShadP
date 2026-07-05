@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { EASE } from "@/lib/motion";
-import { SITE_MEDIA } from "@/lib/site-media";
+import { BRAND } from "@/config/brand.config";
 
 /**
  * Signature bootloader — plays once per session.
@@ -16,20 +16,24 @@ export function Preloader() {
   const reduced = useReducedMotion();
 
   useEffect(() => {
-    if (sessionStorage.getItem("ksp-boot")) return;
-    sessionStorage.setItem("ksp-boot", "1");
+    if (sessionStorage.getItem("ksp-boot")) {
+      // Already booted this session — let listeners proceed immediately.
+      window.dispatchEvent(new Event("ksp:reveal"));
+      return;
+    }
     setShow(true);
     document.documentElement.style.overflow = "hidden";
-    const t = setTimeout(() => setDone(true), reduced ? 600 : 2500);
+    const t = setTimeout(() => setDone(true), reduced ? 600 : 2400);
     return () => clearTimeout(t);
   }, [reduced]);
 
   useEffect(() => {
     if (done) {
-      const t = setTimeout(() => {
-        document.documentElement.style.overflow = "";
-        setShow(false);
-      }, 900);
+      // Mark the session booted and release the page as the panel lifts.
+      sessionStorage.setItem("ksp-boot", "1");
+      document.documentElement.style.overflow = "";
+      window.dispatchEvent(new Event("ksp:reveal"));
+      const t = setTimeout(() => setShow(false), 900);
       return () => clearTimeout(t);
     }
   }, [done]);
@@ -53,8 +57,8 @@ export function Preloader() {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-               src={SITE_MEDIA.signature}
-                alt="KingShadP"
+                src={BRAND.assets.bootMark}
+                alt={BRAND.name}
                 className="w-full h-auto select-none pointer-events-none"
                 draggable={false}
               />
@@ -74,7 +78,7 @@ export function Preloader() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.9, duration: 0.8 }}
           >
-            Official Website
+            {BRAND.bootLabel}
           </motion.p>
         </motion.div>
       )}

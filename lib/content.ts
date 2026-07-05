@@ -1,11 +1,10 @@
 import { ARTIFACT_IMAGE_MAP } from "@/lib/site-media";
 
-export const NAV_LINKS = [
-  { href: "/visuals", label: "Visuals", index: "01" },
-  { href: "/music", label: "Music", index: "02" },
-  { href: "/world", label: "World", index: "03" },
-  { href: "/shop", label: "Shop", index: "04" },
-];
+/**
+ * INSTANCE content. Navigation moved to config/site.config.ts (structure
+ * belongs to site config, not content); re-exported here for compatibility.
+ */
+export { NAV_LINKS } from "@/config/site.config";
 
 export type Artifact = {
   ref: string;

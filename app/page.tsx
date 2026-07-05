@@ -1,15 +1,18 @@
-import { Hero } from "@/components/home/Hero";
-import { SystemIndex } from "@/components/home/SystemIndex";
-import { SelectedArtifacts } from "@/components/home/SelectedArtifacts";
-import { Doctrine } from "@/components/home/Doctrine";
+import { SITE } from "@/config/site.config";
+import { HOME_SECTIONS } from "@/components/sections/registry";
 
+/**
+ * Home = ordered composition of registered sections, driven by
+ * config/site.config.ts. Reordering or removing home sections is a
+ * config edit, not a code change.
+ */
 export default function Home() {
   return (
     <>
-      <Hero />
-      <SystemIndex />
-      <SelectedArtifacts />
-      <Doctrine />
+      {SITE.home.sections.map((key) => {
+        const Section = HOME_SECTIONS[key];
+        return <Section key={key} />;
+      })}
     </>
   );
 }
