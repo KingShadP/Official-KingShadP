@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { EASE } from "@/lib/motion";
-import { SITE_MEDIA } from "@/lib/site-media";
+import { BRAND } from "@/config/brand.config";
 
 /**
  * Signature bootloader — plays once per session.
@@ -57,8 +57,8 @@ export function Preloader() {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-               src={SITE_MEDIA.signature}
-                alt="KingShadP"
+                src={BRAND.assets.bootMark}
+                alt={BRAND.name}
                 className="w-full h-auto select-none pointer-events-none"
                 draggable={false}
               />
@@ -78,7 +78,7 @@ export function Preloader() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.9, duration: 0.8 }}
           >
-            Official Website
+            {BRAND.bootLabel}
           </motion.p>
         </motion.div>
       )}

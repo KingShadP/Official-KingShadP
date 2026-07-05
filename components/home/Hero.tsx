@@ -9,18 +9,27 @@ import {
 } from "framer-motion";
 import { TransitionLink } from "@/components/system/TransitionProvider";
 import { EASE } from "@/lib/motion";
-import { SITE_MEDIA } from "@/lib/site-media";
 import { useBootReveal } from "@/lib/useBootReveal";
+import { BRAND } from "@/config/brand.config";
+import { SITE } from "@/config/site.config";
+
+const CTA_STYLES = {
+  primary:
+    "px-6 py-3 border border-bronze/40 hover:border-bronze hover:bg-bronze/10 transition-all duration-500 font-mono text-[10px] uppercase tracking-[0.3em] text-bronze",
+  ghost:
+    "px-6 py-3 border border-ivory/15 hover:border-ivory/50 transition-all duration-500 font-mono text-[10px] uppercase tracking-[0.3em] text-ivory/70",
+} as const;
 
 /**
- * Hero — three parallax layers (architecture lines, Giragon plate, type),
- * driven by transform-only motion values. Optional ambient video layer.
+ * CORE section — hero with three parallax layers (architecture lines,
+ * brand plate, type), transform-only motion values. All copy, media, and
+ * CTAs come from config (site.config.home.hero + brand.config).
  */
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
   const ready = useBootReveal();
-  const [ambient, setAmbient] = useState(false);
+  const hero = SITE.home.hero;
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -38,13 +47,13 @@ export function Hero() {
 
   return (
     <section ref={ref} className="relative h-[100svh] overflow-hidden flex items-end">
-      {/* Layer 0 — architecture: warm glow + column hairlines */}
+      {/* Layer 0 — architecture: warm glow + column hairlines (token-driven) */}
       <div
         aria-hidden
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 90% 55% at 50% 100%, rgba(192,141,93,0.13), transparent 65%), radial-gradient(ellipse 60% 40% at 50% 0%, rgba(192,141,93,0.05), transparent 70%)",
+            "radial-gradient(ellipse 90% 55% at 50% 100%, rgb(var(--brand-accent) / 0.13), transparent 65%), radial-gradient(ellipse 60% 40% at 50% 0%, rgb(var(--brand-accent) / 0.05), transparent 70%)",
         }}
       />
       <div
@@ -52,28 +61,30 @@ export function Hero() {
         className="absolute inset-0 opacity-[0.05]"
         style={{
           background:
-            "repeating-linear-gradient(90deg, transparent 0px, transparent 158px, rgba(242,237,228,0.5) 159px, transparent 161px)",
+            "repeating-linear-gradient(90deg, transparent 0px, transparent 158px, rgb(var(--brand-foreground) / 0.5) 159px, transparent 161px)",
         }}
       />
 
-      <motion.img
-        key="ambient"
-        src={SITE_MEDIA.heroBackdrop}
-        alt=""
-        className="absolute inset-0 w-full h-full object-cover saturate-[0.4]"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.16 }}
-        transition={{ duration: 1.4, ease: EASE }}
-      />
+      {/* Ambient backdrop */}
+      {hero.backdrop && (
+        <motion.img
+          src={hero.backdrop}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover saturate-[0.4]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.16 }}
+          transition={{ duration: 1.4, ease: EASE }}
+        />
+      )}
 
-      {/* Layer 1 — the Giragon plate, drifting slower than scroll */}
+      {/* Layer 1 — the brand plate, drifting slower than scroll */}
       <motion.div
         aria-hidden
         className="absolute inset-0 flex items-center justify-center"
         style={{ y: yArt, opacity: oFade }}
       >
         <motion.img
-          src={SITE_MEDIA.heroPlate}
+          src={hero.plate}
           alt=""
           draggable={false}
           className="w-[62vmin] max-w-[560px] select-none"
@@ -98,33 +109,30 @@ export function Hero() {
           {...enter(0.25)}
           className="font-mono text-[10px] md:text-xs text-bronze tracking-[0.45em] uppercase mb-6"
         >
-          Identity / Luxury / Worldbuilding / Sound
+          {hero.kicker}
         </motion.p>
 
         <motion.h1
           {...enter(0.4)}
           className="font-serif font-light text-ivory uppercase leading-[0.95] tracking-tight text-[16vw] md:text-[10.5vw] lg:text-[9vw] select-none"
         >
-          KingShadP
+          {BRAND.wordmark.text}
         </motion.h1>
 
         <motion.div {...enter(0.6)} className="mt-8 flex flex-wrap items-center gap-8">
           <p className="font-serif italic font-light text-ivory/65 text-base md:text-lg max-w-md">
-            KingShadP is a luxury world in progress: a creative house where image, sound, symbols, fashion, and prophecy are treated as one unified system.
+            {hero.intro}
           </p>
           <div className="flex gap-4">
-            <TransitionLink
-              href="/visuals"
-              className="px-6 py-3 border border-bronze/40 hover:border-bronze hover:bg-bronze/10 transition-all duration-500 font-mono text-[10px] uppercase tracking-[0.3em] text-bronze"
-            >
-              Enter Visuals
-            </TransitionLink>
-            <TransitionLink
-              href="/world"
-              className="px-6 py-3 border border-ivory/15 hover:border-ivory/50 transition-all duration-500 font-mono text-[10px] uppercase tracking-[0.3em] text-ivory/70"
-            >
-              Read the World
-            </TransitionLink>
+            {hero.ctas.map((cta) => (
+              <TransitionLink
+                key={cta.href}
+                href={cta.href}
+                className={CTA_STYLES[cta.variant]}
+              >
+                {cta.label}
+              </TransitionLink>
+            ))}
           </div>
         </motion.div>
       </motion.div>

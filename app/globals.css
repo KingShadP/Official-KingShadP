@@ -2,21 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * CORE stylesheet. All colors resolve through --brand-* variables injected
+ * from config/brand.config.ts (lib/theme.ts). The :root block below is only
+ * a pre-hydration fallback; the injected <style> in app/layout.tsx is the
+ * source of truth. No other hard-coded brand colors belong in this file.
+ */
+:root {
+  --brand-background: 7 6 5;
+  --brand-surface: 16 13 11;
+  --brand-foreground: 242 237 228;
+  --brand-accent: 192 141 93;
+  --brand-accent-alt: 125 0 9;
+}
+
 @layer base {
   html {
-    background-color: #070605;
+    background-color: rgb(var(--brand-background));
   }
   body {
-    background-color: theme("colors.void");
-    color: theme("colors.ivory");
+    background-color: rgb(var(--brand-background));
+    color: rgb(var(--brand-foreground));
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
   }
 }
 
 ::selection {
-  background: theme("colors.bronze");
-  color: #070605;
+  background: rgb(var(--brand-accent));
+  color: rgb(var(--brand-background));
 }
 
 /* Custom cursor active: hide the native one */
@@ -33,7 +47,12 @@ html.cursor-fine * {
 /* Hairline rules */
 .rule {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(192, 141, 93, 0.35), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(var(--brand-accent) / 0.35),
+    transparent
+  );
 }
 
 @media (prefers-reduced-motion: reduce) {
