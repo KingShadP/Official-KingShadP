@@ -1,6 +1,8 @@
 "use client";
 
 import { memo } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ScrollParticleBurst } from "@/components/ScrollParticleBurst";
 
@@ -77,25 +79,25 @@ export const TheVerse = memo(function TheVerse() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
              <div className="aspect-[16/9] border border-ivory/10 relative group cursor-crosshair overflow-hidden">
-                <img src="/front_black_1_1.png" alt="Artifact" className="absolute inset-0 w-full h-full object-cover mix-blend-multiply grayscale opacity-20 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700" />
+                <Image src="/front_black_1_1.png" alt="Artifact" fill referrerPolicy="no-referrer" className="absolute inset-0 object-cover mix-blend-multiply grayscale opacity-20 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700" />
                 <div className="absolute inset-0 flex items-center justify-center p-8 text-center transition-all">
                   <h4 className="font-serif text-2xl text-ivory font-light italic">The Platinum Standard</h4>
                 </div>
              </div>
              <div className="aspect-[16/9] border border-ivory/10 relative group cursor-crosshair overflow-hidden">
-                <img src="/unisex_organic_mid_light_crafter_t_shirt_desert_dust_front_6a16dd454c251.jpg" alt="Artifact" className="absolute inset-0 w-full h-full object-cover mix-blend-multiply grayscale opacity-20 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700" />
+                <Image src="/unisex_organic_mid_light_crafter_t_shirt_desert_dust_front_6a16dd454c251.jpg" alt="Artifact" fill referrerPolicy="no-referrer" className="absolute inset-0 object-cover mix-blend-multiply grayscale opacity-20 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700" />
                 <div className="absolute inset-0 flex items-center justify-center p-8 text-center transition-all">
                   <h4 className="font-serif text-2xl text-ivory font-light italic">Ruby Reflections</h4>
                 </div>
              </div>
              <div className="aspect-[16/9] border border-ivory/10 relative group cursor-crosshair overflow-hidden">
-                <img src="/unisex_columbia_soft_shell_jacket_collegiate_navy_front_6a16eba5ad374.jpg" alt="Artifact" className="absolute inset-0 w-full h-full object-cover mix-blend-multiply grayscale opacity-20 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700" />
+                <Image src="/unisex_columbia_soft_shell_jacket_collegiate_navy_front_6a16eba5ad374.jpg" alt="Artifact" fill referrerPolicy="no-referrer" className="absolute inset-0 object-cover mix-blend-multiply grayscale opacity-20 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700" />
                 <div className="absolute inset-0 flex items-center justify-center p-8 text-center transition-all">
                   <h4 className="font-serif text-2xl text-ivory font-light italic">Crown Presence</h4>
                 </div>
              </div>
              <div className="aspect-[16/9] border border-ivory/10 relative group cursor-crosshair overflow-hidden">
-                <img src="/unisex_organic_mid_light_crafter_t_shirt_black_back_6a16dd454caca.jpg" alt="Artifact" className="absolute inset-0 w-full h-full object-cover mix-blend-multiply grayscale opacity-20 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700" />
+                <Image src="/unisex_organic_mid_light_crafter_t_shirt_black_back_6a16dd454caca.jpg" alt="Artifact" fill referrerPolicy="no-referrer" className="absolute inset-0 object-cover mix-blend-multiply grayscale opacity-20 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700" />
                 <div className="absolute inset-0 flex items-center justify-center p-8 text-center transition-all">
                   <h4 className="font-serif text-2xl text-ivory font-light italic">Echoes of Gold</h4>
                 </div>
@@ -127,7 +129,7 @@ export const TheVerse = memo(function TheVerse() {
                 transition={{ duration: 0.8, ease: "easeOut" }}
               >
                 <div className="aspect-[3/4] border border-ivory/10 relative overflow-hidden bg-ivory/5 group">
-                  <img src="/chatgpt_image_may_28_2026_02_10_07_am_5_.png" alt="Artifact" className="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-700" />
+                  <Image src="/chatgpt_image_may_28_2026_02_10_07_am_5_.png" alt="Artifact" fill referrerPolicy="no-referrer" className="object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-700" />
                   <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent opacity-60" />
                 </div>
                 <div className="mt-6 md:-mt-12 md:pl-8 relative z-20 mix-blend-difference">
@@ -144,7 +146,7 @@ export const TheVerse = memo(function TheVerse() {
                 transition={{ duration: 1, ease: "easeOut" }}
               >
                 <div className="aspect-[4/3] border border-ivory/10 relative overflow-hidden bg-ivory/5 group">
-                  <img src="/chatgpt_image_may_28_2026_02_10_07_am_6_1.png" alt="Artifact" className="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-700" />
+                  <Image src="/chatgpt_image_may_28_2026_02_10_07_am_6_1.png" alt="Artifact" fill referrerPolicy="no-referrer" className="object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-700" />
                 </div>
                 <div className="mt-6">
                   <h4 className="font-serif text-2xl text-ivory">Crafted Silence</h4>
@@ -160,7 +162,7 @@ export const TheVerse = memo(function TheVerse() {
                 transition={{ duration: 0.9, ease: "easeOut" }}
               >
                 <div className="aspect-[16/9] border border-ivory/10 relative overflow-hidden bg-ivory/5 group">
-                  <img src="/chatgpt_image_may_28_2026_02_10_36_am_1_1.png" alt="Artifact" className="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-700" />
+                  <Image src="/chatgpt_image_may_28_2026_02_10_36_am_1_1.png" alt="Artifact" fill referrerPolicy="no-referrer" className="object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-700" />
                 </div>
                 <div className="mt-6 bg-void/80 backdrop-blur-sm p-6 border border-ivory/5 -ml-4 md:-ml-8 mr-4 md:mr-0 inline-block shadow-2xl">
                   <h4 className="font-serif text-2xl text-ivory font-light italic">Private Command</h4>
@@ -176,7 +178,7 @@ export const TheVerse = memo(function TheVerse() {
                 transition={{ duration: 1.2, ease: "easeOut" }}
               >
                 <div className="aspect-square border border-ivory/10 relative overflow-hidden bg-ivory/5 group">
-                  <img src="/chatgpt_image_may_28_2026_02_11_23_am_1_.png" alt="Artifact" className="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-700" />
+                  <Image src="/chatgpt_image_may_28_2026_02_11_23_am_1_.png" alt="Artifact" fill referrerPolicy="no-referrer" className="object-cover grayscale mix-blend-multiply opacity-80 group-hover:scale-105 transition-transform duration-700" />
                 </div>
                 <div className="mt-6 text-right md:pr-8 md:-mt-12 relative z-20 mix-blend-difference">
                   <h4 className="font-serif text-2xl text-ivory">Archive Presence</h4>
@@ -311,15 +313,15 @@ export const TheVerse = memo(function TheVerse() {
               Protocols
             </h3>
             <div className="flex flex-col gap-4 font-mono text-sm tracking-[0.2em] uppercase text-ivory/80">
-              <a href="#" className="flex items-center gap-4 hover:text-gold hover:translate-x-2 transition-all">
+              <Link href="#" className="flex items-center gap-4 hover:text-gold hover:translate-x-2 transition-all">
                 <span className="text-oxblood">01 /</span> Summit_Core
-              </a>
-              <a href="#" className="flex items-center gap-4 hover:text-gold hover:translate-x-2 transition-all">
+              </Link>
+              <Link href="#" className="flex items-center gap-4 hover:text-gold hover:translate-x-2 transition-all">
                 <span className="text-oxblood">02 /</span> Mirror_Feeds
-              </a>
-              <a href="#" className="flex items-center gap-4 hover:text-gold hover:translate-x-2 transition-all">
+              </Link>
+              <Link href="#" className="flex items-center gap-4 hover:text-gold hover:translate-x-2 transition-all">
                 <span className="text-oxblood">03 /</span> Neural_Archive
-              </a>
+              </Link>
             </div>
           </motion.div>
 

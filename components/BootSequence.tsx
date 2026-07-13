@@ -58,6 +58,7 @@ export function BootSequence({ onComplete }: { onComplete: () => void }) {
     }, 180);
 
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onComplete]);
 
   return (

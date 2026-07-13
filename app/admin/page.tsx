@@ -94,6 +94,7 @@ export default function AdminDashboard() {
       setAdminKey(savedKey);
       testAuthentication(savedKey);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addLog = (message: string) => {

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lock, FileText, ChevronRight, Eye, X, ShieldAlert } from "lucide-react";
 import { GlitchText } from "./GlitchText";
@@ -210,10 +211,12 @@ export function AvariceArtifacts() {
                   </div>
                 ) : (
                   <>
-                    <img
+                    <Image
                       src={art.image}
                       alt={art.title}
+                      fill
                       className="w-full h-full object-cover filter contrast-[1.05] grayscale opacity-45 group-hover:opacity-85 group-hover:scale-105 transition-all duration-700"
+                      referrerPolicy="no-referrer"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-void/90 via-transparent to-transparent opacity-80" />
                     <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
@@ -323,10 +326,12 @@ export function AvariceArtifacts() {
               {/* Left Side: Heavy Graphic Presentation */}
               <div className="flex-1 flex flex-col gap-4">
                 <div className="aspect-[4/3] w-full border border-ivory/10 bg-void flex items-center justify-center relative overflow-hidden group">
-                  <img
+                  <Image
                     src={selectedArtifact.image}
                     alt={selectedArtifact.title}
+                    fill
                     className="w-full h-full object-cover filter contrast-[1.08]"
+                    referrerPolicy="no-referrer"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
                 </div>
