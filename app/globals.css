@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --font-serif: "Times New Roman", Times, serif;
+  --font-sans: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "Courier New", Courier, monospace;
+}
+
 @layer base {
   body {
     background-color: #090908;
@@ -24,5 +30,4 @@
   background: #dcc57b;
   color: #090908;
 }
-
 
