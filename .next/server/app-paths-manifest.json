@@ -1,0 +1,21 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/contact/route": "app/api/contact/route.js",
+  "/api/gemini/generate/route": "app/api/gemini/generate/route.js",
+  "/api/admin/route": "app/api/admin/route.js",
+  "/api/concierge/route": "app/api/concierge/route.js",
+  "/api/search/route": "app/api/search/route.js",
+  "/admin/page": "app/admin/page.js",
+  "/(public)/about/page": "app/(public)/about/page.js",
+  "/(public)/accessibility/page": "app/(public)/accessibility/page.js",
+  "/(public)/acquisition/page": "app/(public)/acquisition/page.js",
+  "/(public)/campaigns/page": "app/(public)/campaigns/page.js",
+  "/(public)/archive/page": "app/(public)/archive/page.js",
+  "/(public)/contact/page": "app/(public)/contact/page.js",
+  "/(public)/music/page": "app/(public)/music/page.js",
+  "/(public)/privacy/page": "app/(public)/privacy/page.js",
+  "/(public)/page": "app/(public)/page.js",
+  "/(public)/search/page": "app/(public)/search/page.js",
+  "/(public)/terms/page": "app/(public)/terms/page.js",
+  "/(public)/fashion/page": "app/(public)/fashion/page.js"
+}
