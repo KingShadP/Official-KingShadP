@@ -1,40 +1,32 @@
-import { TransitionLink } from "@/components/system/TransitionProvider";
-import { BRAND } from "@/config/brand.config";
-import { NAV_LINKS } from "@/config/site.config";
+"use client";
 
-/** CORE chrome — all strings and links come from config. */
-export function Footer() {
+import { memo } from "react";
+import Link from "next/link";
+
+export const Footer = memo(function Footer() {
   return (
-    <footer className="relative w-full border-t border-ivory/10 bg-void">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 py-14 flex flex-col md:flex-row justify-between gap-10">
-        <div className="flex flex-col gap-3">
-          <span className="font-serif italic text-2xl font-light text-ivory/90">
-            {BRAND.wordmark.text}
-            <span className="text-bronze">{BRAND.wordmark.accent}</span>
-          </span>
-          <span className="font-mono text-[9px] uppercase tracking-[0.35em] text-ivory/35">
-            {BRAND.tagline}
+    <footer className="w-full py-12 px-6 lg:px-24 border-t border-[#dcc57b]/20 z-10 bg-[#090908] relative">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+        <div className="flex flex-col gap-2">
+          <span className="font-serif text-xl tracking-[0.1em] uppercase font-light text-white">KING SHAD P</span>
+          <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#dcc57b]/60">
+            © 2026 KING SHAD P // ALL RIGHTS RESERVED
           </span>
         </div>
-
-        <nav className="flex items-start gap-8">
-          {NAV_LINKS.map((l) => (
-            <TransitionLink
-              key={l.href}
-              href={l.href}
-              className="font-mono text-[10px] tracking-[0.3em] uppercase text-ivory/50 hover:text-bronze transition-colors duration-300"
-            >
-              {l.label}
-            </TransitionLink>
-          ))}
-        </nav>
-
-        <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-ivory/30 md:text-right">
-          {BRAND.copyrightLine}
-          <br />
-          All rights reserved.
-        </p>
+        
+        <div className="flex flex-wrap items-center justify-center gap-6 font-mono text-[9px] uppercase tracking-[0.2em] text-white/50">
+          <Link href="/" className="hover:text-[#dcc57b] transition-colors">Home</Link>
+          <Link href="/music" className="hover:text-[#dcc57b] transition-colors">Music</Link>
+          <Link href="/fashion" className="hover:text-[#dcc57b] transition-colors">Lookbook</Link>
+          <Link href="/archive" className="hover:text-[#dcc57b] transition-colors">Archive</Link>
+          <Link href="/campaigns" className="hover:text-[#dcc57b] transition-colors">Manifesto</Link>
+          <Link href="/contact" className="hover:text-[#dcc57b] transition-colors">Inquire</Link>
+          <Link href="/privacy" className="hover:text-[#dcc57b] transition-colors">Privacy</Link>
+          <Link href="/terms" className="hover:text-[#dcc57b] transition-colors">Terms</Link>
+          <Link href="/accessibility" className="hover:text-[#dcc57b] transition-colors">Accessibility</Link>
+        </div>
       </div>
     </footer>
   );
-}
+});
+
