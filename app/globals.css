@@ -2,65 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
- * CORE stylesheet. All colors resolve through --brand-* variables injected
- * from config/brand.config.ts (lib/theme.ts). The :root block below is only
- * a pre-hydration fallback; the injected <style> in app/layout.tsx is the
- * source of truth. No other hard-coded brand colors belong in this file.
- */
 :root {
-  --brand-background: 7 6 5;
-  --brand-surface: 16 13 11;
-  --brand-foreground: 242 237 228;
-  --brand-accent: 192 141 93;
-  --brand-accent-alt: 125 0 9;
+  --font-serif: "Times New Roman", Times, serif;
+  --font-sans: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "Courier New", Courier, monospace;
 }
 
 @layer base {
-  html {
-    background-color: rgb(var(--brand-background));
-  }
   body {
-    background-color: rgb(var(--brand-background));
-    color: rgb(var(--brand-foreground));
+    background-color: #090908;
+    color: #dcc57b;
     overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 
 ::selection {
-  background: rgb(var(--brand-accent));
-  color: rgb(var(--brand-background));
+  background: #dcc57b;
+  color: #090908;
 }
 
-/* Custom cursor active: hide the native one */
-html.cursor-fine,
-html.cursor-fine * {
-  cursor: none !important;
-}
-
-/* Single, cheap film-grain texture (no blend mode, no animation) */
-.bg-grain {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-}
-
-/* Hairline rules */
-.rule {
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgb(var(--brand-accent) / 0.35),
-    transparent
-  );
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}

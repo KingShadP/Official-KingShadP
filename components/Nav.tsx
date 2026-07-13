@@ -1,52 +1,63 @@
 "use client";
-
+import { useState, memo } from "react";
 import { usePathname } from "next/navigation";
-import { TransitionLink } from "@/components/system/TransitionProvider";
-import { BRAND } from "@/config/brand.config";
-import { NAV_LINKS } from "@/config/site.config";
+import Link from "next/link";
+import { MenuOverlay } from "./MenuOverlay";
 
-/**
- * CORE chrome — wordmark + inline nav. Links and brand strings come from
- * config; this component contains no instance-specific values.
- */
-export function Nav() {
+export const Nav = memo(function Nav() {
   const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-[120] px-4 md:px-6 lg:px-12 py-5 pointer-events-none">
-      <div className="absolute inset-0 bg-gradient-to-b from-void/90 via-void/65 to-transparent pointer-events-none" />
-      <div className="relative pointer-events-auto flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <TransitionLink
-          href="/"
-          className="font-serif italic text-xl text-ivory tracking-tight w-fit"
-        >
-          {BRAND.wordmark.text}
-          <span className="text-bronze">{BRAND.wordmark.accent}</span>
-        </TransitionLink>
+    <>
+      <header id="main-header" className="fixed top-0 left-0 right-0 z-40 bg-[#0c0a09]/60 backdrop-blur-md border-b border-[#dcc57b]/20 px-6 lg:px-12 py-5 flex justify-between items-center">
+        <div className="flex flex-col">
+          <Link 
+            href="/" 
+            className="font-serif text-xl tracking-[0.2em] uppercase font-light text-white hover:text-[#dcc57b] transition-colors"
+          >
+            KING SHAD P
+          </Link>
+        </div>
 
-        <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 md:justify-end">
-          {NAV_LINKS.map((link) => (
-            <TransitionLink
-              key={link.href}
-              href={link.href}
-              className={`group font-mono text-[10px] tracking-[0.35em] uppercase transition-colors duration-300 ${
-                pathname === link.href
-                  ? "text-bronze"
-                  : "text-ivory/60 hover:text-ivory"
+        {/* Desktop navigation */}
+        <nav id="top-navigation" className="hidden md:flex items-center gap-6 md:gap-10">
+          {[
+            { label: "Home", path: "/" },
+            { label: "Music", path: "/music" },
+            { label: "Lookbook", path: "/fashion" },
+            { label: "Archive", path: "/archive" },
+            { label: "Manifesto", path: "/campaigns" },
+            { label: "Inquire", path: "/contact" },
+            { label: "Search", path: "/search" }
+          ].map((item) => (
+            <Link
+              key={item.path}
+              href={item.path}
+              className={`font-mono text-[10px] uppercase tracking-widest transition-all duration-300 ${
+                pathname === item.path
+                  ? "text-[#dcc57b] font-semibold border-b border-[#dcc57b] pb-0.5"
+                  : "text-white/50 hover:text-white"
               }`}
             >
-              {link.label}
-              <span
-                className={`block h-px mt-1 bg-bronze origin-left transition-transform duration-500 ease-out ${
-                  pathname === link.href
-                    ? "scale-x-100"
-                    : "scale-x-0 group-hover:scale-x-100"
-                }`}
-              />
-            </TransitionLink>
+              {item.label}
+            </Link>
           ))}
         </nav>
-      </div>
-    </header>
+
+        {/* Mobile Navigation Trigger Button */}
+        <button
+          onClick={() => setMenuOpen(true)}
+          className="md:hidden flex items-center font-mono text-[10px] uppercase tracking-widest text-[#dcc57b] border border-[#dcc57b]/30 px-3 py-1.5 rounded-sm hover:text-white hover:border-white transition-colors"
+          aria-label="Open navigation menu"
+        >
+          [ MENU ]
+        </button>
+      </header>
+
+      {/* Render the full screen menu overlay */}
+      <MenuOverlay isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+    </>
   );
-}
+});
+
